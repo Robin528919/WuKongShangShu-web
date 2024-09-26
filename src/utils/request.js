@@ -14,8 +14,8 @@ export let isRelogin = { show: false };
 axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8'
 // 创建axios实例
 const service = axios.create({
-  // axios中请求配置有baseURL选项，表示请求URL公共部分
-  baseURL: import.meta.env.VITE_APP_BASE_API,
+  // axios中请求配置有baseURL选项，表示请求URL公共部分 "http://120.27.8.117/api/v1",
+  baseURL:  "http://120.27.8.117/api/v1",    //import.meta.env.VITE_APP_BASE_API,
   // 超时
   timeout: 10000
 })
@@ -73,6 +73,7 @@ service.interceptors.request.use(config => {
 
 // 响应拦截器
 service.interceptors.response.use(res => {
+  console.log("相应拦截题内容",res)
     // 未设置状态码则默认成功状态
     const code = res.data.code || 200;
     // 获取错误信息

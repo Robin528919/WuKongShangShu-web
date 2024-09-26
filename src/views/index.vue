@@ -1,15 +1,24 @@
 <template>
     <div class="app-container home">
         <h1>悟空上书系统首页</h1>
+        <div style="display: flex; align-items: center;" v-for="item in svgList" :key="item.name">
+            <span style="margin-right: 18px;">{{ item.name }}</span>
+            <svg-icon :icon-class="item.name" class="el-input__icon" style="height: 32px;width: 16px;" />
+        </div>
+
     </div>
 </template>
 
 <script setup name="Index">
-const version = ref('3.8.8')
+import SvgIcon from "@/components/SvgIcon"
+const svgModules = import.meta.glob('/src/assets/icons/svg/*.svg');
+const svgList = Object.keys(svgModules).map((key) => ({
+    name: key.replace(/^.*\/(\S+)\..*/, '$1'),
+    module: SvgIcon,
+}));
 
-function goTarget(url) {
-    window.open(url, '__blank')
-}
+console.log("svgModules", svgList)
+
 </script>
 
 <style scoped lang="scss">

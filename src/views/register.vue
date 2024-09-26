@@ -2,8 +2,8 @@
     <div class="register">
         <el-form ref="registerRef" :model="registerForm" :rules="registerRules" class="register-form">
             <h3 class="title">悟空上书系统</h3>
-            <el-form-item prop="username">
-                <el-input v-model="registerForm.username" type="text" size="large" auto-complete="off" placeholder="账号">
+            <el-form-item prop="email">
+                <el-input v-model="registerForm.email" type="text" size="large" auto-complete="off" placeholder="邮箱">
                     <template #prefix><svg-icon icon-class="user" class="el-input__icon input-icon" /></template>
                 </el-input>
             </el-form-item>
@@ -19,7 +19,7 @@
                     <template #prefix><svg-icon icon-class="password" class="el-input__icon input-icon" /></template>
                 </el-input>
             </el-form-item>
-            <el-form-item prop="code" v-if="captchaEnabled">
+            <!-- <el-form-item prop="code" v-if="captchaEnabled">
                 <el-input size="large" v-model="registerForm.code" auto-complete="off" placeholder="验证码"
                     style="width: 63%" @keyup.enter="handleRegister">
                     <template #prefix><svg-icon icon-class="validCode" class="el-input__icon input-icon" /></template>
@@ -27,7 +27,7 @@
                 <div class="register-code">
                     <img :src="codeUrl" @click="getCode" class="register-code-img" />
                 </div>
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item style="width:100%;">
                 <el-button :loading="loading" size="large" type="primary" style="width:100%;"
                     @click.prevent="handleRegister">
@@ -41,24 +41,24 @@
         </el-form>
         <!--  底部  -->
         <div class="el-register-footer">
-            <span>Copyright © 2018-2024 ruoyi.vip All Rights Reserved.</span>
+            <span>悟空上书系统</span>
         </div>
     </div>
 </template>
 
 <script setup>
-import { ElMessageBox } from "element-plus";
-import { getCodeImg, register } from "@/api/login";
+import { ElMessage, ElMessageBox } from "element-plus";
+import {  register } from "@/api/login";
 
 const router = useRouter();
 const { proxy } = getCurrentInstance();
 
 const registerForm = ref({
-    username: "",
+    email: "",
     password: "",
-    confirmPassword: "",
+    confirmPassword:"",
     code: "",
-    uuid: ""
+
 });
 
 const equalToPassword = (rule, value, callback) => {
@@ -68,9 +68,8 @@ const equalToPassword = (rule, value, callback) => {
         callback();
     }
 };
-
 const registerRules = {
-    username: [
+    email: [
         { required: true, trigger: "blur", message: "请输入您的账号" },
         { min: 2, max: 20, message: "用户账号长度必须介于 2 和 20 之间", trigger: "blur" }
     ],
@@ -83,7 +82,7 @@ const registerRules = {
         { required: true, trigger: "blur", message: "请再次输入您的密码" },
         { required: true, validator: equalToPassword, trigger: "blur" }
     ],
-    code: [{ required: true, trigger: "change", message: "请输入验证码" }]
+    // code: [{ required: true, trigger: "change", message: "请输入验证码" }]
 };
 
 const codeUrl = ref("");
@@ -95,34 +94,45 @@ function handleRegister() {
         if (valid) {
             loading.value = true;
             register(registerForm.value).then(res => {
-                const username = registerForm.value.username;
-                ElMessageBox.alert("<font color='red'>恭喜你，您的账号 " + username + " 注册成功！</font>", "系统提示", {
-                    dangerouslyUseHTMLString: true,
-                    type: "success",
-                }).then(() => {
-                    router.push("/login");
-                }).catch(() => { });
+                console.log("Fffff",res)
+                // const username = registerForm.value.email;
+               
+                if(res&&res.code==200){
+                    ElMessage.success("注册成功！")
+                    setTimeout(()=>{
+                        router.push("/login");
+                    },1000)
+                }
+                loading.value = false
+
+                // console.log("egisterForm.value",registerForm )
+                // ElMessageBox.alert("<font color='red'>恭喜你，您的账号 " + username + " 注册成功！</font>", "系统提示", {
+                //     dangerouslyUseHTMLString: true,
+                //     type: "success",
+                // }).then(() => {
+                //     router.push("/login");
+                // }).catch(() => { });
             }).catch(() => {
                 loading.value = false;
                 if (captchaEnabled) {
-                    getCode();
+                    // getCode();
                 }
             });
         }
     });
 }
 
-function getCode() {
-    getCodeImg().then(res => {
-        captchaEnabled.value = res.captchaEnabled === undefined ? true : res.captchaEnabled;
-        if (captchaEnabled.value) {
-            codeUrl.value = "data:image/gif;base64," + res.img;
-            registerForm.value.uuid = res.uuid;
-        }
-    });
-}
+// function getCode() {
+//     getCodeImg().then(res => {
+//         captchaEnabled.value = res.captchaEnabled === undefined ? true : res.captchaEnabled;
+//         if (captchaEnabled.value) {
+//             codeUrl.value = "data:image/gif;base64," + res.img;
+//             registerForm.value.uuid = res.uuid;
+//         }
+//     });
+// }
 
-getCode();
+// getCode();
 </script>
 
 <style lang='scss' scoped>

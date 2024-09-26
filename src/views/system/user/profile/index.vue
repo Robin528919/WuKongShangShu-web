@@ -30,7 +30,7 @@
                                 <div class="pull-right">正常</div>
                             </li>
                             <li class="list-group-item">
-                                <svg-icon icon-class="tree" />账户余额
+                                <svg-icon icon-class="money" />账户余额
                                 <div class="pull-right">0.00元</div>
                             </li>
                             <li class="list-group-item">
