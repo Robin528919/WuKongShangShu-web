@@ -24,8 +24,8 @@ const useUserStore = defineStore("user", {
           password,
         })
           .then((res) => {
-            setToken(res.token);
-            this.token = res.token;
+            setToken(res.data.token);
+            this.token = res.data.token;
             resolve();
           })
           .catch((error) => {

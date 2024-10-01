@@ -52,12 +52,10 @@ const route = useRoute();
 const router = useRouter();
 const { proxy } = getCurrentInstance();
 console.log("proxy", proxy)
-
-
 const loginForm = ref({
     email: "wkm@123.com",
-  password: "123456",
-    
+    password: "123456",
+
 })
 const loginRules = {
     email: [{ required: true, trigger: "blur", message: "请输入您的账号" }],

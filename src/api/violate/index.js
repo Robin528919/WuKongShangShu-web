@@ -6,7 +6,7 @@ export function addWord(data) {
     return request({
       url: '/word',
       headers: {
-        isToken: false
+        isToken: true
       },
       method: 'post',
       data: data
@@ -19,7 +19,7 @@ export function delWord(data) {
     return request({
       url: '/word',
       headers: {
-        isToken: false
+        isToken: true
       },
       method: 'delete',
       data: data
@@ -30,9 +30,9 @@ export function delWord(data) {
     return request({
       url: '/word',
       headers: {
-        isToken: false
+        isToken: true
       },
-      method: 'delete',
+      method: 'put',
       data: data
     })
   }
@@ -40,12 +40,12 @@ export function delWord(data) {
   // 查询词库 /api/v1/word/query
   export function getQuery(data) {
     return request({
-      url: '/word/query',
+      url: `/word/query?page=${data.current_page}&page_size=${data.page_size}`,
       headers: {
-        isToken: false
+        isToken: true
       },
-      method: 'get',
-      data: data
+      method: 'post',
+      data: data.body
     })
   }
 
@@ -101,14 +101,3 @@ export function logout() {
   })
 }
 
-// 获取验证码
-export function getCodeImg() {
-  return request({
-    url: '/captchaImage',
-    headers: {
-      isToken: false
-    },
-    method: 'get',
-    timeout: 20000
-  })
-}

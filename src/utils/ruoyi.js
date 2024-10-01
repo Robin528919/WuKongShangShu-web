@@ -244,3 +244,19 @@ export function getNormalPath(p) {
 export function blobValidate(data) {
   return data.type !== 'application/json'
 }
+
+// 把对象转为对象数组查询
+
+
+// 对象转数组
+export function objToArrayFun(params) {
+  let newQueryArr = []
+  for (let key in params) {
+      console.log("paramsparams", key)
+      newQueryArr.push({
+          field: key, value: query[key], operator: "=="
+      })
+
+  }
+  return newQueryArr
+}

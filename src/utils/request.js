@@ -28,15 +28,18 @@ service.interceptors.request.use(config => {
   const isRepeatSubmit = (config.headers || {}).repeatSubmit === false
   if (getToken() && !isToken) {
     config.headers['Authorization'] = 'Bearer ' + getToken() // 让每个请求携带自定义token 请根据实际情况自行修改
+    config.headers['token'] =  getToken() // 让每个请求携带自定义token 请根据实际情况自行修改
   }
   // get请求映射params参数
-  if (config.method === 'get' && config.params) {
-    let url = config.url + '?' + tansParams(config.params);
+  if (config.method === 'get' && config.params ||config.method==='put') {
+   
+    let url = config.url + '?' + tansParams(config.data);
     url = url.slice(0, -1);
     config.params = {};
     config.url = url;
   }
-  if (!isRepeatSubmit && (config.method === 'post' || config.method === 'put')) {
+  
+  if (!isRepeatSubmit && (config.method === 'post' )) {
     const requestObj = {
       url: config.url,
       data: typeof config.data === 'object' ? JSON.stringify(config.data) : config.data,
@@ -57,9 +60,9 @@ service.interceptors.request.use(config => {
       const s_time = sessionObj.time;              // 请求时间
       const interval = 1000;                       // 间隔时间(ms)，小于此时间视为重复提交
       if (s_data === requestObj.data && requestObj.time - s_time < interval && s_url === requestObj.url) {
-        const message = '数据正在处理，请勿重复提交';
-        console.warn(`[${s_url}]: ` + message)
-        return Promise.reject(new Error(message))
+        // const message = '数据正在处理，请勿重复提交';
+        //console.warn(`[${s_url}]: ` + message)
+        //return Promise.reject(new Error(message))
       } else {
         cache.session.setJSON('sessionObj', requestObj)
       }
@@ -87,9 +90,11 @@ service.interceptors.response.use(res => {
         isRelogin.show = true;
         ElMessageBox.confirm('登录状态已过期，您可以继续留在该页面，或者重新登录', '系统提示', { confirmButtonText: '重新登录', cancelButtonText: '取消', type: 'warning' }).then(() => {
           isRelogin.show = false;
-          useUserStore().logOut().then(() => {
-            location.href = '/index';
-          })
+          // useUserStore().logOut().then(() => {
+           
+          // })
+           location.href = '/index';
+
       }).catch(() => {
         isRelogin.show = false;
       });
