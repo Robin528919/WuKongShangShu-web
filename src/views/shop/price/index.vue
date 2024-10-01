@@ -1,148 +1,108 @@
 <template>
     <div class="app-container">
-        <el-form ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
-            <el-form-item label="价格价位">
-                <el-input v-model="query.configName" placeholder="请输入参数名称" clearable style="width: 240px"
-                    @keyup.enter="handleQuery" />
+        <el-form ref="queryRef" :model="query" :inline="true" v-show="showSearch" label-width="68px">
+            <el-form-item label="档位名称">
+                <el-input v-model.trim="query.name" placeholder="请输入档位名称" clearable style="width: 240px" />
             </el-form-item>
-
             <el-form-item label="启用状态" prop="configType">
-                <el-select v-model="query.configType" placeholder="系统内置" style="width: 120px" clearable>
+                <el-select v-model="query.configType" placeholder="全部" style="width: 120px" clearable>
                     <el-option v-for="dict in sys_yes_no" :key="dict.value" :label="dict.label" :value="dict.value" />
                 </el-select>
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" icon="Search" @click="seachFun">搜索</el-button>
-                <el-button icon="Refresh" @click="resetQuery">重置</el-button>
-                <el-button type="danger" @click="addFun">新增</el-button>
+                <el-button type="primary" icon="Search" @click="searchFun">搜索</el-button>
+                <el-button icon="Refresh" @click="resetFun">重置</el-button>
+                <el-button type="primary" @click="addFun">新增</el-button>
                 <el-button type="danger" @click="handleQuery">批量禁用</el-button>
                 <el-button type="success" @click="handleQuery">批量启用</el-button>
             </el-form-item>
         </el-form>
-        <el-table v-loading="loading" :data="configList" @selection-change="handleSelectionChange">
+        <el-table v-loading="loading" :data="tableList" @selection-change="handleSelectionChange">
             <el-table-column type="selection" width="55" align="center" />
-            <el-table-column label="序号" align="center" prop="configId" >
+            <el-table-column label="序号" align="center" prop="configId">
                 <template #default="{ row, $index }">
                     {{ (page.current_page - 1) * page.page_size + $index + 1 }}
                 </template>
-                </el-table-column>
+            </el-table-column>
             <el-table-column label="档位名称" align="center" prop="name" :show-overflow-tooltip="true" />
-            <el-table-column label="档位id" align="center" prop="start_pricez" :show-overflow-tooltip="true" />
             <el-table-column label="开始价格" align="center" prop="start_price" :show-overflow-tooltip="true" />
             <el-table-column label="原价" align="center" prop="original_price" :show-overflow-tooltip="true" />
             <el-table-column label="运算符1" align="center" prop="operator1" :show-overflow-tooltip="true" />
             <el-table-column label="数字1" align="center" prop="number1" :show-overflow-tooltip="true" />
             <el-table-column label="运算符2" align="center" prop="operator2" :show-overflow-tooltip="true" />
             <el-table-column label="数字2" align="center" prop="number2" :show-overflow-tooltip="true" />
-
             <el-table-column label="说明" align="center" prop="description" :show-overflow-tooltip="true" />
-            <el-table-column label="状是否启用态" align="center" prop="configType">
-                <!-- <template #default="scope">
-                    <dict-tag :options="sys_yes_no" :value="scope.row.configType" />
-                </template> -->
+            <el-table-column label="状是否启用态" align="center" prop="is_enable">
+                <template #default="scope">
+                    <el-tag v-if="scope.row.is_enable" type="success">是</el-tag>
+                    <el-tag v-else type="error">否</el-tag>
+                </template>
             </el-table-column>
             <el-table-column label="创建时间" align="center" prop="createTime" width="180">
                 <template #default="scope">
                     <span>{{ parseTime(scope.row.createTime) }}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="操作" align="center" width="180" class-name="small-padding fixed-width">
+            <el-table-column label="操作" align="center" width="250" class-name="small-padding fixed-width">
                 <template #default="scope">
                     <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)">修改</el-button>
-                    <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)"
-                       >删除</el-button>
-                    <el-tag type="danger">禁用</el-tag>
+                    <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)">删除</el-button>
+                    <el-button type="danger"  @click="disableFun(scope.row)">禁用</el-button>
                 </template>
             </el-table-column>
         </el-table>
-
-        <pagination v-show="total > 0" :total="total" v-model:page="page.page_size" v-model:limit="page.current_page"
-            @pagination="getList" />
+        <div style="display: flex; justify-content: end;">
+            <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                style="margin-top: 20px;" background layout="total, sizes, prev, pager, next, jumper"
+                :total="page.total">
+            </el-pagination>
+        </div>
         <!-- 添加或修改参数配置对话框 -->
-        <addPop :open="open" v-if="open" :title="title" @close="open = false" />
-
+        <addPop :open="open" :editObj="editObj" v-if="open" :title="title" @close="closeFun" />
     </div>
-</template>+
+</template>
 
 <script setup name="Config">
 import { listConfig, getConfig, delConfig, addConfig, updateConfig, } from "@/api/system/config";
+import { useTableListFun } from "@/hooks/getTabel.js"
 import { getQuery } from "@/api/price/index"
 import addPop from "./components/addPop.vue"
 import { reactify } from "@vueuse/core";
-import { reactive, toRefs } from "vue";
-import { pa } from "element-plus/es/locales.mjs";
+import { reactive, } from "vue";
+import { Edit } from "@element-plus/icons-vue";
 const { proxy } = getCurrentInstance();
+import { delPrice,putPrice } from "@/api/price/index"
 
-const configList = ref([]);
+const { page,open, query, tableList, searchFun,resetFun,closeFun,handleCurrentChange,handleSizeChange,getQueryList} = useTableListFun(getQuery)
 
+console.log("getQueryList",getQueryList)
 
-
+const sys_yes_no = [{
+    value: true,
+    label: '是'
+},{
+    value: false,
+    label: '否'
+}]
 const loading = ref(false);
 const showSearch = ref(true);
 const ids = ref([]);
 const single = ref(true);
 const multiple = ref(true);
-const total = ref(0);
-const dateRange = ref([]);
 // 新增价格管理 弹出层相关内容-------------------
-const open = ref(false);
+
 const title = ref("");
 function addFun() {
     open.value = true
     title.value = "新增"
 }
 /** 修改按钮操作 */
+let editObj = reactive({})
 function handleUpdate(row) {
+    editObj=row
     open.value = true
     title.value = "修改"
 }
-
-/** 查询参数列表 */
-const page = reactive({
-    current_page: 1,
-    page_size: 10,
-    total: 10
-});
-let query = reactive({
-})
-function getList() {
-    loading.value = true;
-    // let body = proxy.objToArrayFun(query)
-    loading.value = true;
-    getQuery(page).then(response => {
-        configList.value = response.data.data;
-        page.total = response.data.total_records
-        loading.value = false;
-    });
-
-
-}
-
-/** 取消按钮 */
-function cancel() {
-    open.value = false;
-    reset();
-}
-
-/** 表单重置 */
-function reset() {
-
-    proxy.resetForm("configRef");
-}
-
-/** 搜索按钮操作 */
-function handleQuery() {
-    query.value.pageNum = 1;
-    getList();
-}
-
-/** 重置按钮操作 */
-function resetQuery() {
-    dateRange.value = [];
-    proxy.resetForm("queryRef");
-    handleQuery();
-}
-
 /** 多选框选中数据 */
 function handleSelectionChange(selection) {
     ids.value = selection.map(item => item.configId);
@@ -150,49 +110,32 @@ function handleSelectionChange(selection) {
     multiple.value = !selection.length;
 }
 
-/** 新增按钮操作 */
-function handleAdd() {
-    reset();
-    open.value = true;
-    title.value = "添加参数";
-}
 
 
 
-/** 提交按钮 */
-function submitForm() {
-    proxy.$refs["configRef"].validate(valid => {
-        if (valid) {
-            if (form.value.configId != undefined) {
-                updateConfig(form.value).then(response => {
-                    proxy.$modal.msgSuccess("修改成功");
-                    open.value = false;
-                    getList();
-                });
-            } else {
-                addConfig(form.value).then(response => {
-                    proxy.$modal.msgSuccess("新增成功");
-                    open.value = false;
-                    getList();
-                });
-            }
-        }
-    });
-}
 /** 删除按钮操作 */
 function handleDelete(row) {
-    const configIds = row.configId || ids.value;
-    proxy.$modal.confirm('是否确认删除参数编号为"' + configIds + '"的数据项？').then(function () {
-        return delConfig(configIds);
-    }).then(() => {
-        getList();
-        // proxy.$modal.msgSuccess("删除成功");
-    }).catch(() => { });
+    const configIds = row.price_id || ids.value;
+    proxy.$modal.confirm('确定删除').then(async ()=> {
+         let res = await delPrice({price_id:configIds});
+         console.log("删除成功----",res)
+         if(res.code==200){
+            proxy.$modal.msgSuccess("删除成功");
+           getQueryList()
+            
+         }
+    })
+}
+
+// 禁用操作
+
+function disableFun(row){
+
 }
 
 
 
 
 
-getList();
+//getList();
 </script>

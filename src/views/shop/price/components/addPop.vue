@@ -34,7 +34,7 @@
         </el-radio-group>
       </el-form-item>
       <el-form-item label="数字2" prop="number2" :required="true">
-        <el-input-number v-model="form.configName" />
+        <el-input-number v-model="form.number2" />
         <span>数字2:与原价相加或者与原价相乘</span>
       </el-form-item>
       <el-form-item label="是否启用" :required="true">
@@ -49,16 +49,17 @@
     </el-form>
     <template #footer>
       <div class="dialog-footer">
-        <el-button type="primary" @click="submitForm">确 定</el-button>
+        <el-button type="primary" v-if="title=='新增'" @click="submitForm">确 定</el-button>
+        <el-button type="primary" v-else @click="updateFun">确 定</el-button>
         <el-button @click="cancel">取 消</el-button>
       </div>
     </template>
   </el-dialog>
 </template>
 <script setup>
-import { reactive } from "vue";
+import { reactive ,onMounted } from "vue";
 const { proxy } = getCurrentInstance();
-import { addprice } from "@/api/price/index"
+import { addprice,putPrice } from "@/api/price/index"
 const props = defineProps({
   title: {
     type: String,
@@ -67,10 +68,15 @@ const props = defineProps({
   open: {
     type: Boolean,
     default: "",
+  },
+  editObj:{
+    type: Object,
+    default: {},
   }
+
 });
 const visible = ref(props.open)
-const form = reactive({
+let form = reactive({
   name: "",
   start_price: 0,
   end_price: 0,
@@ -82,15 +88,35 @@ const form = reactive({
   description: "",
   is_enable: true
 });
-
-const submitForm=async ()=>{
-    let res = await addprice(form)
+const submitForm = async () => {
+  let res = await addprice(form)
+  if(res.code==200){
+    proxy.$modal.msgSuccess("新增成功")
+    emit('close')
+  }
 }
-
 const emit = defineEmits(['close'])
 function cancel() {
   emit('close')
 }
+// 修改
+onMounted(()=>{
+  if(props.title=='修改'){
+    form = props.editObj
+  }
+})
+// 确定修改
+
+const updateFun = async () => {
+  let res = await putPrice(form)
+  if(res.code==200){
+    proxy.$modal.msgSuccess("修改成功")
+    emit('close')
+  }
+}
+
+
+
 
 </script>
 <style scoped lang="scss"></style>

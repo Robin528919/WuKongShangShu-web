@@ -252,10 +252,13 @@ export function blobValidate(data) {
 export function objToArrayFun(params) {
   let newQueryArr = []
   for (let key in params) {
-      console.log("paramsparams", key)
+    if(params[key]){
       newQueryArr.push({
-          field: key, value: query[key], operator: "=="
-      })
+        field: key, value: params[key], operator: "=="
+    })
+
+    }
+     
 
   }
   return newQueryArr
