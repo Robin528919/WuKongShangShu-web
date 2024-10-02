@@ -121,6 +121,19 @@ export const constantRoutes = [
         ],
     },
     {
+        path: "/admin",
+        component: Layout,
+        redirect: "noRedirect",
+        children: [
+            {
+                path: "word",
+                component: () => import("@/views/admin/word"),
+                name: "authorization",
+                meta: { title: "管理员词库", icon: "peoples", affix: true },
+            },
+        ],
+    },
+    {
         path: "/task",
         component: Layout,
         redirect: "noRedirect",

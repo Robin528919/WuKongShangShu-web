@@ -63,15 +63,15 @@
 </template>
 
 <script setup name="Config">
-import { listConfig, getConfig, delConfig, addConfig, updateConfig, } from "@/api/system/config";
+
 import { useTableListFun } from "@/hooks/getTabel.js"
-import { getQuery } from "@/api/price/index"
+import {  } from "@/api/price/index"
 import addPop from "./components/addPop.vue"
 import { reactify } from "@vueuse/core";
 import { reactive, } from "vue";
 import { Edit } from "@element-plus/icons-vue";
 const { proxy } = getCurrentInstance();
-import { delPrice,putPrice } from "@/api/price/index"
+import { delPrice,getQuery } from "@/api/price/index"
 
 const { page,open, query, tableList, searchFun,resetFun,closeFun,handleCurrentChange,handleSizeChange,getQueryList} = useTableListFun(getQuery)
 

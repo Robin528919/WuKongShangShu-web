@@ -11,12 +11,9 @@ export function configFun(){
       isToken: false
     },
     method: 'get',
-   
   })
-
 }
-
-
+// 新增价格
 export function addprice(data) {
     return request({
       url: '/price/add',
@@ -63,6 +60,35 @@ export function delPrice(data) {
       data: data.body
     })
   }
+
+  // 查询用户 /api/v1/admin/user/query
+
+  export function getUser(data) {
+    return request({
+      url: `/admin/user/query?page=${data.current_page}&page_size=${data.page_size}`,
+      headers: {
+        isToken: true
+      },
+      method: 'post',
+      data: data.body
+    })
+  }
+
+  // 更新用户信息  /api/v1/admin/user/update
+
+  export function updatetUser(data) {
+    return request({
+      url: `/admin/user/update?page=${data.current_page}&page_size=${data.page_size}`,
+      headers: {
+        isToken: true
+      },
+      method: 'post',
+      data: data.body
+    })
+  }
+
+
+
 
 
 
