@@ -25,7 +25,7 @@ export function publish(data) {
     })
   }
 
-  // 查询任务列表 /api/v1/word/query /api/v1/tasks/query
+ 
   export function getQuery(data) {
     return request({
       url: `/tasks/query?page=${data.current_page}&page_size=${data.page_size}`,
@@ -42,24 +42,25 @@ export function publish(data) {
 
 
 
-// /api/v1/word 增加词库
+// 采集结果  /api/v1/books/query 查询图书列表
 
-export function addWord(data) {
+export function getQueryBook(data) {
+  return request({
+    url: `/books/query?page=${data.current_page}&page_size=${data.page_size}`,
+    headers: {
+      isToken: true
+    },
+    method: 'post',
+    data: data.body
+  })
+}
+
+
+ // 删除图书  // 删除价格 /api/v1/books
+
+export function delBook(data) {
     return request({
-      url: '/word',
-      headers: {
-        isToken: true
-      },
-      method: 'post',
-      data: data
-    })
-  }
-
-  // /api/v1/word 删除词库
-
-export function delWord(data) {
-    return request({
-      url: '/word',
+      url: '/books',
       headers: {
         isToken: true
       },
@@ -67,23 +68,3 @@ export function delWord(data) {
       data: data
     })
   }
-// 更新词库
-  export function putWord(data) {
-    return request({
-      url: '/word',
-      headers: {
-        isToken: true
-      },
-      method: 'put',
-      data: data
-    })
-  }
-
-  
-
-
-
-
-
-
-

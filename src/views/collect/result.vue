@@ -1,18 +1,18 @@
 <template>
     <div class="app-container">
         <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
-            <el-form-item label="图书名称" prop="configName">
-                <el-input v-model="queryParams.configName" placeholder="图书名称,店铺id" clearable style="width: 240px"
+            <el-form-item label="图书名称" >
+                <el-input v-model="query.configName" placeholder="图书名称,店铺id" clearable style="width: 240px"
                     @keyup.enter="handleQuery" />
             </el-form-item>
-            <el-form-item label="图书分类" prop="configType">
+            <!-- <el-form-item label="图书分类" prop="configType">
                 <el-select v-model="queryParams.configType" placeholder="请选择" clearable style="width: 240px">
                     <el-option v-for="dict in sys_yes_no" :key="dict.value" :label="dict.label" :value="dict.value" />
                 </el-select>
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item>
-                <el-button type="primary" icon="Search" @click="handleQuery">查询</el-button>
-                <el-button icon="Refresh" @click="resetQuery">重置</el-button>
+                <el-button type="primary" icon="Search" @click="searchFun">查询</el-button>
+                <el-button icon="Refresh" @click="resetFun">重置</el-button>
                 <el-button type="danger" @click="handleQuery">清空采集所有数据</el-button>
             </el-form-item>
         </el-form>
@@ -44,48 +44,56 @@
             <!-- <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar> -->
         </el-row>
 
-        <el-table v-loading="loading" :data="configList" @selection-change="handleSelectionChange">
+        <el-table v-loading="loading" :data="tableList" @selection-change="handleSelectionChange">
             <el-table-column type="selection" width="55" align="center" />
             <el-table-column label="序号" align="center" prop="item_id" />
-            <el-table-column label="主图" align="center" prop="configKey" :show-overflow-tooltip="true" />
-            <el-table-column label="排序" align="center" prop="configKey" :show-overflow-tooltip="true" />
-            <el-table-column label="图书id" align="center" prop="configName" :show-overflow-tooltip="true" />
-            <el-table-column label="图书名称" align="center" prop="configKey" :show-overflow-tooltip="true" />
-            <el-table-column label="书店id" align="center" prop="configName" :show-overflow-tooltip="true" />
-            <el-table-column label="书店名称" align="center" prop="configKey" :show-overflow-tooltip="true" />
-            <el-table-column label="价格" align="center" prop="configName" :show-overflow-tooltip="true" />
+            <el-table-column label="主图" align="center" prop="pc_url" :show-overflow-tooltip="true" />
+            <!-- <el-table-column label="排序" align="center" prop="configKey" :show-overflow-tooltip="true" /> -->
+            <el-table-column label="图书id" align="center" prop="shop_id" :show-overflow-tooltip="true" />
+            <el-table-column label="图书名称" align="center" prop="item_name" :show-overflow-tooltip="true" />
+            <el-table-column label="书店id" align="center" prop="book_id" :show-overflow-tooltip="true" />
+            <el-table-column label="书店名称" align="center" prop="shop_name" :show-overflow-tooltip="true" />
+            <el-table-column label="价格" align="center" prop="price" :show-overflow-tooltip="true" />
             <el-table-column label="发布时间" align="center" prop="configKey" :show-overflow-tooltip="true" />
             <el-table-column label="图书信息" align="center" prop="configKey" :show-overflow-tooltip="true" />
             <el-table-column label="图书介绍" align="center" prop="configKey" :show-overflow-tooltip="true" />
             <el-table-column label="是否上传" align="center" prop="configKey" :show-overflow-tooltip="true" />
-            <el-table-column label="创建时间" align="center" prop="createTime" width="180">
+            <!-- <el-table-column label="创建时间" align="center" prop="createTime" width="180">
                 <template #default="scope">
                     <span>{{ parseTime(scope.row.createTime) }}</span>
                 </template>
-            </el-table-column>
+            </el-table-column> -->
 
             <el-table-column label="操作" align="center" width="150" class-name="small-padding fixed-width">
                 <template #default="scope">
-                    <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
-                        v-hasPermi="['system:config:edit']">修改</el-button>
+                   
                     <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)"
-                        v-hasPermi="['system:config:remove']">删除</el-button>
+                       >删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
-        <pagination v-show="total > 0" :total="total" v-model:page="queryParams.pageNum"
-            v-model:limit="queryParams.pageSize" @pagination="getList" />
+        <div style="display: flex; justify-content: end;">
+            <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                style="margin-top: 20px;" background layout="total, sizes, prev, pager, next, jumper"
+                :total="page.total">
+            </el-pagination>
+        </div>
     </div>
 </template>
 
 <script setup name="Config">
 import { listConfig, getConfig, delConfig, addConfig, updateConfig, } from "@/api/system/config";
+import { useTableListFun } from "@/hooks/getTabel.js"
 
 const { proxy } = getCurrentInstance();
 //const { sys_yes_no } = proxy.useDict("sys_yes_no");
+import { getQueryBook,delBook} from "@/api/task/index"
+const { page,open, query, tableList, searchFun,resetFun,closeFun,handleCurrentChange,handleSizeChange,getQueryList} = useTableListFun(getQueryBook)
+
+
 
 const configList = ref([]);
-const open = ref(false);
+
 const loading = ref(false);
 const showSearch = ref(true);
 const ids = ref([]);

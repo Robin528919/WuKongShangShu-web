@@ -69,11 +69,11 @@
 import { listConfig, getConfig, delConfig, addConfig, updateConfig, } from "@/api/system/config";
 
 const { proxy } = getCurrentInstance();
-const { sys_yes_no } = proxy.useDict("sys_yes_no");
+//const { sys_yes_no } = proxy.useDict("sys_yes_no");
 
 const configList = ref([]);
 const open = ref(false);
-const loading = ref(true);
+const loading = ref(false);
 const showSearch = ref(true);
 const ids = ref([]);
 const single = ref(true);
@@ -202,5 +202,5 @@ function handleDelete(row) {
 
 
 
-getList();
+//getList();
 </script>

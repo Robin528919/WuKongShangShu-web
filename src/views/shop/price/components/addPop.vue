@@ -23,7 +23,7 @@
         </el-radio-group>
       </el-form-item>
       <el-form-item label="数字1" prop="number1" :required="true">
-        <el-input-number v-model="form.number2" />
+        <el-input-number v-model="form.number1" />
       </el-form-item>
       <el-form-item label="运算符2" prop="operator2" :required="true">
         <el-radio-group v-model="form.operator2">
@@ -39,8 +39,8 @@
       </el-form-item>
       <el-form-item label="是否启用" :required="true">
         <el-radio-group v-model="form.is_enable">
-          <el-radio :value="true">是</el-radio>
-          <el-radio :value="false">否</el-radio>
+          <el-radio :value=true>是</el-radio>
+          <el-radio :value=false>否</el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item label="说明">
@@ -86,7 +86,7 @@ let form = reactive({
   operator2: 1,
   number2: 0,
   description: "",
-  is_enable: true
+  is_enable: 1
 });
 const submitForm = async () => {
   let res = await addprice(form)
@@ -103,11 +103,18 @@ function cancel() {
 onMounted(()=>{
   if(props.title=='修改'){
     form = props.editObj
+    // if(form.is_enable){
+    //   form.is_enable=1
+    // }else{
+    //   form.is_enable=0
+    // }
+ 
   }
 })
 // 确定修改
 
 const updateFun = async () => {
+
   let res = await putPrice(form)
   if(res.code==200){
     proxy.$modal.msgSuccess("修改成功")

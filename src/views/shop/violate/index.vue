@@ -27,9 +27,9 @@
             <el-col :span="1.5">
                 <el-button type="primary" @click="moreAddFun">批量新增</el-button>
             </el-col>
-            <el-col :span="1.5">
+            <!-- <el-col :span="1.5">
                 <el-button type="danger" plain icon="Refresh" @click="handleRefreshCache">清空违禁词所有数据</el-button>
-            </el-col>
+            </el-col> -->
             <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
         </el-row>
         <el-table v-loading="loading" :data="configList" @selection-change="handleSelectionChange">
@@ -148,7 +148,12 @@ function handleAdd() {
 
 /** 删除按钮操作 */
 const handleDelete = async (row) => {
-    const configIds = [row.word_id] || ids.value;
+    let  configIds = null
+    if(row&&row.word_id){
+        configIds = [row.word_id]
+    }else{
+        configIds = ids.value;
+    }
     if (configIds.length == 0) {
         ElMessage.warning("请选择要删除的违禁词")
         return

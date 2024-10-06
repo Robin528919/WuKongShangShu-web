@@ -13,6 +13,21 @@ export function configFun(){
     method: 'get',
   })
 }
+// 批量启用 禁用价格 /api/v1/price/batch_enable
+
+export function batchEnable(data) {
+  return request({
+    url: '/price/batch_enable',
+    headers: {
+      isToken: true
+    },
+    method: 'put',
+    data: data
+  })
+}
+
+
+
 // 新增价格
 export function addprice(data) {
     return request({
@@ -74,11 +89,24 @@ export function delPrice(data) {
     })
   }
 
-  // 更新用户信息  /api/v1/admin/user/update
+  // 更新用户信息  /api/v1/admin/user/update /api/v1/admin/user/update
 
   export function updatetUser(data) {
     return request({
-      url: `/admin/user/update?page=${data.current_page}&page_size=${data.page_size}`,
+      url: `/admin/user/update`,
+      headers: {
+        isToken: true
+      },
+      method: 'post',
+      data: data
+    })
+  }
+
+  //  用户-书籍分组 /api/v1/book/group/query
+
+  export function getbookGroup(data) {
+    return request({
+      url: `/book/group/query?page=${data.current_page}&page_size=${data.page_size}`,
       headers: {
         isToken: true
       },
@@ -86,6 +114,93 @@ export function delPrice(data) {
       data: data.body
     })
   }
+  // 创建书籍分组  /api/v1/book/group
+
+  export function createbookGroup(data) {
+    return request({
+      url: `/book/group`,
+      headers: {
+        isToken: true
+      },
+      method: 'post',
+      data: data
+    })
+  }
+
+
+
+  // 删除书籍分组 
+
+   // /api/v1/word 删除词库 /api/v1/book/group  /api/v1/book/group
+
+export function delBookGroup(data) {
+  return request({
+    url: `/book/group?group_id=${data}`,
+    headers: {
+      isToken: true
+    },
+    method: 'delete',
+    //data: data
+  })
+}
+
+// 
+
+//  获取水印列表
+
+export function getwatermarkList(data) {
+  return request({
+    url: `watermark/query?page=${data.current_page}&page_size=${data.page_size}`,
+    headers: {
+      isToken: true
+    },
+    method: 'post',
+    data: data.body
+  })
+}
+
+// 添加水印 
+
+export function addwatermark(data) {
+  return request({
+    url: `watermark`,
+    headers: {
+      isToken: true,
+      "Content-Type":"form-data;charset=utf-8"
+    },
+    method: 'post',
+    data: data
+  })
+}
+
+// 删除水印
+
+export function delwatermark(id) {
+  return request({
+    url: `watermark/${id}`,
+    headers: {
+      isToken: true
+    },
+    method: 'delete',
+    // data: data
+  })
+}
+
+// 更新水印
+
+export function putwatermark(id) {
+  return request({
+    url: `watermark/${id}`,
+    headers: {
+      isToken: true,
+       "Content-Type":"form-data;charset=utf-8"
+    },
+    method: 'delete',
+    // data: data
+  })
+}
+
+
 
 
 

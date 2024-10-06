@@ -26,356 +26,311 @@ import Layout from "@/layout";
 
 // 公共路由
 export const constantRoutes = [
-    {
-        path: "/redirect",
-        component: Layout,
-        hidden: true,
-        children: [
-            {
-                path: "/redirect/:path(.*)",
-                component: () => import("@/views/redirect/index.vue"),
-            },
-        ],
-    },
-    {
-        path: "/login",
-        component: () => import("@/views/login"),
-        hidden: true,
-    },
-    {
-        path: "/register",
-        component: () => import("@/views/register"),
-        hidden: true,
-    },
-    {
-        path: "/:pathMatch(.*)*",
-        component: () => import("@/views/error/404"),
-        hidden: true,
-    },
-    {
-        path: "/401",
-        component: () => import("@/views/error/401"),
-        hidden: true,
-    },
-    {
-        path: "",
-        component: Layout,
-        redirect: "/index",
-        children: [
-            {
-                path: "/index",
-                component: () => import("@/views/index"),
-                name: "Index",
-                meta: { title: "首页", icon: "dashboard", affix: true },
-            },
-        ],
-    },
-    {
-        path: "/shop",
-        component: Layout,
-        redirect: "noRedirect",
-        hidden: false,
-        alwaysShow: true,
-        meta: { title: "店铺配置", icon: "system" },
-        children: [
-            {
-                path: "violate",
-                component: () => import("@/views/shop/violate/index"),
-                name: "violate",
-                meta: {
-                    title: "违禁词过滤",
-                    icon: "search",
-                },
-            },
-            {
-                path: "watermark",
-                component: () => import("@/views/shop/watermark/index"),
-                name: "watermark",
-                meta: {
-                    title: "水印管理",
-                    icon: "post",
-                },
-            },
-            {
-                path: "price",
-                component: () => import("@/views/shop/price/index"),
-                name: "price",
-                meta: {
-                    title: "价格管理",
-                    icon: "money",
-                },
-            },
-        ],
-    },
-    {
-        path: "/authorization",
-        component: Layout,
-        redirect: "noRedirect",
-        children: [
-            {
-                path: "index",
-                component: () => import("@/views/authorization/index"),
-                name: "authorization",
-                meta: { title: "发布授权", icon: "peoples", affix: true },
-            },
-        ],
-    },
-    {
-        path: "/admin",
-        component: Layout,
-        redirect: "noRedirect",
-        children: [
-            {
-                path: "word",
-                component: () => import("@/views/admin/word"),
-                name: "authorization",
-                meta: { title: "管理员词库", icon: "peoples", affix: true },
-            },
-        ],
-    },
-    {
-        path: "/task",
-        component: Layout,
-        redirect: "noRedirect",
-        children: [
-            {
-                path: "index",
-                component: () => import("@/views/task/index"),
-                name: "task",
-                meta: { title: "店铺任务", icon: "peoples", affix: true },
-            },
-        ],
-    },
+  {
+    path: "/redirect",
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: "/redirect/:path(.*)",
+        component: () => import("@/views/redirect/index.vue"),
+      },
+    ],
+  },
+  {
+    path: "/login",
+    component: () => import("@/views/login"),
+    hidden: true,
+  },
+  {
+    path: "/register",
+    component: () => import("@/views/register"),
+    hidden: true,
+  },
+  {
+    path: "/:pathMatch(.*)*",
+    component: () => import("@/views/error/404"),
+    hidden: true,
+  },
+  {
+    path: "/401",
+    component: () => import("@/views/error/401"),
+    hidden: true,
+  },
+  {
+    path: "",
+    component: Layout,
+    redirect: "/index",
+    children: [
+      {
+        path: "/index",
+        component: () => import("@/views/index"),
+        name: "Index",
+        meta: { title: "首页", icon: "dashboard", affix: true },
+      },
+    ],
+  },
+  {
+    path: "/shop",
+    component: Layout,
+    redirect: "noRedirect",
+    hidden: false,
+    alwaysShow: true,
+    meta: { title: "店铺配置", icon: "system" },
+    children: [
+      {
+        path: "violate",
+        component: () => import("@/views/shop/violate/index"),
+        name: "violate",
+        meta: {
+          title: "违禁词过滤",
+          icon: "search",
+        },
+      },
+      {
+        path: "watermark",
+        component: () => import("@/views/shop/watermark/index"),
+        name: "watermark",
+        meta: {
+          title: "水印管理",
+          icon: "post",
+        },
+      },
+      {
+        path: "price",
+        component: () => import("@/views/shop/price/index"),
+        name: "price",
+        meta: {
+          title: "价格管理",
+          icon: "money",
+        },
+      },
+    ],
+  },
+  {
+    path: "/authorization",
+    component: Layout,
+    redirect: "noRedirect",
+    children: [
+      {
+        path: "index",
+        component: () => import("@/views/authorization/index"),
+        name: "authorization",
+        meta: { title: "发布授权", icon: "peoples", affix: true },
+      },
+    ],
+  },
+  {
+    path: "/admin",
+    component: Layout,
+    redirect: "noRedirect",
+    children: [
+      {
+        path: "word",
+        component: () => import("@/views/admin/word"),
+      // component: () => import("@/views/system/user/index"),
+        name: "word",
+        meta: { title: "管理员词库", icon: "peoples", affix: true },
+      },
+    ],
+  },
+  {
+    path: "/task",
+    component: Layout,
+    redirect: "noRedirect",
+    children: [
+      {
+        path: "index",
+        component: () => import("@/views/task/index"),
+        name: "task",
+        meta: { title: "店铺任务", icon: "peoples", affix: true },
+      },
+    ],
+  },
 
-    {
-        path: "/collect",
-        component: Layout,
-        redirect: "noRedirect",
-        hidden: false,
-        alwaysShow: true,
-        meta: { title: "采集数据", icon: "lock" },
-        children: [
-            {
-                path: "bookCollect",
-                component: () => import("@/views//collect/bookCollect"),
-                name: "bookCollect",
-                meta: {
-                    title: "图书采集",
-                    icon: "education",
-                },
-            },
-            {
-                path: "collectOrder",
-                component: () => import("@/views/collect/collectOrder"),
-                name: "collectOrder",
-                meta: {
-                    title: "采集指令",
-                    icon: "post",
-                },
-            },
-            {
-                path: "result",
-                component: () => import("@/views/collect/result"),
-                name: "result",
-                meta: {
-                    title: "采集结果",
-                    icon: "dict",
-                },
-            },
-            {
-                path: "filterResult",
-                component: () => import("@/views/collect/filterResult"),
-                name: "filterResult",
-                meta: {
-                    title: "过滤结果",
-                    icon: "date-range",
-                },
-            },
-        ],
-    },
-    {
-        path: "/issue",
-        component: Layout,
-        redirect: "noRedirect",
-        hidden: false,
-        alwaysShow: true,
-        meta: { title: "发布数据", icon: "guide" },
-        children: [
-            {
-                path: "bookManage",
-                component: () => import("@/views/issue/bookManage"),
-                name: "bookManage",
-                meta: {
-                    title: "图书管理",
-                    icon: "monitor",
-                },
-            },
-            {
-                path: "issueLog",
-                component: () => import("@/views/issue/issueLog"),
-                name: "issueLog",
-                meta: {
-                    title: "发布日志",
-                    icon: "nested",
-                },
-            },
-            {
-                path: "issueTj",
-                component: () => import("@/views/issue/issueTj"),
-                name: "issueTj",
-                meta: {
-                    title: "发布统计",
-                    icon: "build",
-                },
-            },
-            {
-                path: "issueJf",
-                component: () => import("@/views/issue/issueJf"),
-                name: "issueJf",
-                meta: {
-                    title: "发布计费",
-                    icon: "money",
-                },
-            },
-        ],
-    },
+  {
+    path: "/collect",
+    component: Layout,
+    redirect: "noRedirect",
+    hidden: false,
+    alwaysShow: true,
+    meta: { title: "采集数据", icon: "lock" },
+    children: [
+      {
+        path: "bookCollect",
+        component: () => import("@/views//collect/bookCollect"),
+        name: "bookCollect",
+        meta: {
+          title: "图书采集",
+          icon: "education",
+        },
+      },
+      {
+        path: "bookGroup",
+        component: () => import("@/views//collect/bookGroup"),
+        name: "bookGroup",
+        meta: {
+          title: "图书分组",
+          icon: "education",
+        },
+      },
+      {
+        path: "collectOrder",
+        component: () => import("@/views/collect/collectOrder"),
+        name: "collectOrder",
+        meta: {
+          title: "采集指令",
+          icon: "post",
+        },
+      },
+      {
+        path: "result",
+        component: () => import("@/views/collect/result"),
+        name: "result",
+        meta: {
+          title: "采集结果",
+          icon: "dict",
+        },
+      },
+      {
+        path: "filterResult",
+        component: () => import("@/views/collect/filterResult"),
+        name: "filterResult",
+        meta: {
+          title: "过滤结果",
+          icon: "date-range",
+        },
+      },
+    ],
+  },
+  {
+    path: "/issue",
+    component: Layout,
+    redirect: "noRedirect",
+    hidden: false,
+    alwaysShow: true,
+    meta: { title: "发布数据", icon: "guide" },
+    children: [
+      {
+        path: "bookManage",
+        component: () => import("@/views/issue/bookManage"),
+        name: "bookManage",
+        meta: {
+          title: "图书管理",
+          icon: "monitor",
+        },
+      },
+      {
+        path: "issueLog",
+        component: () => import("@/views/issue/issueLog"),
+        name: "issueLog",
+        meta: {
+          title: "发布日志",
+          icon: "nested",
+        },
+      },
+      {
+        path: "issueTj",
+        component: () => import("@/views/issue/issueTj"),
+        name: "issueTj",
+        meta: {
+          title: "发布统计",
+          icon: "build",
+        },
+      },
+      {
+        path: "issueJf",
+        component: () => import("@/views/issue/issueJf"),
+        name: "issueJf",
+        meta: {
+          title: "发布计费",
+          icon: "money",
+        },
+      },
+    ],
+  },
 
-    {
-        path: "/delete",
-        component: Layout,
-        redirect: "noRedirect",
-        hidden: false,
-        alwaysShow: true,
-        meta: { title: "删除数据", icon: "build" },
-        children: [
-            {
-                path: "product",
-                component: () => import("@/views/delete/product"),
-                name: "product",
-                meta: {
-                    title: "删除商品",
-                    icon: "build",
-                },
-            },
-            {
-                path: "statistics",
-                component: () => import("@/views/delete/statistics"),
-                name: "statistics",
-                meta: {
-                    title: "删除统计",
-                    icon: "build",
-                },
-            },
-            {
-                path: "dellog",
-                component: () => import("@/views/delete/dellog"),
-                name: "dellog",
-                meta: {
-                    title: "删除日志",
-                    icon: "build",
-                },
-            },
-        ],
-    },
-    {
-        path: "/user",
-        component: Layout,
-        hidden: true, // 状态栏吟唱
-        redirect: "noredirect",
-        children: [
-            {
-                path: "profile",
-                component: () => import("@/views/system/user/profile/index"),
-                name: "Profile",
-                meta: { title: "个人中心", icon: "user" },
-            },
-        ],
-    },
+  {
+    path: "/delete",
+    component: Layout,
+    redirect: "noRedirect",
+    hidden: false,
+    alwaysShow: true,
+    meta: { title: "删除数据", icon: "build" },
+    children: [
+      {
+        path: "product",
+        component: () => import("@/views/delete/product"),
+        name: "product",
+        meta: {
+          title: "删除商品",
+          icon: "build",
+        },
+      },
+      {
+        path: "statistics",
+        component: () => import("@/views/delete/statistics"),
+        name: "statistics",
+        meta: {
+          title: "删除统计",
+          icon: "build",
+        },
+      },
+      {
+        path: "dellog",
+        component: () => import("@/views/delete/dellog"),
+        name: "dellog",
+        meta: {
+          title: "删除日志",
+          icon: "build",
+        },
+      },
+    ],
+  },
+  {
+    path: "/user",
+    component: Layout,
+    hidden: true, // 状态栏吟唱
+    redirect: "noredirect",
+    children: [
+      {
+        path: "profile",
+        component: () => import("@/views/system/user/profile/index"),
+        name: "Profile",
+        meta: { title: "个人中心", icon: "user" },
+      },
+    ],
+  },
+  {
+    path: "/userm",
+    component: Layout,
+    redirect: "noRedirect",
+    children: [
+      {
+        path: "index",
+        component: () => import("@/views/system/user/index"),
+      // component: () => import("@/views/system/user/index"),
+        name: "userm",
+        meta: { title: "用户管理", icon: "peoples", affix: true },
+      },
+    ],
+  },
+
+  
 ];
 // 动态路由，基于用户权限动态去加载
-export const dynamicRoutes = [
-    // {
-    //     path: "/system/user-auth",
-    //     component: Layout,
-    //     hidden: true,
-    //     permissions: ["system:user:edit"],
-    //     children: [
-    //         {
-    //             path: "role/:userId(\\d+)",
-    //             component: () => import("@/views/system/user/authRole"),
-    //             name: "AuthRole",
-    //             meta: { title: "分配角色", activeMenu: "/system/user" },
-    //         },
-    //     ],
-    // },
-    // {
-    //     path: "/system/role-auth",
-    //     component: Layout,
-    //     hidden: true,
-    //     permissions: ["system:role:edit"],
-    //     children: [
-    //         {
-    //             path: "user/:roleId(\\d+)",
-    //             component: () => import("@/views/system/role/authUser"),
-    //             name: "AuthUser",
-    //             meta: { title: "分配用户", activeMenu: "/system/role" },
-    //         },
-    //     ],
-    // },
-    // {
-    //     path: "/system/dict-data",
-    //     component: Layout,
-    //     hidden: true,
-    //     permissions: ["system:dict:list"],
-    //     children: [
-    //         {
-    //             path: "index/:dictId(\\d+)",
-    //             component: () => import("@/views/system/dict/data"),
-    //             name: "Data",
-    //             meta: { title: "字典数据", activeMenu: "/system/dict" },
-    //         },
-    //     ],
-    // },
-    // {
-    //     path: "/monitor/job-log",
-    //     component: Layout,
-    //     hidden: true,
-    //     permissions: ["monitor:job:list"],
-    //     children: [
-    //         {
-    //             path: "index/:jobId(\\d+)",
-    //             component: () => import("@/views/monitor/job/log"),
-    //             name: "JobLog",
-    //             meta: { title: "调度日志", activeMenu: "/monitor/job" },
-    //         },
-    //     ],
-    // },
-    // {
-    //     path: "/tool/gen-edit",
-    //     component: Layout,
-    //     hidden: true,
-    //     permissions: ["tool:gen:edit"],
-    //     children: [
-    //         {
-    //             path: "index/:tableId(\\d+)",
-    //             component: () => import("@/views/tool/gen/editTable"),
-    //             name: "GenEdit",
-    //             meta: { title: "修改生成配置", activeMenu: "/tool/gen" },
-    //         },
-    //     ],
-    // },
-];
+export const dynamicRoutes = [];
 
 const router = createRouter({
-    history: createWebHistory(),
-    routes: constantRoutes,
-    scrollBehavior(to, from, savedPosition) {
-        if (savedPosition) {
-            return savedPosition;
-        } else {
-            return { top: 0 };
-        }
-    },
+  history: createWebHistory(),
+  routes: constantRoutes,
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition;
+    } else {
+      return { top: 0 };
+    }
+  },
 });
 
 export default router;

@@ -211,7 +211,7 @@ function objToArrayFun(params) {
 }
 /** 查询参数列表 */
 let query = reactive({
-    word: ''
+    // word: ''
 })
 function getList() {
     let body = objToArrayFun(query)

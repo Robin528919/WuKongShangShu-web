@@ -57,6 +57,7 @@ import RuoYiDoc from '@/components/RuoYi/Doc'
 import useAppStore from '@/store/modules/app'
 import useUserStore from '@/store/modules/user'
 import useSettingsStore from '@/store/modules/settings'
+import {  removeToken } from "@/utils/auth";
 
 const appStore = useAppStore()
 const userStore = useUserStore()
@@ -85,6 +86,8 @@ function logout() {
         cancelButtonText: '取消',
         type: 'warning'
     }).then(() => {
+        removeToken()
+        location.href = '/index';
         // userStore.logOut().then(() => {
         //     location.href = '/index';
         // })

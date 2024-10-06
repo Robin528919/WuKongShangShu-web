@@ -1,20 +1,20 @@
 <template>
     <div class="app-container">
-        <el-form ref="queryRef" :model="query" :inline="true" v-show="showSearch" label-width="68px">
-            <el-form-item label="档位名称">
-                <el-input v-model.trim="query.name" placeholder="请输入档位名称" clearable style="width: 240px" />
+        <el-form ref="queryRef"  :inline="true" v-show="showSearch" label-width="68px">
+            <el-form-item label="邮箱">
+                <el-input v-model.trim="query.email" placeholder="请输入档位名称" clearable style="width: 240px" />
             </el-form-item>
-            <el-form-item label="启用状态" prop="configType">
+            <!-- <el-form-item label="启用状态" prop="configType">
                 <el-select v-model="query.configType" placeholder="全部" style="width: 120px" clearable>
                     <el-option v-for="dict in sys_yes_no" :key="dict.value" :label="dict.label" :value="dict.value" />
                 </el-select>
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item>
                 <el-button type="primary" icon="Search" @click="searchFun">搜索</el-button>
                 <el-button icon="Refresh" @click="resetFun">重置</el-button>
-                <el-button type="primary" @click="addFun">新增</el-button>
+                <!-- <el-button type="primary" @click="addFun">新增</el-button>
                 <el-button type="danger" @click="handleQuery">批量禁用</el-button>
-                <el-button type="success" @click="handleQuery">批量启用</el-button>
+                <el-button type="success" @click="handleQuery">批量启用</el-button> -->
             </el-form-item>
         </el-form>
         <el-table v-loading="loading" :data="tableList" @selection-change="handleSelectionChange">
@@ -24,9 +24,18 @@
                     {{ (page.current_page - 1) * page.page_size + $index + 1 }}
                 </template>
             </el-table-column>
-            <el-table-column label="档位名称" align="center" prop="name" :show-overflow-tooltip="true" />
-            <el-table-column label="开始价格" align="center" prop="start_price" :show-overflow-tooltip="true" />
-            <el-table-column label="原价" align="center" prop="original_price" :show-overflow-tooltip="true" />
+            <el-table-column label="用户id" align="center" prop="user_id" :show-overflow-tooltip="true" />
+            <el-table-column label="邮箱" align="center" prop="email" :show-overflow-tooltip="true" />
+            <el-table-column label="状态" align="center" prop="status" :show-overflow-tooltip="true" >
+                <template #default="scope">
+                    <el-tag v-if="scope.row.status==0" type="success">正常</el-tag>
+                    <el-tag v-else type="error">禁用</el-tag>
+                </template>
+            </el-table-column>
+            <el-table-column label="描述" align="center" prop="remark" :show-overflow-tooltip="true" />
+            <el-table-column label="余额" align="center" prop="balance" :show-overflow-tooltip="true" />
+            <!-- <el-table-column label="密码" align="center" prop="start_price" :show-overflow-tooltip="true" /> -->
+            <!-- <el-table-column label="原价" align="center" prop="original_price" :show-overflow-tooltip="true" />
             <el-table-column label="运算符1" align="center" prop="operator1" :show-overflow-tooltip="true" />
             <el-table-column label="数字1" align="center" prop="number1" :show-overflow-tooltip="true" />
             <el-table-column label="运算符2" align="center" prop="operator2" :show-overflow-tooltip="true" />
@@ -38,16 +47,12 @@
                     <el-tag v-else type="error">否</el-tag>
                 </template>
             </el-table-column>
-            <el-table-column label="创建时间" align="center" prop="createTime" width="180">
-                <template #default="scope">
-                    <span>{{ parseTime(scope.row.createTime) }}</span>
-                </template>
-            </el-table-column>
+            -->
             <el-table-column label="操作" align="center" width="250" class-name="small-padding fixed-width">
                 <template #default="scope">
                     <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)">修改</el-button>
-                    <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)">删除</el-button>
-                    <el-button type="danger"  @click="disableFun(scope.row)">禁用</el-button>
+                    <!-- <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)">删除</el-button>
+                    <el-button type="danger"  @click="disableFun(scope.row)">禁用</el-button> -->
                 </template>
             </el-table-column>
         </el-table>
@@ -63,19 +68,18 @@
 </template>
 
 <script setup name="Config">
-import { listConfig, getConfig, delConfig, addConfig, updateConfig, } from "@/api/system/config";
+
 import { useTableListFun } from "@/hooks/getTabel.js"
 import { getUser } from "@/api/price/index"
-//import addPop from "./components/addPop.vue"
-import { reactify } from "@vueuse/core";
+import addPop from "./addPop.vue"
+
 import { reactive, } from "vue";
-import { Edit } from "@element-plus/icons-vue";
+
 const { proxy } = getCurrentInstance();
 import { delPrice,putPrice } from "@/api/price/index"
 
 const { page,open, query, tableList, searchFun,resetFun,closeFun,handleCurrentChange,handleSizeChange,getQueryList} = useTableListFun(getUser)
 
-console.log("getQueryList",getQueryList)
 
 const sys_yes_no = [{
     value: true,
@@ -101,6 +105,7 @@ let editObj = reactive({})
 function handleUpdate(row) {
     editObj=row
     open.value = true
+   
     title.value = "修改"
 }
 /** 多选框选中数据 */
@@ -127,11 +132,6 @@ function handleDelete(row) {
     })
 }
 
-// 禁用操作
-
-function disableFun(row){
-
-}
 
 
 

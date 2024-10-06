@@ -4,7 +4,6 @@
             <el-form-item label="图书查询" prop="configName">
                 <el-input v-model="query.name" placeholder="请输入参数名称" clearable style="width: 240px" />
             </el-form-item>
-
             <el-form-item label="状态" prop="configType">
                 <el-select v-model="query.staus" style="width: 130px" placeholder="请选择" clearable>
                  

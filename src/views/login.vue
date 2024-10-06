@@ -52,9 +52,15 @@ const route = useRoute();
 const router = useRouter();
 const { proxy } = getCurrentInstance();
 console.log("proxy", proxy)
-const loginForm = ref({
-    email: "wkm@123.com",
+/*
+  email: "wkm@123.com",
     password: "123456",
+      email: "admin123@qq.com",
+    password: "admin123",
+*/
+const loginForm = ref({
+    email: "admin123@qq.com",
+    password: "admin123",
 
 })
 const loginRules = {
@@ -73,12 +79,10 @@ const register = ref(true);
 const redirect = ref(undefined);
 
 // watch(route, (newRoute) => {
+   
 //     console.log("监听---", route, route)
 //     redirect.value = newRoute.query && newRoute.query.redirect;
 // }, { immediate: true });
-
-
-
 function handleLogin() {
     proxy.$refs.loginRef.validate(valid => {
         if (valid) {
