@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :title="title" destroy-on-close v-model="visible" width="600px" append-to-body>
+  <el-dialog :title="title" destroy-on-close v-model="visible" :before-close="cancel" width="600px" append-to-body>
     <el-form ref="configRef" :model="form" label-width="120px">
 
       <el-form-item label="水印预览">
@@ -95,7 +95,7 @@ function cancel() {
 }
 // 修改
 onMounted(() => {
-  if (props.title == '修改') {
+  if (props.title == '修改水印') {
     form = props.editObj
     // if(form.is_enable){
     //   form.is_enable=1
@@ -108,13 +108,13 @@ onMounted(() => {
 // 确定修改
 
 const updateFun = async () => {
+  // if (!form.file) return proxy.$modal.msgWarning("请上传图片!")
+  // let formData = new FormData()
 
-  if (!form.file) return proxy.$modal.msgWarning("请上传图片!")
-  let formData = new FormData()
-  formData.append("file", form.file)
-  formData.append("position", form.position)
-  formData.append("is_enable", form.is_enable)
-  let res = await putwatermark(formData)
+  // formData.append("file", form.file)
+  // formData.append("position", form.position)
+  //formData.append("is_enable", form.is_enable)
+  let res = await putwatermark(form)
   if (res.code == 200) {
     proxy.$modal.msgSuccess("新增成功")
     emit('close')

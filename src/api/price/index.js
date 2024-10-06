@@ -188,15 +188,15 @@ export function delwatermark(id) {
 
 // 更新水印
 
-export function putwatermark(id) {
+export function putwatermark(data) {
   return request({
-    url: `watermark/${id}`,
+    url: `watermark/${data.watermark_id}`,
     headers: {
       isToken: true,
-       "Content-Type":"form-data;charset=utf-8"
+      // "Content-Type":"form-data;charset=utf-8"
     },
-    method: 'delete',
-    // data: data
+    method: 'put',
+    data: data
   })
 }
 
