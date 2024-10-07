@@ -87,6 +87,7 @@ function logout() {
         type: 'warning'
     }).then(() => {
         removeToken()
+        localStorage.removeItem("tbMsg")
         location.href = '/index';
         // userStore.logOut().then(() => {
         //     location.href = '/index';
