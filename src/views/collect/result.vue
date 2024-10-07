@@ -1,7 +1,7 @@
 <template>
     <div class="app-container">
         <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
-            <el-form-item label="图书名称" >
+            <el-form-item label="图书名称">
                 <el-input v-model="query.configName" placeholder="图书名称,店铺id" clearable style="width: 240px"
                     @keyup.enter="handleQuery" />
             </el-form-item>
@@ -47,13 +47,20 @@
         <el-table v-loading="loading" :data="tableList" @selection-change="handleSelectionChange">
             <el-table-column type="selection" width="55" align="center" />
             <el-table-column label="序号" align="center" prop="item_id" />
-            <el-table-column label="主图" align="center" prop="pc_url" :show-overflow-tooltip="true" />
+            <el-table-column label="主图" align="center" prop="img_big" >
+                <template  #default="scope">
+                    <el-image style="width: 100px; height: 100px" :src="scope.row.img_big" :zoom-rate="1.2" :max-scale="7"
+                    :min-scale="0.2" :z-index="999"     :initial-index="4" fit="cover" />
+                </template>
+               
+            </el-table-column>
             <!-- <el-table-column label="排序" align="center" prop="configKey" :show-overflow-tooltip="true" /> -->
             <el-table-column label="图书id" align="center" prop="shop_id" :show-overflow-tooltip="true" />
-            <el-table-column label="图书名称" align="center" prop="item_name" :show-overflow-tooltip="true" />
+            <el-table-column label="图书名称" align="center" width="200" prop="item_name" :show-overflow-tooltip="true" />
             <el-table-column label="书店id" align="center" prop="book_id" :show-overflow-tooltip="true" />
             <el-table-column label="书店名称" align="center" prop="shop_name" :show-overflow-tooltip="true" />
             <el-table-column label="价格" align="center" prop="price" :show-overflow-tooltip="true" />
+            <el-table-column label="品相" align="center" prop="quality" :show-overflow-tooltip="true" />
             <el-table-column label="发布时间" align="center" prop="configKey" :show-overflow-tooltip="true" />
             <el-table-column label="图书信息" align="center" prop="configKey" :show-overflow-tooltip="true" />
             <el-table-column label="图书介绍" align="center" prop="configKey" :show-overflow-tooltip="true" />
@@ -62,13 +69,12 @@
                 <template #default="scope">
                     <span>{{ parseTime(scope.row.createTime) }}</span>
                 </template>
-            </el-table-column> -->
+</el-table-column> -->
 
             <el-table-column label="操作" align="center" width="150" class-name="small-padding fixed-width">
                 <template #default="scope">
-                   
-                    <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)"
-                       >删除</el-button>
+
+                    <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -87,8 +93,8 @@ import { useTableListFun } from "@/hooks/getTabel.js"
 
 const { proxy } = getCurrentInstance();
 //const { sys_yes_no } = proxy.useDict("sys_yes_no");
-import { getQueryBook,delBook} from "@/api/task/index"
-const { page,open, query, tableList, searchFun,resetFun,closeFun,handleCurrentChange,handleSizeChange,getQueryList} = useTableListFun(getQueryBook)
+import { getQueryBook, delBook } from "@/api/task/index"
+const { page, open, query, tableList, searchFun, resetFun, closeFun, handleCurrentChange, handleSizeChange, getQueryList } = useTableListFun(getQueryBook)
 
 
 
