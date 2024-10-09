@@ -26,7 +26,12 @@
             </el-table-column>
             <el-table-column label="档位名称" align="center" prop="name" :show-overflow-tooltip="true" />
             <el-table-column label="开始价格" align="center" prop="start_price" :show-overflow-tooltip="true" />
-            <el-table-column label="原价" align="center" prop="original_price" :show-overflow-tooltip="true" />
+            <el-table-column label="原价" align="center" prop="original_price" >
+                <template #default="scope">
+                    <el-tag v-if="scope.row.original_price" type="success">是</el-tag>
+                    <el-tag v-else type="error">否</el-tag>
+                </template>
+            </el-table-column>
             <el-table-column label="运算符1" align="center" prop="operator1" :show-overflow-tooltip="true" />
             <el-table-column label="数字1" align="center" prop="number1" :show-overflow-tooltip="true" />
             <el-table-column label="运算符2" align="center" prop="operator2" :show-overflow-tooltip="true" />
@@ -47,7 +52,7 @@
                 <template #default="scope">
                     <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)">修改</el-button>
                     <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)">删除</el-button>
-                    <el-button type="danger"  @click="disableFun(scope.row)">禁用</el-button>
+                    <el-button type="danger" @click="disableFun(scope.row)">禁用</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -71,16 +76,16 @@ import addPop from "./components/addPop.vue"
 import { reactive, } from "vue";
 
 const { proxy } = getCurrentInstance();
-import { delPrice,getQuery,batchEnable } from "@/api/price/index"
+import { delPrice, getQuery, batchEnable } from "@/api/price/index"
 
-const { page,open, query, tableList, searchFun,resetFun,closeFun,handleCurrentChange,handleSizeChange,getQueryList} = useTableListFun(getQuery)
+const { page, open, query, tableList, searchFun, resetFun, closeFun, handleCurrentChange, handleSizeChange, getQueryList } = useTableListFun(getQuery)
 
 
 
 const sys_yes_no = [{
     value: true,
     label: '是'
-},{
+}, {
     value: false,
     label: '否'
 }]
@@ -99,7 +104,7 @@ function addFun() {
 /** 修改按钮操作 */
 let editObj = reactive({})
 function handleUpdate(row) {
-    editObj=row
+    editObj = row
     open.value = true
     title.value = "修改"
 }
@@ -112,29 +117,29 @@ function handleSelectionChange(selection) {
 
 // 批量启用 禁用价格
 
-const someDisableFun = async ()=>{
-    if(ids.value.length==0) return  proxy.$modal.msgWarning("请选择要操作的数据")
-  let res = await batchEnable({
-    ids:ids.value,
-    is_enable:0
-  })
-  if(res.code==200){
-    proxy.$modal.msgSuccess("操作成功");
-    getQueryList()
-  }
+const someDisableFun = async () => {
+    if (ids.value.length == 0) return proxy.$modal.msgWarning("请选择要操作的数据")
+    let res = await batchEnable({
+        ids: ids.value,
+        is_enable: 0
+    })
+    if (res.code == 200) {
+        proxy.$modal.msgSuccess("操作成功");
+        getQueryList()
+    }
 }
 // 启用价格
 
-const someTrueFun = async ()=>{
-    if(ids.value.length==0) return  proxy.$modal.msgWarning("请选择要操作的数据")
-  let res = await batchEnable({
-    ids:ids.value,
-    is_enable:1
-  })
-  if(res.code==200){
-    proxy.$modal.msgSuccess("操作成功");
-    getQueryList()
-  }
+const someTrueFun = async () => {
+    if (ids.value.length == 0) return proxy.$modal.msgWarning("请选择要操作的数据")
+    let res = await batchEnable({
+        ids: ids.value,
+        is_enable: 1
+    })
+    if (res.code == 200) {
+        proxy.$modal.msgSuccess("操作成功");
+        getQueryList()
+    }
 }
 
 
@@ -145,21 +150,21 @@ const someTrueFun = async ()=>{
 /** 删除按钮操作 */
 function handleDelete(row) {
     const configIds = row.price_id || ids.value;
-    proxy.$modal.confirm('确定删除').then(async ()=> {
-         let res = await delPrice({price_id:configIds});
-         console.log("删除成功----",res)
-         if(res.code==200){
+    proxy.$modal.confirm('确定删除').then(async () => {
+        let res = await delPrice({ price_id: configIds });
+        console.log("删除成功----", res)
+        if (res.code == 200) {
             proxy.$modal.msgSuccess("删除成功");
-           getQueryList()
-            
-         }
+            getQueryList()
+
+        }
     })
 }
 
 // 禁用操作
 
-function disableFun(row){
-    
+function disableFun(row) {
+
 
 }
 

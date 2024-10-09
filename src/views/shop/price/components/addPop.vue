@@ -2,17 +2,20 @@
   <el-dialog :title="title" destroy-on-close v-model="visible" width="500px" append-to-body>
     <el-form ref="configRef" :model="form" label-width="80px">
 
-      <el-form-item label="档位名称" prop="name" :required="true">
+      <el-form-item label="档位名称" :required="true">
         <el-input v-model="form.name" placeholder="请输入档位名称(不可重复)" />
       </el-form-item>
-      <el-form-item label="开始价格" prop="start_price" :required="true">
+      <el-form-item label="开始价格"  :required="true">
         <el-input-number v-model="form.start_price" 	 />
       </el-form-item>
-      <el-form-item label="结束价格" prop="end_price" :required="true">
+      <el-form-item label="结束价格" :required="true">
         <el-input-number v-model="form.end_price" />
       </el-form-item>
       <el-form-item label="原价" prop="original_price" :required="true">
-        <el-input-number v-model="form.original_price" />
+        <el-radio-group v-model="form.original_price">
+          <el-radio :value="true">是</el-radio>
+          <el-radio :value="false">否</el-radio>
+        </el-radio-group>
       </el-form-item>
       <el-form-item label="运算符1" prop="operator1" :required="true">
         <el-radio-group v-model="form.operator1">
@@ -80,13 +83,13 @@ let form = reactive({
   name: "",
   start_price: 0,
   end_price: 0,
-  original_price: 0,
+  original_price: true,
   operator1: 1,
   number1: 0,
   operator2: 1,
   number2: 0,
   description: "",
-  is_enable: 1
+  is_enable: true
 });
 const submitForm = async () => {
   let res = await addprice(form)
