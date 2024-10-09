@@ -58,7 +58,7 @@ import { ElMessage} from "element-plus"
 const form = reactive({
     task_type: 1, // 采集 2 发布
     task_params: { 
-        shop_ids: "21905",
+        shop_ids: "",
         start_time: null,
         end_time: null,
         num: 100,
@@ -92,22 +92,19 @@ function changeTime(arr) {
 }
 // 采集
 const submitFun = async () => {
-    // if (!form.task_name) {
-    //     ElMessage.warning("请输入采集任务名称")
-    //     return
-    // }
-    // if (!form.task_type) {
-    //     ElMessage.warning("请选择任务类型")
-    //     return
-    // }
-    // if (!form.task_params.name) {
-    //     ElMessage.warning("请输入任务名称")
-    //     return
-    // }
-    // if (!form.task_params.shop_ids) {
-    //     ElMessage.warning("请输入书店id")
-    //     return
-    // }
+    if (!form.task_name) {
+        ElMessage.warning("请输入采集任务名称")
+        return
+    }
+    if (!form.task_type) {
+        ElMessage.warning("请选择任务类型")
+        return
+    }
+    if (!form.task_params.shop_ids) {
+        ElMessage.warning("请输入书店id")
+        return
+    }
+   
     form.task_params.shop_ids = form.task_params.shop_ids.split(",")
     let obj = {
         task_type: 1,
@@ -126,7 +123,7 @@ const submitFun = async () => {
         task_name: "任务名称",
         task_desc: "任务描述"
     }
-    let res = await createTask(obj)
+    let res = await createTask(form)
     if (res.code == 200) {
         ElMessage.success("开始采集")
     }
