@@ -18,10 +18,8 @@
       {{ shopMsg.title }}
     </el-form-item>
     <el-form-item label="店铺登陆：">
-      <el-button type="primary" @click="getCode">获取淘宝店铺认证码</el-button>
-      <span style="margin-left: 100px">注意：跳转界面账号登陆成功后，复制session 到店铺session
-        ,获取淘宝session需要先购买应用,注意：api服务订购链接
-      </span>
+      <el-button type="primary" @click="getAuthuUrlFun">获取授权链接</el-button>
+      <el-link style="margin-left: 20px;" v-if="linkUrl"  :href="linkUrl" target="_blank" type="success"> 点击授权</el-link>
     </el-form-item>
     <el-form-item label="店铺认证：">
       <el-button type="primary" @click="getTbMsg">获取淘宝信息</el-button>
@@ -37,7 +35,7 @@
 </template>
 <script setup>
 import { ref, reactive, toRefs, onMounted } from "vue";
-import { getTb, postTb } from "@/api/taobao/index.js"
+import { getTb, postTb ,getAuthuUrl} from "@/api/taobao/index.js"
 // src/store/modules/tbMsg.js
 import useTbMsgStore from '../../../store/modules/tbMsg'
 const { proxy } = getCurrentInstance();
@@ -73,6 +71,15 @@ const updateMsg = async () => {
   if (res.code == 200) {
     proxy.$modal.msgSuccess("获取淘宝信息成功");
   }
+}
+let linkUrl = ref('')
+const getAuthuUrlFun= async()=>{
+  let res = await getAuthuUrl()
+  if (res.code == 200) {
+    linkUrl.value = res.data.url
+    proxy.$modal.msgSuccess("获取淘宝信息成功");
+  }
+
 }
 
 

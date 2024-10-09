@@ -70,3 +70,17 @@ export function getTemplate(data) {
      // data: data
     })
   }
+
+  //  获取授权链接 /api/v1/callback/get_auth_url
+
+  export function getAuthuUrl(data) {
+    return request({
+      url: "callback/get_auth_url",
+      headers: {
+        isToken: true
+      },
+      method: 'get',
+     // data: data
+    })
+  }
+
