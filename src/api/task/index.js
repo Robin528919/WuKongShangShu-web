@@ -25,7 +25,7 @@ export function publish(data) {
     })
   }
 
- 
+  // 查询任务列表
   export function getQuery(data) {
     return request({
       url: `/tasks/query?page=${data.current_page}&page_size=${data.page_size}`,

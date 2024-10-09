@@ -1,19 +1,18 @@
 <template>
     <div class="app-container">
-        <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
+        <el-form :inline="true" v-show="showSearch" label-width="68px">
             <el-form-item label="指令查询" prop="configName">
-                <el-input v-model="queryParams.configName" placeholder="请输入参数名称" clearable style="width: 240px"
-                    @keyup.enter="handleQuery" />
+                <el-input v-model="query.configName" placeholder="请输入参数名称" clearable style="width: 240px" />
             </el-form-item>
 
             <el-form-item label="状态" prop="configType">
-                <el-select v-model="queryParams.configType" placeholder="系统内置" clearable>
+                <el-select v-model="query.configType" placeholder="系统内置" clearable>
                     <el-option v-for="dict in sys_yes_no" :key="dict.value" :label="dict.label" :value="dict.value" />
                 </el-select>
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" icon="Search" @click="handleQuery">查询</el-button>
-                <el-button icon="Refresh" @click="resetQuery">重置</el-button>
+                <el-button type="primary" icon="Search" @click="searchFun">查询</el-button>
+                <el-button icon="Refresh" @click="resetFun">重置</el-button>
             </el-form-item>
         </el-form>
 
@@ -37,29 +36,35 @@
             <el-col :span="1.5">
                 <el-button type="primary" @click="handleQuery">一键停止采集指令</el-button>
             </el-col>
-
-
             <!-- <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar> -->
         </el-row>
 
-        <el-table v-loading="loading" :data="configList" @selection-change="handleSelectionChange">
+        <el-table v-loading="loading" :data="tableList" @selection-change="handleSelectionChange">
             <el-table-column type="selection" width="55" align="center" />
-            <el-table-column label="序号" align="center" prop="configId" />
-            <el-table-column label="排序" align="center" prop="configKey" :show-overflow-tooltip="true" />
-            <el-table-column label="指令id" align="center" prop="configName" :show-overflow-tooltip="true" />
-            <el-table-column label="指令名称" align="center" prop="configKey" :show-overflow-tooltip="true" />
-            <el-table-column label="指令状态" align="center" prop="configName" :show-overflow-tooltip="true" />
-            <el-table-column label="结果内容" align="center" prop="configKey" :show-overflow-tooltip="true" />
-            <el-table-column label="错误信息" align="center" prop="configName" :show-overflow-tooltip="true" />
-            <el-table-column label="结果" align="center" prop="configKey" :show-overflow-tooltip="true" />
-            <el-table-column label="创建时间" align="center" prop="createTime" width="180">
-                <template #default="scope">
-                    <span>{{ parseTime(scope.row.createTime) }}</span>
+            <el-table-column label="序号" align="center" prop="configId">
+                <template #default="{ row, $index }">
+                    {{ (page.current_page - 1) * page.page_size + $index + 1 }}
                 </template>
             </el-table-column>
-            <el-table-column label="完成时间" align="center" prop="configType">
+            <el-table-column label="任务类型" align="center" prop="task_type" :show-overflow-tooltip="true">
+                 <template #default="scope">
+                    <span>{{ scope.row.task_type == 1 ? '采集' : '发布' }}</span>
+                </template> 
+            </el-table-column>
+            <el-table-column label="任务名称" align="center" prop="task_name" :show-overflow-tooltip="true" />
+            <el-table-column label="任务描述" align="center" prop="task_desc" :show-overflow-tooltip="true" />
+            <el-table-column label="任务ID" align="center" prop="task_id" :show-overflow-tooltip="true" />
+            <el-table-column label="结果信息" align="center" prop="result" :show-overflow-tooltip="true" />
+            <el-table-column label="任务状态" align="center" prop="stauts" :show-overflow-tooltip="true" />
+
+            <el-table-column label="任务开始时间" align="center" prop="task_start_time" width="180">
                 <template #default="scope">
-                    <dict-tag :options="sys_yes_no" :value="scope.row.configType" />
+                    <span>{{ parseTime(scope.row.task_start_time) }}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="任务结束时间" align="center" prop="task_end_time">
+                <template #default="scope">
+                    <span>{{ parseTime(scope.row.task_end_time) }}</span>
                 </template>
             </el-table-column>
             <el-table-column label="操作" align="center" width="150" class-name="small-padding fixed-width">
@@ -71,142 +76,84 @@
                 </template>
             </el-table-column>
         </el-table>
-        <pagination v-show="total > 0" :total="total" v-model:page="queryParams.pageNum"
-            v-model:limit="queryParams.pageSize" @pagination="getList" />
+        <div style="display: flex; justify-content: end;">
+            <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                style="margin-top: 20px;" background layout="total, sizes, prev, pager, next, jumper"
+                :total="page.total">
+            </el-pagination>
+        </div>
+
     </div>
 </template>
 
 <script setup name="Config">
-import { listConfig, getConfig, delConfig, addConfig, updateConfig, } from "@/api/system/config";
+
+import { useTableListFun } from "@/hooks/getTabel.js"
+
+
+
+import { reactive, } from "vue";
 
 const { proxy } = getCurrentInstance();
-// const { sys_yes_no } = proxy.useDict("sys_yes_no");
+import { getQuery, } from "@/api/task/index"
 
-const configList = ref([]);
-const open = ref(false);
+const { page, open, query, tableList, searchFun, resetFun, closeFun, handleCurrentChange, handleSizeChange, getQueryList } = useTableListFun(getQuery)
+
+
+
+const sys_yes_no = [{
+    value: true,
+    label: '是'
+}, {
+    value: false,
+    label: '否'
+}]
 const loading = ref(false);
 const showSearch = ref(true);
 const ids = ref([]);
 const single = ref(true);
 const multiple = ref(true);
-const total = ref(0);
+// 新增价格管理 弹出层相关内容-------------------
+
 const title = ref("");
-const dateRange = ref([]);
-
-const data = reactive({
-    form: {},
-    queryParams: {
-        pageNum: 1,
-        pageSize: 10,
-        configName: undefined,
-        configKey: undefined,
-        configType: undefined
-    },
-    rules: {
-        configName: [{ required: true, message: "参数名称不能为空", trigger: "blur" }],
-        configKey: [{ required: true, message: "参数键名不能为空", trigger: "blur" }],
-        configValue: [{ required: true, message: "参数键值不能为空", trigger: "blur" }]
-    }
-});
-
-const { queryParams, form, rules } = toRefs(data);
-
-/** 查询参数列表 */
-function getList() {
-    loading.value = true;
-    listConfig(proxy.addDateRange(queryParams.value, dateRange.value)).then(response => {
-        configList.value = response.rows;
-        total.value = response.total;
-        loading.value = false;
-    });
+function addFun() {
+    open.value = true
+    title.value = "新增"
 }
-
-/** 取消按钮 */
-function cancel() {
-    open.value = false;
-    reset();
+/** 修改按钮操作 */
+let editObj = reactive({})
+function handleUpdate(row) {
+    editObj = row
+    open.value = true
+    title.value = "修改"
 }
-
-/** 表单重置 */
-function reset() {
-    form.value = {
-        configId: undefined,
-        configName: undefined,
-        configKey: undefined,
-        configValue: undefined,
-        configType: "Y",
-        remark: undefined
-    };
-    proxy.resetForm("configRef");
-}
-
-/** 搜索按钮操作 */
-function handleQuery() {
-    queryParams.value.pageNum = 1;
-    getList();
-}
-
-/** 重置按钮操作 */
-function resetQuery() {
-    dateRange.value = [];
-    proxy.resetForm("queryRef");
-    handleQuery();
-}
-
 /** 多选框选中数据 */
 function handleSelectionChange(selection) {
-    ids.value = selection.map(item => item.configId);
+    ids.value = selection.map(item => item.price_id);
     single.value = selection.length != 1;
     multiple.value = !selection.length;
 }
 
-/** 新增按钮操作 */
-function handleAdd() {
-    reset();
-    open.value = true;
-    title.value = "添加参数";
-}
+// 批量启用 禁用价格
 
-/** 修改按钮操作 */
-function handleUpdate(row) {
-    reset();
-    const configId = row.configId || ids.value;
-    getConfig(configId).then(response => {
-        form.value = response.data;
-        open.value = true;
-        title.value = "修改参数";
-    });
-}
 
-/** 提交按钮 */
-function submitForm() {
-    proxy.$refs["configRef"].validate(valid => {
-        if (valid) {
-            if (form.value.configId != undefined) {
-                updateConfig(form.value).then(response => {
-                    proxy.$modal.msgSuccess("修改成功");
-                    open.value = false;
-                    getList();
-                });
-            } else {
-                addConfig(form.value).then(response => {
-                    proxy.$modal.msgSuccess("新增成功");
-                    open.value = false;
-                    getList();
-                });
-            }
-        }
-    });
-}
+// 启用价格
+
+
+
+
+
+
+
+
 /** 删除按钮操作 */
-function handleDelete(row) {
-    const configIds = row.configId || ids.value;
-    proxy.$modal.confirm('是否确认删除参数编号为"' + configIds + '"的数据项？').then(function () {
-        return delConfig(configIds);
-    }).then(() => {
-        getList();
-        proxy.$modal.msgSuccess("删除成功");
-    }).catch(() => { });
+
+
+// 禁用操作
+
+function disableFun(row) {
+
+
 }
 
 
