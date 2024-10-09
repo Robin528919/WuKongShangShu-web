@@ -6,7 +6,7 @@
         <el-input v-model="form.name" placeholder="请输入档位名称(不可重复)" />
       </el-form-item>
       <el-form-item label="开始价格" prop="start_price" :required="true">
-        <el-input-number v-model="form.start_price" />
+        <el-input-number v-model="form.start_price" 	 />
       </el-form-item>
       <el-form-item label="结束价格" prop="end_price" :required="true">
         <el-input-number v-model="form.end_price" />

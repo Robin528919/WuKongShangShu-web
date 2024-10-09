@@ -19,7 +19,7 @@
     </el-form-item>
     <el-form-item label="店铺登陆：">
       <el-button type="primary" @click="getAuthuUrlFun">获取授权链接</el-button>
-      <el-link style="margin-left: 20px;" v-if="linkUrl"  :href="linkUrl" target="_blank" type="success"> 点击授权</el-link>
+    
     </el-form-item>
     <el-form-item label="店铺认证：">
       <el-button type="primary" @click="getTbMsg">获取淘宝信息</el-button>
@@ -31,7 +31,7 @@
       <el-button type="primary" @click="updateMsg">绑定或更新淘宝信息</el-button>
       <span style="margin-left: 20px">注意：淘宝商铺必须绑定书帮帮商城，才可以进行发布和删除操作</span>
     </el-form-item>
-  </el-form>
+    </el-form>
 </template>
 <script setup>
 import { ref, reactive, toRefs, onMounted } from "vue";
@@ -72,12 +72,12 @@ const updateMsg = async () => {
     proxy.$modal.msgSuccess("获取淘宝信息成功");
   }
 }
-let linkUrl = ref('')
+
 const getAuthuUrlFun= async()=>{
   let res = await getAuthuUrl()
   if (res.code == 200) {
-    linkUrl.value = res.data.url
-    proxy.$modal.msgSuccess("获取淘宝信息成功");
+    window.open(res.data.url)
+   // proxy.$modal.msgSuccess("获取淘宝信息成功");
   }
 
 }
