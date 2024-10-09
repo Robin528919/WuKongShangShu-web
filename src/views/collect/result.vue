@@ -2,8 +2,8 @@
     <div class="app-container">
         <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
             <el-form-item label="图书名称">
-                <el-input v-model="query.configName" placeholder="图书名称,店铺id" clearable style="width: 240px"
-                    @keyup.enter="handleQuery" />
+                <el-input v-model="query.item_name" placeholder="图书名称" clearable style="width: 240px"
+                   />
             </el-form-item>
             <!-- <el-form-item label="图书分类" prop="configType">
                 <el-select v-model="queryParams.configType" placeholder="请选择" clearable style="width: 240px">
@@ -20,8 +20,8 @@
         <el-row :gutter="10" class="mb8">
 
             <el-col :span="1.5">
-                <el-form-item label="书店id" prop="configName">
-                    <el-input v-model="queryParams.configName" placeholder="请输入要删除书店id,用,分割" clearable
+                <el-form-item label="书店id" >
+                    <el-input v-model="queryParams.book_id" placeholder="请输入要删除书店id,用,分割" clearable
                         style="width: 240px" @keyup.enter="handleQuery" />
                 </el-form-item>
             </el-col>
@@ -43,7 +43,6 @@
             </el-col>
             <!-- <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar> -->
         </el-row>
-
         <el-table v-loading="loading" :data="tableList" @selection-change="handleSelectionChange">
             <el-table-column type="selection" width="55" align="center" />
             <el-table-column label="序号" align="center" prop="item_id" />
@@ -52,11 +51,16 @@
                     <el-image style="width: 100px; height: 100px" :src="scope.row.img_big" :zoom-rate="1.2" :max-scale="7"
                     :min-scale="0.2" :z-index="999"     :initial-index="4" fit="cover" />
                 </template>
-               
             </el-table-column>
-            <!-- <el-table-column label="排序" align="center" prop="configKey" :show-overflow-tooltip="true" /> -->
             <el-table-column label="图书id" align="center" prop="shop_id" :show-overflow-tooltip="true" />
-            <el-table-column label="图书名称" align="center" width="200" prop="item_name" :show-overflow-tooltip="true" />
+            <el-table-column label="图书名称" align="center" width="200" prop="item_name" :show-overflow-tooltip="true" >
+                <template #default="scope">
+                    <el-link :href="scope.row.pc_url" target="_blank">{{ scope.row.item_name }}</el-link>
+                </template>
+            </el-table-column>
+            <el-table-column label="作者" align="center" prop="author" :show-overflow-tooltip="true" />
+            <el-table-column label="出版社" align="center" prop="author" :show-overflow-tooltip="true" />
+            <el-table-column label="年代" align="center" prop="pub_date" :show-overflow-tooltip="true" />
             <el-table-column label="书店id" align="center" prop="book_id" :show-overflow-tooltip="true" />
             <el-table-column label="书店名称" align="center" prop="shop_name" :show-overflow-tooltip="true" />
             <el-table-column label="价格" align="center" prop="price" :show-overflow-tooltip="true" />
@@ -65,15 +69,8 @@
             <el-table-column label="图书信息" align="center" prop="configKey" :show-overflow-tooltip="true" />
             <el-table-column label="图书介绍" align="center" prop="configKey" :show-overflow-tooltip="true" />
             <el-table-column label="是否上传" align="center" prop="configKey" :show-overflow-tooltip="true" />
-            <!-- <el-table-column label="创建时间" align="center" prop="createTime" width="180">
-                <template #default="scope">
-                    <span>{{ parseTime(scope.row.createTime) }}</span>
-                </template>
-</el-table-column> -->
-
             <el-table-column label="操作" align="center" width="150" class-name="small-padding fixed-width">
                 <template #default="scope">
-
                     <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)">删除</el-button>
                 </template>
             </el-table-column>

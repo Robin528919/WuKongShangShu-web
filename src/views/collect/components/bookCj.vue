@@ -5,14 +5,10 @@
             <el-form-item label="采集任务名称：" :required="true">
                 <el-input type="text" v-model="form.task_name" />
             </el-form-item>
-            <el-form-item label="任务类型：" :required="true">
-                <el-select v-model="form.task_type" placeholder="请选择任务类型">
-                    <el-option v-for="item in taskType" :key="item.value" :label="item.label" :value="item.value" />
-                </el-select>
-            </el-form-item>
-            <el-form-item label="任务名称：" :required="true" placeholder="请输入采集任务名称">
+          
+            <!-- <el-form-item label="任务名称：" :required="true" placeholder="请输入采集任务名称">
                 <el-input type="text" v-model="form.task_params.name" />
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item label="书店ID：" :required="true">
                 <el-input type="textarea" v-model="form.task_params.shop_ids" placeholder="请输入书店ID" />
                 <span>注意格式事例：22522,23221,25346</span>
@@ -60,8 +56,8 @@ import { getbookGroup } from "@/api/price/index"
 import { ElMessage} from "element-plus"
 
 const form = reactive({
-    task_type: null,
-    task_params: {
+    task_type: 1, // 采集 2 发布
+    task_params: { 
         shop_ids: "21905",
         start_time: null,
         end_time: null,
