@@ -200,6 +200,50 @@ export function putwatermark(data) {
   })
 }
 
+//   获取再售总数   /api/v1/tb/sell_count
+// data
+export function sell_count() {
+  return request({
+    url: `tb/sell_count`,
+    headers: {
+      isToken: true,
+      // "Content-Type":"form-data;charset=utf-8"
+    },
+    method: 'get',
+   // data: data
+  })
+}
+
+// 获取店铺分类 /api/v1/tb/category
+
+
+export function getCategory() {
+  return request({
+    url: `tb/category`,
+    headers: {
+      isToken: true,
+      // "Content-Type":"form-data;charset=utf-8"
+    },
+    method: 'get',
+   // data: data
+  })
+}
+
+// 获取运费模版 /api/v1/tb/template
+
+
+export function templateS() {
+  return request({
+    url: `tb/template`,
+    headers: {
+      isToken: true,
+      // "Content-Type":"form-data;charset=utf-8"
+    },
+    method: 'get',
+   // data: data
+  })
+}
+
 
 
 

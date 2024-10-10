@@ -66,6 +66,7 @@ const form = reactive({
         book_category: "all",
         name: "",
         book_group_id: "",
+      
 
     },
     task_name: "", // 任务名称
