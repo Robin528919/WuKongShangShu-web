@@ -244,6 +244,19 @@ export function templateS() {
   })
 }
 
+// 发布类目 /api/v1/tb/category_info
+
+export function category_info(str) {
+  return request({
+    url: `tb/category_info?keyword=${str}`,
+    headers: {
+      isToken: true,
+      // "Content-Type":"form-data;charset=utf-8"
+    },
+    method: 'get',
+   // data: data
+  })
+}
 
 
 

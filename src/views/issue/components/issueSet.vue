@@ -5,9 +5,7 @@
             <el-form-item label="任务名称" :required="true">
                 <el-input placeholder="请输入任务名称" v-model="form.task_name"></el-input>
             </el-form-item>
-            <el-form-item label="任务描述" :required="true">
-                <el-input placeholder="请输入任务名称" v-model="form.task_desc"></el-input>
-            </el-form-item>
+
             <el-form-item label="宝贝描述" :required="true">
                 <el-input placeholder="请输入任务名称" v-model="form.task_params.desc"></el-input>
             </el-form-item>
@@ -46,9 +44,17 @@
 
             <el-form-item label="发布选项：">
                 <el-radio-group v-model="form.task_params.publish_option">
-                    <el-radio value="0">直接上架</el-radio>
-                    <el-radio value="1">放入库存</el-radio>
+                    <el-radio :value="0">直接上架</el-radio>
+                    <el-radio :value="1">放入库存</el-radio>
                 </el-radio-group>
+            </el-form-item>
+            <el-form-item label="发布类目：" :required="true">
+
+                <el-select v-model="form.task_params.category_id"  filterable remote reserve-keyword
+                    placeholder="请选择发布类目" remote-show-suffix :remote-method="remoteMethod"
+                    :loading="loading" >
+                    <el-option v-for="item in category_infoList" :key="item.cid" :label="item.name" :value="item.cid" />
+                </el-select>
             </el-form-item>
 
 
@@ -60,7 +66,7 @@
             </el-form-item>
 
             <el-form-item label="选择分类：" :required="true">
-                <el-select v-model="form.task_params.category" placeholder="请选者运费模版">
+                <el-select v-model="form.task_params.category" placeholder="选择分类">
                     <el-option v-for="item in categoryList" :key="item.cid" :label="item.name" :value="item.cid">
                     </el-option>
                 </el-select>
@@ -72,7 +78,7 @@
                     </el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item >
+            <el-form-item>
                 <el-button type="primary" @click="sureIssuFun">确定发布</el-button>
             </el-form-item>
 
@@ -85,7 +91,7 @@
 
 <script setup>
 import { ref, reactive, toRefs } from "vue";
-import { getbookGroup, templateS, getCategory } from "@/api/price/index"
+import { getbookGroup, templateS, getCategory, category_info } from "@/api/price/index"
 import { createTask } from "@/api/task/index"
 
 
@@ -124,16 +130,31 @@ const categoryListFun = async () => {
 }
 categoryListFun()
 // 获取运费模版
-
 const templateList = ref([])
 const templateListtFun = async () => {
     let res = await templateS({ current_page: 1, page_size: 10000 })
     templateList.value = res.data.delivery_templates
 }
 templateListtFun()
-const sureIssuFun = async ()=>{
+
+
+// 获取发布类目
+let loading = ref(false)
+const category_infoList = ref([])
+const remoteMethod = async (e) => {
+    loading.value = true
+    console.log("FFFF",e)
+    let res = await category_info(e)
+    loading.value = false
+    category_infoList.value = res.data.item_cats
+}
+remoteMethod()
+
+
+
+const sureIssuFun = async () => {
     let res = await createTask(form)
-    if(res&&res.code==200){
+    if (res && res.code == 200) {
 
     }
 }
