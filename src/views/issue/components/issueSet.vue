@@ -7,41 +7,32 @@
             </el-form-item>
 
             <el-form-item label="宝贝描述" :required="true">
-                <el-input placeholder="请输入任务名称" v-model="form.task_params.desc"></el-input>
+                <el-input placeholder="请输入宝贝描述" v-model="form.task_params.desc"></el-input>
             </el-form-item>
 
             <el-form-item label="标题前缀：">
-                <el-input placeholder="请输入任务名称" v-model="form.task_params.title_prefix"></el-input>
+                <el-input placeholder="请输入标题前缀：" v-model="form.task_params.title_prefix"></el-input>
             </el-form-item>
             <el-form-item label="标题过滤：">
-                <el-input placeholder="请输入任务名称" v-model="form.task_params.title_filter"></el-input>
+                <el-input placeholder="请输入标题过滤" v-model="form.task_params.title_filter"></el-input>
             </el-form-item>
             <el-form-item label="水印位置" :required="true">
                 <el-radio-group v-model="form.task_params.watermark">
                     <el-radio v-for="item in position" :key="item.id" :value="item.id">{{ item.text }}</el-radio>
                 </el-radio-group>
             </el-form-item>
-
             <el-form-item label="宝贝库存" :required="true">
-                <el-input placeholder="宝贝库存" v-model="form.task_params.stock"></el-input>
+                <el-input-number placeholder="宝贝库存" v-model="form.task_params.stock"></el-input-number>
             </el-form-item>
             <el-form-item label="发布数量" :required="true">
-                <el-input placeholder="发布数量" v-model="form.task_params.num"></el-input>
+                <el-input-number placeholder="发布数量" v-model="form.task_params.num"></el-input-number>
             </el-form-item>
-
-
-
-
-
-
             <el-form-item label="是否全新：">
                 <el-radio-group v-model="form.task_params.is_new">
                     <el-radio :value="true">全新</el-radio>
                     <el-radio :value="false">二手</el-radio>
                 </el-radio-group>
             </el-form-item>
-
-
             <el-form-item label="发布选项：">
                 <el-radio-group v-model="form.task_params.publish_option">
                     <el-radio :value="0">直接上架</el-radio>
@@ -49,7 +40,6 @@
                 </el-radio-group>
             </el-form-item>
             <el-form-item label="发布类目：" :required="true">
-
                 <el-select v-model="form.task_params.category_id"  filterable remote reserve-keyword
                     placeholder="请选择发布类目" remote-show-suffix :remote-method="remoteMethod"
                     :loading="loading" >
@@ -93,8 +83,7 @@
 import { ref, reactive, toRefs } from "vue";
 import { getbookGroup, templateS, getCategory, category_info } from "@/api/price/index"
 import { createTask } from "@/api/task/index"
-
-
+import { ElMessage } from "element-plus";
 const position = [{ id: 1, text: '左上角' }, { id: 2, text: '左下角' }, { id: 3, text: '右上角' }, { id: 4, text: '右下角' }, { id: 5, text: '正面' }]
 const form = reactive({
     task_type: 2,
@@ -104,11 +93,11 @@ const form = reactive({
         desc: "", // 宝贝描述
         title_prefix: "",//标题前缀
         title_filter: "", // 标题过滤
-        watermark: "",
+        watermark: 1,
         stock: "", //
         num: "",
         is_new: true,
-        publish_option: "",  // 0 直接上架  1 放入仓库
+        publish_option: 0,  // 0 直接上架  1 放入仓库
         book_group_id: "",
         category_id: null,
         category: "",
@@ -153,8 +142,26 @@ remoteMethod()
 
 
 const sureIssuFun = async () => {
+    
+    if(!form.task_name)return ElMessage.warning("任务名称必须填写!")
+
+   
+   
+    if(!form.task_params.stock)return ElMessage.warning("宝贝库存必填写!")
+
+    if(!form.task_params.stock)return ElMessage.warning("宝贝库存必填写!")
+    if(!form.task_params.num)return ElMessage.warning("宝贝库存必填写!")
+    if(!form.task_params.stock)return ElMessage.warning("发布数量必填写!")
+    if(!form.task_params.category_id)return ElMessage.warning("发布类目必填写!")
+
+
+    if(!form.task_params.book_group_id)return ElMessage.warning("图书分组必须填写!")
+    if(!form.task_params.stock)return ElMessage.warning("分类必须选择!")
+    if(!form.task_params.category_id)return ElMessage.warning("运费模版必选!")
+  
     let res = await createTask(form)
     if (res && res.code == 200) {
+        ElMessage.success("发布图书成功")
 
     }
 }
