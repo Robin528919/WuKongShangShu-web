@@ -1,6 +1,6 @@
 <template>
     <div class="form-warp">
-        <el-form :model="form" label-width="120px">
+        <el-form :model="form" label-width="120px" style="width: 50%;">
 
             <el-form-item label="任务名称" :required="true">
                 <el-input placeholder="请输入任务名称" v-model="form.task_name"></el-input>
@@ -40,9 +40,8 @@
                 </el-radio-group>
             </el-form-item>
             <el-form-item label="发布类目：" :required="true">
-                <el-select v-model="form.task_params.category_id"  filterable remote reserve-keyword
-                    placeholder="请选择发布类目" remote-show-suffix :remote-method="remoteMethod"
-                    :loading="loading" >
+                <el-select v-model="form.task_params.category_id" filterable remote reserve-keyword
+                    placeholder="请选择发布类目" remote-show-suffix :remote-method="remoteMethod" :loading="loading">
                     <el-option v-for="item in category_infoList" :key="item.cid" :label="item.name" :value="item.cid" />
                 </el-select>
             </el-form-item>
@@ -68,14 +67,18 @@
                     </el-option>
                 </el-select>
             </el-form-item>
+
             <el-form-item>
                 <el-button type="primary" @click="sureIssuFun">确定发布</el-button>
             </el-form-item>
-
-
-
-
         </el-form>
+        <el-form label-width="80px" style="width: 50%; margin-left: 50px;">
+            <el-form-item label="宝贝详情">
+                <el-input placeholder="请输入html" type="textarea" v-model="form.task_params.detial"></el-input>
+            </el-form-item>
+            <div v-html="form.task_params.detial" class="html-preview"></div>
+        </el-form>
+
     </div>
 </template>
 
@@ -132,7 +135,7 @@ let loading = ref(false)
 const category_infoList = ref([])
 const remoteMethod = async (e) => {
     loading.value = true
-    console.log("FFFF",e)
+    console.log("FFFF", e)
     let res = await category_info(e)
     loading.value = false
     category_infoList.value = res.data.item_cats
@@ -142,23 +145,23 @@ remoteMethod()
 
 
 const sureIssuFun = async () => {
-    
-    if(!form.task_name)return ElMessage.warning("任务名称必须填写!")
 
-   
-   
-    if(!form.task_params.stock)return ElMessage.warning("宝贝库存必填写!")
-
-    if(!form.task_params.stock)return ElMessage.warning("宝贝库存必填写!")
-    if(!form.task_params.num)return ElMessage.warning("宝贝库存必填写!")
-    if(!form.task_params.stock)return ElMessage.warning("发布数量必填写!")
-    if(!form.task_params.category_id)return ElMessage.warning("发布类目必填写!")
+    if (!form.task_name) return ElMessage.warning("任务名称必须填写!")
 
 
-    if(!form.task_params.book_group_id)return ElMessage.warning("图书分组必须填写!")
-    if(!form.task_params.stock)return ElMessage.warning("分类必须选择!")
-    if(!form.task_params.category_id)return ElMessage.warning("运费模版必选!")
-  
+
+    if (!form.task_params.stock) return ElMessage.warning("宝贝库存必填写!")
+
+    if (!form.task_params.stock) return ElMessage.warning("宝贝库存必填写!")
+    if (!form.task_params.num) return ElMessage.warning("宝贝库存必填写!")
+    if (!form.task_params.stock) return ElMessage.warning("发布数量必填写!")
+    if (!form.task_params.category_id) return ElMessage.warning("发布类目必填写!")
+
+
+    if (!form.task_params.book_group_id) return ElMessage.warning("图书分组必须填写!")
+    if (!form.task_params.stock) return ElMessage.warning("分类必须选择!")
+    if (!form.task_params.category_id) return ElMessage.warning("运费模版必选!")
+
     let res = await createTask(form)
     if (res && res.code == 200) {
         ElMessage.success("发布图书成功")
@@ -170,6 +173,12 @@ const sureIssuFun = async () => {
 </script>
 <style scoped lang="scss">
 .form-warp {
-    width: 800px;
+    display: flex;
+}
+
+.html-preview {
+    border: 2px solid #ccc;
+    min-height: 600px;
+    border-radius: 10px;
 }
 </style>
