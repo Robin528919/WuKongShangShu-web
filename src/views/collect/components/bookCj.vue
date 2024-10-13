@@ -1,6 +1,6 @@
 <template>
     <div class="form-warp">
-        <el-button type="primary">图书采集设置</el-button>
+       
         <el-form :model="form" label-width="120px">
             <el-form-item label="采集任务名称：" :required="true">
                 <el-input type="text" v-model="form.task_name" />
@@ -23,10 +23,19 @@
                 <span style="margin-left: 20px;">注意：可分分类采集（全部all，文学cat）...</span>
             </el-form-item>
             <el-form-item label="图书分组：" :required="true">
-                <el-select v-model="form.task_params.book_group_id" placeholder="请选择图书分组">
+                <div style="display: flex;">
+                    <el-select style="width: 400px;" v-model="form.task_params.book_group_id" placeholder="请选择图书分组">
                     <el-option v-for="item in bookList" :key="item.group_id" :label="item.group_name"
                         :value="item.group_id" />
                 </el-select>
+                <div style="display: flex;margin-left: 20px;">
+                    <el-button type="primary" @click="open=true">新建分组</el-button>
+                    <el-button type="primary" @click="getbookGroupFun">刷新分组</el-button>
+                </div>
+
+                </div>
+               
+               
             </el-form-item>
             <el-form-item label="时间选择：">
                 <el-date-picker v-model="timeArr" value-format="YYYY-MM-DD" type="daterange" range-separator="-"
@@ -35,25 +44,28 @@
             <el-form-item label="采集数量：">
                 <el-input-number v-model="form.task_params.num" :min="1" :max="10000000" />
             </el-form-item>
-            <el-form-item label="任务描述：" :required="true">
+            <!-- <el-form-item label="任务描述：" :required="true">
                 <el-input type="textarea" v-model="form.task_desc" />
-            </el-form-item>
+            </el-form-item> -->
 
             <el-form-item>
                 <el-button type="primary" @click="submitFun">进行采集</el-button>
-                <el-button type="primary" @click="publishFun">发布任务</el-button>
+             
             </el-form-item>
         </el-form>
-
+        <addPop :open="open" :editObj="editObj" v-if="open" :title="title" @close="closeFun" />
     </div>
 
 </template>
 
 <script setup>
 import { ref, reactive, toRefs } from 'vue';
+import { useTableListFun } from "@/hooks/getTabel.js"
 import { createTask, publish } from "@/api/task/index"
 import { getbookGroup } from "@/api/price/index"
 import { ElMessage} from "element-plus"
+import  addPop  from '@/views/collect/components/addPop.vue'
+const { open ,handleSizeChange,getQueryList} = useTableListFun(getbookGroup)
 
 const form = reactive({
     task_type: 1, // 采集 2 发布
@@ -79,6 +91,13 @@ const bookList = ref([])
 const getbookGroupFun = async () => {
     let res = await getbookGroup({ current_page: 1, page_size: 10000 })
     bookList.value = res.data.data
+}
+
+function closeFun(){
+    open.value = false
+    getbookGroupFun()
+    ElMessage.success("刷新分组成功")
+
 }
 getbookGroupFun()
 function changeTime(arr) {
@@ -107,26 +126,14 @@ const submitFun = async () => {
     }
    
     form.task_params.shop_ids = form.task_params.shop_ids.split(",")
-    let obj = {
-        task_type: 1,
-        task_params: {
-            shop_ids: [
-                '21905'
-            ],
-            start_time: null,
-            end_time: null,
-            num: 20,
-            is_vip: false,
-            book_group_id: "12",
-            book_category: "all",
-            name: "string"
-        },
-        task_name: "任务名称",
-        task_desc: "任务描述"
-    }
+    console.log("task_desctask_desc",form)
+    
+    //
     let res = await createTask(form)
     if (res.code == 200) {
-        ElMessage.success("开始采集")
+        ElMessage.success("采集成功")
+        form.task_params.shop_ids = '';
+
     }
 }
 // 发布任务

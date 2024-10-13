@@ -70,9 +70,20 @@ export function useTableListFun(fetchFunction) {
   open.value = false
   getQueryList();
 
+  
+
 
  }
+
+ const transform=(data ,code)=> {
+  let str=""
+  data.forEach(item => {
+      item.value==code && (str=item.label)
+  })
+  return str
+}
   return {
+    transform,
     open,
     closeFun, // 关闭弹出
     tableList,

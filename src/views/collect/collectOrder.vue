@@ -47,15 +47,21 @@
                 </template>
             </el-table-column>
             <el-table-column label="任务类型" align="center" prop="task_type" :show-overflow-tooltip="true">
-                 <template #default="scope">
+                <template #default="scope">
                     <span>{{ scope.row.task_type == 1 ? '采集' : '发布' }}</span>
-                </template> 
+                </template>
             </el-table-column>
             <el-table-column label="任务名称" align="center" prop="task_name" :show-overflow-tooltip="true" />
-            <el-table-column label="任务描述" align="center" prop="task_desc" :show-overflow-tooltip="true" />
+            <!-- <el-table-column label="任务描述" align="center" prop="task_desc" :show-overflow-tooltip="true" /> -->
             <el-table-column label="任务ID" align="center" prop="task_id" :show-overflow-tooltip="true" />
-            <el-table-column label="结果信息" align="center" prop="result" :show-overflow-tooltip="true" />
-            <el-table-column label="任务状态" align="center" prop="stauts" :show-overflow-tooltip="true" />
+            <!-- <el-table-column label="结果信息" align="center" prop="result" :show-overflow-tooltip="true" /> -->
+
+            <!-- :0-待执行 1-执行中 2-执行完成 3-执行失败 4-已取消 5-已暂停 6-已恢复 7-已超时 8-已取消 -->
+            <el-table-column label="任务状态" align="center" prop="status" :show-overflow-tooltip="true">
+                <template #default="scope">
+                    {{ transform(statusOptions,scope.row.status) }}
+                </template>
+            </el-table-column>
 
             <el-table-column label="任务开始时间" align="center" prop="task_start_time" width="180">
                 <template #default="scope">
@@ -133,7 +139,54 @@ function handleSelectionChange(selection) {
     single.value = selection.length != 1;
     multiple.value = !selection.length;
 }
+// :0-待执行 1-执行中 2-执行完成 3-执行失败 4-已取消 5-已暂停 6-已恢复 7-已超时 8-已取消 
+const statusOptions = [
+    {
+        label: "待执行",
+        value: 0
+    },
+    {
+        label: "执行中",
+        value: 1
+    },
+    {
+        label: "执行完成",
+        value: 2
+    },
+    {
+        label: "执行失败",
+        value: 3
+    },
+    {
+        label: "已取消",
+        value: 4
+    },
 
+    {
+        label: "已暂停",
+        value: 5
+    },
+    {
+        label: "已恢复",
+        value: 6
+    },
+    {
+        label: "已超时",
+        value: 7
+    },
+    {
+        label: "已超时",
+        value: 8
+    },
+]
+
+function transform(data ,code) {
+    let str=""
+    data.forEach(item => {
+        item.value==code && (str=item.label)
+    })
+    return str
+}
 // 批量启用 禁用价格
 
 
