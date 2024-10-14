@@ -56,7 +56,7 @@ function getCode() {
 const getTbMsg = async () => {
   let res = await getTb()
   if (res.code == 200) {
-    shopMsg.value = res.data.shop
+    shopMsg.value = res.data
     useTbMsgStore().changeTbMsg(shopMsg.value)
     console.log("formform", shopMsg)
     proxy.$modal.msgSuccess("获取淘宝信息成功");

@@ -16,7 +16,7 @@
                 <el-button type="danger" plain>清空采集过滤数据</el-button>
             </el-form-item>
         </el-form>
-        <el-row :gutter="10" class="mb8">
+        <!-- <el-row :gutter="10" class="mb8">
             <el-col :span="1.5" style="line-height: 28px;">
                 <span>自动刷新(秒)</span>
             </el-col>
@@ -29,7 +29,7 @@
             <el-col :span="1.5">
                 <el-button type="primary" @click="handleQuery">手动刷新</el-button>
             </el-col>
-        </el-row>
+        </el-row> -->
         <el-table v-loading="loading" :data="configList" @selection-change="handleSelectionChange">
             <el-table-column type="selection" width="55" align="center" />
             <el-table-column label="序号" align="center" prop="configId">
@@ -71,7 +71,7 @@
 </template>
 
 <script setup name="任务">
-import { listConfig, getConfig, delConfig, addConfig, updateConfig, } from "@/api/system/config";
+
 import { useTableListFun } from "@/hooks/getTabel.js"
 
 import {getQuery } from "@/api/task/index"

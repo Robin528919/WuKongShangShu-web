@@ -257,8 +257,33 @@ export function category_info(str) {
    // data: data
   })
 }
+// 获取缓存 /api/v1/cache
 
 
+
+export function getcache(data) {
+  return request({
+    url: `cache?cache_type=${data.cache_type}`,
+    headers: {
+      isToken: true,
+      // "Content-Type":"form-data;charset=utf-8"
+    },
+    method: 'get',
+    data :data      //data: data
+  })
+}
+
+export function setcache(data) {
+  return request({
+    url: `cache?cache_type=${data.cache_type}`,
+    headers: {
+      isToken: true,
+      // "Content-Type":"form-data;charset=utf-8"
+    },
+    method: 'post',
+    data :data      //data: data
+  })
+}
 
 
 

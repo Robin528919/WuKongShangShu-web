@@ -59,8 +59,8 @@ console.log("proxy", proxy)
     password: "admin123",
 */
 const loginForm = ref({
-    email: "admin123@qq.com",
-    password: "admin123",
+    email: "",
+    password: "",
 
 })
 const loginRules = {

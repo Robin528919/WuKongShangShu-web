@@ -239,6 +239,15 @@ export const constantRoutes = [
         },
       },
       {
+        path: "record",
+        component: () => import("@/views/issue/record"),
+        name: "record",
+        meta: {
+          title: "发布记录",
+          icon: "build",
+        },
+      },
+      {
         path: "issueJf",
         component: () => import("@/views/issue/issueJf"),
         name: "issueJf",
@@ -322,7 +331,7 @@ export const constantRoutes = [
 export const dynamicRoutes = [];
 
 const router = createRouter({
-  history: createWebHashHistory(),
+  history:createWebHashHistory(),
   routes: constantRoutes,
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {

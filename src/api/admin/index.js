@@ -101,3 +101,12 @@ export function logout() {
   })
 }
 
+// /api/v1/release/record/query 获取发布记录
+export function getReleaseRecord(data) {
+  return request({
+    url: `/release/record/query?page=${data.current_page}&page_size=${data.page_size}`,
+    method: 'post',
+    data: data.body
+  })
+}
+

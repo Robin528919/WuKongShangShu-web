@@ -11,10 +11,23 @@
             </el-form-item>
 
             <el-form-item label="标题前缀：">
-                <el-input placeholder="请输入标题前缀：" v-model="form.task_params.title_prefix"></el-input>
+                <div style="display: flex; width: 100%;">
+                    <div  style="flex: 1;">
+                        <el-input placeholder="请输入标题前缀：" v-model="form.task_params.title_prefix"></el-input>
+                    </div>
+                 
+                    <!-- <el-button type="primary" @click="setTitle_prefix">设置缓存</el-button>
+                    <el-button type="primary"  @click="getTitle_prefix">获取缓存</el-button> -->
+
+                </div>
+               
             </el-form-item>
             <el-form-item label="标题过滤：">
+                <div style="display: flex; width: 100%;">
                 <el-input placeholder="请输入标题过滤" v-model="form.task_params.title_filter"></el-input>
+                <!-- <el-button  style="flex: 1;" type="primary">设置缓存</el-button>
+                <el-button type="primary">获取缓存</el-button> -->
+                </div>
             </el-form-item>
             <el-form-item label="水印位置" :required="true">
                 <el-radio-group v-model="form.task_params.watermark">
@@ -83,8 +96,8 @@
 </template>
 
 <script setup>
-import { ref, reactive, toRefs } from "vue";
-import { getbookGroup, templateS, getCategory, category_info } from "@/api/price/index"
+import { ref, reactive } from "vue";
+import { getbookGroup, templateS, getCategory, category_info,setcache,getcache } from "@/api/price/index"
 import { createTask } from "@/api/task/index"
 import { ElMessage } from "element-plus";
 const position = [{ id: 1, text: '左上角' }, { id: 2, text: '左下角' }, { id: 3, text: '右上角' }, { id: 4, text: '右下角' }, { id: 5, text: '正面' }]
@@ -107,6 +120,27 @@ const form = reactive({
         template: "",
     }
 });
+// 设置缓存
+function setTitle_prefix(){
+    setcache({ cache_type:form.task_params.title_prefix }).then((res)=>{
+       if(res&&res.code==200){
+        ElMessage.success("设置成功");
+       }
+
+    })
+}
+// 获取缓存 
+function getTitle_prefix(){
+    getcache({ cache_type:form.task_params.title_prefix }).then((res)=>{
+       if(res&&res.code==200){
+        
+        form.task_params.title_prefix = res.data.cache_type;
+       }
+
+    })
+}
+
+
 // 图书分组
 const bookList = ref([])
 const getbookGroupFun = async () => {
