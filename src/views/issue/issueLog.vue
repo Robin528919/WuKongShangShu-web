@@ -51,18 +51,17 @@
                 <template #default="scope">
                     <span>{{ parseTime(scope.row.task_start_time) }}</span>
                 </template>
-            </el-table-column>
-            <el-table-column label="task_end_time" align="center" prop="任务结束时间" width="180">
+            </el-table-column> 
+            <el-table-column label="任务结束时间" align="center" prop="task_end_time" width="180">
                 <template #default="scope">
                     <span>{{ parseTime(scope.row.task_end_time) }}</span>
                 </template>
             </el-table-column>
-            <!-- <el-table-column label="操作" align="center" width="150" class-name="small-padding fixed-width">
+            <el-table-column label="操作" align="center" width="150" class-name="small-padding fixed-width">
                 <template #default="scope">
-                    <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)">修改</el-button>
-                    <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)">删除</el-button>
+                    <el-button  type="text"  @click="handleUpdate(scope.row)">查看记录</el-button>
                 </template>
-            </el-table-column> -->
+            </el-table-column>
         </el-table>
         <div style="display: flex; justify-content: end;">
             <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"

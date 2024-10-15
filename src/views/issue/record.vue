@@ -14,7 +14,7 @@
                 <el-button icon="Refresh" @click="resetQuery">重置</el-button>
             </el-form-item>
         </el-form>
-    
+
         <el-table v-loading="loading" :data="tableList" @selection-change="handleSelectionChange">
             <el-table-column type="selection" width="55" align="center" />
             <el-table-column label="序号" width="100">
@@ -23,10 +23,16 @@
                 </template>
             </el-table-column>
             <el-table-column label="任务ID" align="center" prop="task_id" :show-overflow-tooltip="true" />
-            <el-table-column label="原图" align="center" prop="original_img" :show-overflow-tooltip="true" />
-          
+            <el-table-column label="原图" align="center" prop="original_img" :show-overflow-tooltip="true">
+                <template #default="scope">
+                    <img style="height: 100px; width: 100px; object-fit: contain;" :src="scope.row.original_img" alt="">
+                </template>
+            </el-table-column>
+
             <el-table-column label="水印" align="center" prop="watermark_img" width="180">
-               
+                <template #default="scope" >
+                    <img style="height: 100px; width: 100px; object-fit: contain;" :src="scope.row.watermark_img" alt="">
+                </template>
             </el-table-column>
             <el-table-column label="淘宝店铺ID" align="center" prop="shop_id" :show-overflow-tooltip="true" />
             <el-table-column label="淘宝店铺名称" align="center" prop="shop_name" :show-overflow-tooltip="true" />
@@ -37,9 +43,15 @@
             <el-table-column label="加价" align="center" prop="add_price" :show-overflow-tooltip="true" />
 
             <el-table-column label="发布结果" align="center" prop="publish_result" :show-overflow-tooltip="true" />
-            <el-table-column label="淘宝链接" align="center" prop="tb_url" :show-overflow-tooltip="true" />
+            <el-table-column label="淘宝链接" align="center" prop="tb_url" :show-overflow-tooltip="true">
+                <template #default="scope">
+                    <el-link :href="scope.row.tb_url" :underline="false" target="_blank">
+                        {{ scope.row.tb_url }}
+                    </el-link>
+                </template>
+            </el-table-column>
             <el-table-column label="记录ID" align="center" prop="record_id" :show-overflow-tooltip="true" />
-           
+
         </el-table>
         <div style="display: flex; justify-content: end;">
             <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
@@ -48,7 +60,7 @@
             </el-pagination>
         </div>
 
-     
+
 
     </div>
 </template>
@@ -62,16 +74,16 @@ import { useTableListFun } from "@/hooks/getTabel.js"
 import { reactive, } from "vue";
 
 const { proxy } = getCurrentInstance();
-import { getReleaseRecord} from "@/api/admin/index"
+import { getReleaseRecord } from "@/api/admin/index"
 
-const { page,open, query, tableList, searchFun,resetFun,closeFun,handleCurrentChange,handleSizeChange,getQueryList} = useTableListFun(getReleaseRecord)
+const { page, open, query, tableList, searchFun, resetFun, closeFun, handleCurrentChange, handleSizeChange, getQueryList } = useTableListFun(getReleaseRecord)
 
-console.log("getQueryList",getQueryList)
+console.log("getQueryList", getQueryList)
 
 const sys_yes_no = [{
     value: true,
     label: '是'
-},{
+}, {
     value: false,
     label: '否'
 }]
@@ -90,7 +102,7 @@ function addFun() {
 /** 修改按钮操作 */
 let editObj = reactive({})
 function handleUpdate(row) {
-    editObj=row
+    editObj = row
     open.value = true
     title.value = "修改"
 }
@@ -103,29 +115,29 @@ function handleSelectionChange(selection) {
 
 // 批量启用 禁用价格
 
-const someDisableFun = async ()=>{
-    if(ids.value.length==0) return  proxy.$modal.msgWarning("请选择要操作的数据")
-  let res = await batchEnable({
-    ids:ids.value,
-    is_enable:0
-  })
-  if(res.code==200){
-    proxy.$modal.msgSuccess("操作成功");
-    getQueryList()
-  }
+const someDisableFun = async () => {
+    if (ids.value.length == 0) return proxy.$modal.msgWarning("请选择要操作的数据")
+    let res = await batchEnable({
+        ids: ids.value,
+        is_enable: 0
+    })
+    if (res.code == 200) {
+        proxy.$modal.msgSuccess("操作成功");
+        getQueryList()
+    }
 }
 // 启用价格
 
-const someTrueFun = async ()=>{
-    if(ids.value.length==0) return  proxy.$modal.msgWarning("请选择要操作的数据")
-  let res = await batchEnable({
-    ids:ids.value,
-    is_enable:1
-  })
-  if(res.code==200){
-    proxy.$modal.msgSuccess("操作成功");
-    getQueryList()
-  }
+const someTrueFun = async () => {
+    if (ids.value.length == 0) return proxy.$modal.msgWarning("请选择要操作的数据")
+    let res = await batchEnable({
+        ids: ids.value,
+        is_enable: 1
+    })
+    if (res.code == 200) {
+        proxy.$modal.msgSuccess("操作成功");
+        getQueryList()
+    }
 }
 
 
@@ -136,14 +148,14 @@ const someTrueFun = async ()=>{
 /** 删除按钮操作 */
 function handleDelete(row) {
     const configIds = row.group_id || ids.value;
-    proxy.$modal.confirm('确定删除').then(async ()=> {
-         let res = await delBookGroup(configIds);
-         console.log("删除成功----",res)
-         if(res.code==200){
+    proxy.$modal.confirm('确定删除').then(async () => {
+        let res = await delBookGroup(configIds);
+        console.log("删除成功----", res)
+        if (res.code == 200) {
             proxy.$modal.msgSuccess("删除成功");
-           getQueryList()
-            
-         }
+            getQueryList()
+
+        }
     })
 }
 

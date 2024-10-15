@@ -1,12 +1,18 @@
 <template>
-    <el-dialog title="批量新增违禁词" v-model="visible" draggable width="500px" destroy-on-close append-to-body>
+    <el-dialog title="批量新增违禁词" v-model="visible" draggable width="60%" destroy-on-close append-to-body @close="cancel">
         <el-form ref="configRef" :model="form" label-width="120px">
             <el-form-item label="上传违禁词附件：">
-                <el-input v-model="form.words" type="textarea" placeholder="请输入参数名称" />
-                <span style="color: red;">只能支持.txt文件,注意格式事例:a,v,b,c,你,国家</span>
+                <el-upload :limit="1" :on-change="handlePreviewFun">
+                    <el-button type="primary">上传违禁词文件</el-button>
+                    <template #tip>
+                        <div class="el-upload__tip">
+                            只能支持.txt文件,注意格式事例:a,v,b,c,你,国家
+                        </div>
+                    </template>
+                </el-upload>
             </el-form-item>
             <el-form-item label="违禁词：">
-                <el-input v-model="form.words" type="textarea" placeholder="请输入参数名称" />
+                <el-input v-model="form.words"   :autosize="{ minRows: 2, maxRows: 20 }" type="textarea" style="height: 300px;" placeholder="请输入参数名称" />
                 <span style="color: red;">注意格式事例:a,v,b,c,你,国家</span>
             </el-form-item>
             <!-- <el-form-item label="生成违禁词库：" prop="configType">
@@ -37,12 +43,25 @@ const props = defineProps({
         default: true
     }
 })
+
+
 const emit = defineEmits(['close']);
 const visible = ref(props.open);
 
 const form = reactive({
     words: '',
 })
+const handlePreviewFun = (file) => {
+    const reader = new FileReader();
+
+    // 定义加载完成后的回调函数
+    reader.onload =  (e)=> {
+         form.words += e.target.result; // 文件内容
+       
+    };
+    // 读取文件为文本
+    reader.readAsText(file.raw);
+}
 // 提交
 const submitForm = async () => {
     if (!form.words) {
@@ -62,4 +81,12 @@ const cancel = () => {
 
 
 </script>
-<style scoped lang='scss'></style>
+<style>
+.el-textarea__inner{
+    height: 100% !important;
+}
+</style>
+<style scoped lang='scss'>
+
+
+</style>
