@@ -30,7 +30,7 @@
                 <el-button type="primary" @click="handleQuery">手动刷新</el-button>
             </el-col>
         </el-row> -->
-        <el-table v-loading="loading" :data="configList" @selection-change="handleSelectionChange">
+        <el-table v-loading="loading" :data="tableList" @selection-change="handleSelectionChange">
             <el-table-column type="selection" width="55" align="center" />
             <el-table-column label="序号" align="center" prop="configId">
                 <template #default="{ row, $index }">
@@ -39,7 +39,7 @@
             </el-table-column>
 
             <el-table-column label="任务id" align="center" prop="task_id" :show-overflow-tooltip="true" />
-            <el-table-column label="任务名称" align="center" prop="name" :show-overflow-tooltip="true" />
+            <el-table-column label="任务名称" align="center" prop="task_name" :show-overflow-tooltip="true" />
             <el-table-column label="任务状态" align="center" prop="status" :show-overflow-tooltip="true">
                 <template #default="scope">
                     {{ transform(statusOptions, scope.row.status) }}
@@ -47,22 +47,22 @@
             </el-table-column>
             <el-table-column label="结果内容" align="center" prop="result" :show-overflow-tooltip="true" />
             <el-table-column label="状态" align="center" prop="configKey" :show-overflow-tooltip="true" />
-            <el-table-column label="创建时间" align="center" prop="start_time" width="180">
+            <el-table-column label="任务开始时间" align="center" prop="task_start_time" width="180">
                 <template #default="scope">
-                    <span>{{ parseTime(scope.row.createTime) }}</span>
+                    <span>{{ parseTime(scope.row.task_start_time) }}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="完成时间" align="center" prop="task_end_time" width="180">
+            <el-table-column label="task_end_time" align="center" prop="任务结束时间" width="180">
                 <template #default="scope">
-                    <span>{{ parseTime(scope.row.createTime) }}</span>
+                    <span>{{ parseTime(scope.row.task_end_time) }}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="操作" align="center" width="150" class-name="small-padding fixed-width">
-                <!-- <template #default="scope">
+            <!-- <el-table-column label="操作" align="center" width="150" class-name="small-padding fixed-width">
+                <template #default="scope">
                     <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)">修改</el-button>
                     <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)">删除</el-button>
-                </template> -->
-            </el-table-column>
+                </template>
+            </el-table-column> -->
         </el-table>
         <div style="display: flex; justify-content: end;">
             <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
