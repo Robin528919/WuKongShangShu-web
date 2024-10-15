@@ -1,6 +1,10 @@
 <template>
     <el-dialog title="批量新增违禁词" v-model="visible" draggable width="500px" destroy-on-close append-to-body>
         <el-form ref="configRef" :model="form" label-width="120px">
+            <el-form-item label="上传违禁词附件：">
+                <el-input v-model="form.words" type="textarea" placeholder="请输入参数名称" />
+                <span style="color: red;">只能支持.txt文件,注意格式事例:a,v,b,c,你,国家</span>
+            </el-form-item>
             <el-form-item label="违禁词：">
                 <el-input v-model="form.words" type="textarea" placeholder="请输入参数名称" />
                 <span style="color: red;">注意格式事例:a,v,b,c,你,国家</span>

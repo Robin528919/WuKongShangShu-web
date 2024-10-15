@@ -32,9 +32,13 @@
                     <el-tag v-else type="error">否</el-tag>
                 </template>
             </el-table-column>
-            <el-table-column label="运算符1" align="center" prop="operator1" :show-overflow-tooltip="true" />
+            <el-table-column label="运算符1" align="center" prop="operator1" :show-overflow-tooltip="true" >
+                <template #default="scope">{{transform(operator,scope.row.operator1)}}</template>
+            </el-table-column>
             <el-table-column label="数字1" align="center" prop="number1" :show-overflow-tooltip="true" />
-            <el-table-column label="运算符2" align="center" prop="operator2" :show-overflow-tooltip="true" />
+            <el-table-column label="运算符2" align="center" prop="operator2" :show-overflow-tooltip="true">
+                <template #default="scope">{{transform(operator,scope.row.operator2)}}</template>
+            </el-table-column>
             <el-table-column label="数字2" align="center" prop="number2" :show-overflow-tooltip="true" />
             <el-table-column label="说明" align="center" prop="description" :show-overflow-tooltip="true" />
             <el-table-column label="是否启用" align="center" prop="is_enable">
@@ -43,16 +47,17 @@
                     <el-tag v-else type="error">否</el-tag>
                 </template>
             </el-table-column>
-            <el-table-column label="创建时间" align="center" prop="createTime" width="180">
+            <!-- <el-table-column label="创建时间" align="center" prop="createTime" width="180">
                 <template #default="scope">
                     <span>{{ parseTime(scope.row.createTime) }}</span>
                 </template>
-            </el-table-column>
+            </el-table-column> -->
             <el-table-column label="操作" align="center" width="250" class-name="small-padding fixed-width">
                 <template #default="scope">
                     <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)">修改</el-button>
                     <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)">删除</el-button>
-                    <el-button type="danger" @click="disableFun(scope.row)">禁用</el-button>
+                    <el-button type="text" @click="someDisableFun(scope.row)">禁用</el-button>
+                    <el-button type="text" @click="someTrueFun(scope.row)">启用</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -78,7 +83,7 @@ import { reactive, } from "vue";
 const { proxy } = getCurrentInstance();
 import { delPrice, getQuery, batchEnable } from "@/api/price/index"
 
-const { page, open, query, tableList, searchFun, resetFun, closeFun, handleCurrentChange, handleSizeChange, getQueryList } = useTableListFun(getQuery)
+const { page, open, query, tableList, searchFun, transform, resetFun, closeFun, handleCurrentChange, handleSizeChange, getQueryList } = useTableListFun(getQuery)
 
 
 
@@ -88,6 +93,20 @@ const sys_yes_no = [{
 }, {
     value: false,
     label: '否'
+}]
+// 运算符:1-加 2-减 3-乘 4-除
+const operator = [{
+    value: 1,
+    label: '加'
+}, {
+    value: 2,
+    label: '减'
+}, {
+    value: 3,
+    label: '乘'
+}, {
+    value: 4,
+    label: '除'
 }]
 const loading = ref(false);
 const showSearch = ref(true);
@@ -117,10 +136,16 @@ function handleSelectionChange(selection) {
 
 // 批量启用 禁用价格
 
-const someDisableFun = async () => {
-    if (ids.value.length == 0) return proxy.$modal.msgWarning("请选择要操作的数据")
+const someDisableFun = async (row) => {
+    let idArr = []
+    if(row&&row.price_id){
+        idArr = [row.price_id]
+    }else{
+        if (ids.value.length == 0) return proxy.$modal.msgWarning("请选择要操作的数据")
+        idArr = ids.value
+    }
     let res = await batchEnable({
-        ids: ids.value,
+        ids:idArr,
         is_enable: 0
     })
     if (res.code == 200) {
@@ -130,10 +155,16 @@ const someDisableFun = async () => {
 }
 // 启用价格
 
-const someTrueFun = async () => {
-    if (ids.value.length == 0) return proxy.$modal.msgWarning("请选择要操作的数据")
+const someTrueFun = async (row) => {
+    let idArr = []
+    if(row&&row.price_id){
+        idArr = [row.price_id]
+    }else{
+        if (ids.value.length == 0) return proxy.$modal.msgWarning("请选择要操作的数据")
+        idArr = ids.value
+    }
     let res = await batchEnable({
-        ids: ids.value,
+        ids:idArr,
         is_enable: 1
     })
     if (res.code == 200) {
