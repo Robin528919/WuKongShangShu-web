@@ -29,7 +29,7 @@
     <el-form-item label="绑定商城">
       <el-input v-model="session_key" style="width: 200px" placeholder="请输入淘宝店铺认证信息" />
       <el-button type="primary" @click="updateMsg">绑定或更新淘宝信息</el-button>
-      <span style="margin-left: 20px">注意：淘宝商铺必须绑定书帮帮商城，才可以进行发布和删除操作</span>
+      <span style="margin-left: 20px">注意：淘宝商铺必须绑定书悟空上书，才可以进行发布和删除操作</span>
     </el-form-item>
     </el-form>
 </template>

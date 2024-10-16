@@ -13,7 +13,7 @@
             </el-form-item>
         </el-form>
         <el-table v-loading="loading" :data="tableList" @selection-change="handleSelectionChange">
-            <el-table-column type="selection" width="55" align="center" />
+            <!-- <el-table-column type="selection" width="55" align="center" /> -->
             <el-table-column label="序号" align="center" prop="configId">
                 <template #default="{ row, $index }">
                     {{ (page.current_page - 1) * page.page_size + $index + 1 }}
@@ -30,6 +30,7 @@
                 <template #default="scope">
                     <!-- <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)">修改</el-button> -->
                     <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)">删除</el-button>
+                    <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)">查看</el-button>
                     <!-- <el-button type="danger"  @click="disableFun(scope.row)">禁用</el-button> -->
                 </template>
             </el-table-column>

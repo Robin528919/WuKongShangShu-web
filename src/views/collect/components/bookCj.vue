@@ -3,7 +3,7 @@
        
         <el-form :model="form" label-width="120px">
             <el-form-item label="采集任务名称：" :required="true">
-                <el-input type="text" v-model="form.task_name" />
+                <el-input type="text" v-model="form.task_name" placeholder="请输入采集任务名称" />
             </el-form-item>
           
             <!-- <el-form-item label="任务名称：" :required="true" placeholder="请输入采集任务名称">
@@ -17,7 +17,7 @@
                 注意: 官方违禁词库权限,需要联系管理员。作用：对书名标题进行过滤，不符合禁止发布
             </el-form-item>
             <el-form-item label="分类：" :required="true">
-                <el-select v-model="form.task_params.book_category" placeholder="请选择分类">
+                <el-select v-model="form.task_params.book_category" placeholder="选择图书分类">
                     <el-option v-for="item in bookType" :key="item.value" :label="item.label" :value="item.value" />
                 </el-select>
                 <span style="margin-left: 20px;">注意：可分分类采集（全部all，文学cat）...</span>
@@ -73,7 +73,7 @@ const form = reactive({
         shop_ids: "",
         start_time: null,
         end_time: null,
-        num: 100,
+        num: 99999,
         is_vip: true,
         book_category: "all",
         name: "",

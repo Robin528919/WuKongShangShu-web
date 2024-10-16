@@ -20,7 +20,7 @@
 
             <el-col :span="1.5">
                 <el-form-item label="书店id">
-                    <el-input v-model="queryParams.book_id" placeholder="请输入要删除书店id,用,分割" clearable style="width: 240px"
+                    <el-input v-model="query.book_id" placeholder="请输入要删除书店id,用,分割" clearable style="width: 240px"
                         @keyup.enter="handleQuery" />
                 </el-form-item>
             </el-col>
@@ -35,10 +35,10 @@
             </el-col>
 
             <el-col :span="1.5">
-                <el-button type="primary" @click="handleQuery">开始</el-button>
+                <!-- <el-button type="primary" @click="handleQuery">开始</el-button> -->
             </el-col>
             <el-col :span="1.5">
-                <el-button type="primary" @click="handleQuery">手动刷新</el-button>
+                <!-- <el-button type="primary" @click="handleQuery">手动刷新</el-button> -->
             </el-col>
             <!-- <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar> -->
         </el-row>
@@ -78,11 +78,11 @@
             <el-table-column label="图书信息" align="center" prop="configKey" :show-overflow-tooltip="true" />
             <el-table-column label="图书介绍" align="center" prop="configKey" :show-overflow-tooltip="true" />
             <el-table-column label="是否上传" align="center" prop="configKey" :show-overflow-tooltip="true" />
-            <el-table-column label="操作" align="center" width="150" class-name="small-padding fixed-width">
+            <!-- <el-table-column label="操作" align="center" width="150" class-name="small-padding fixed-width">
                 <template #default="scope">
                     <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)">删除</el-button>
                 </template>
-            </el-table-column>
+            </el-table-column> -->
         </el-table>
         <div style="display: flex; justify-content: end;">
             <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"

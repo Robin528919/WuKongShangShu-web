@@ -6,7 +6,6 @@
             </el-form-item>
             <el-form-item label="状态" prop="configType">
                 <el-select v-model="query.staus" style="width: 130px" placeholder="请选择" clearable>
-
                 </el-select>
             </el-form-item>
             <el-form-item>
@@ -59,7 +58,7 @@
             </el-table-column>
             <el-table-column label="操作" align="center" width="150" class-name="small-padding fixed-width">
                 <template #default="scope">
-                    <el-button  type="text"  @click="handleUpdate(scope.row)">查看记录</el-button>
+                    <el-button  type="text"  @click="goRecordFun(scope.row)">查看记录</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -85,6 +84,16 @@ const { proxy } = getCurrentInstance();
 
 const configList = ref([]);
 
+function goRecordFun(row){
+    proxy.$router.push({
+      path: '/issue/record',
+      query: {
+        id: row.task_id,
+        title: row.task_name,
+      },
+    });
+    // this.$router.push({ path: '/user', query: { id: 123 } });
+}
 
 const showSearch = ref(true);
 const ids = ref([]);
