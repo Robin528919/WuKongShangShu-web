@@ -19,7 +19,6 @@
     </el-form-item>
     <el-form-item label="店铺登陆：">
       <el-button type="primary" @click="getAuthuUrlFun">获取授权链接</el-button>
-    
     </el-form-item>
     <!-- <el-form-item label="店铺认证：">
       <el-button type="primary" @click="getTbMsg">获取淘宝信息</el-button>
@@ -30,6 +29,10 @@
       <el-input v-model="session_key" style="width: 200px" placeholder="请输入淘宝店铺认证信息" />
       <el-button type="primary" @click="updateMsg">绑定或更新淘宝信息</el-button>
       <span style="margin-left: 20px">注意：淘宝商铺必须绑定书悟空上书，才可以进行发布和删除操作</span>
+    </el-form-item>
+
+    <el-form-item label="去购买:">
+      <el-link type="primary"  target="_blank" href="https://fuwu.taobao.com/ser/detail.htm?service_code=FW_GOODS-1839531"> 去购买</el-link>
     </el-form-item>
     </el-form>
 </template>
