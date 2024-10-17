@@ -62,12 +62,18 @@
                     {{ transform(statusOptions,scope.row.status) }}
                 </template>
             </el-table-column>
+            <el-table-column label="采集结果" align="center" prop="result" width="180">
+                <template #default="scope">
+                    <span>{{ scope.row.result.msg }}</span>
+                </template>
+            </el-table-column>
 
             <el-table-column label="任务开始时间" align="center" prop="task_start_time" width="180">
                 <template #default="scope">
                     <span>{{ parseTime(scope.row.task_start_time) }}</span>
                 </template>
             </el-table-column>
+          
             <el-table-column label="任务结束时间" align="center" prop="task_end_time">
                 <template #default="scope">
                     <span>{{ parseTime(scope.row.task_end_time) }}</span>
