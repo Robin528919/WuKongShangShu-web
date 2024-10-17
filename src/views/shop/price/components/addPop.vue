@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :title="title" destroy-on-close v-model="visible" width="500px" append-to-body>
+  <el-dialog :title="title" destroy-on-close v-model="visible" width="500px" append-to-body @close="cancel">
     <el-form ref="configRef" :model="form" label-width="80px">
 
       <el-form-item label="档位名称" :required="true">
