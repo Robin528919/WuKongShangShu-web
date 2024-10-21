@@ -12,64 +12,34 @@
             <el-form-item>
                 <el-button type="primary" icon="Search" @click="searchFun">查询</el-button>
                 <el-button icon="Refresh" @click="resetFun">重置</el-button>
-                <el-button type="danger" @click="handleQuery">清空采集所有数据</el-button>
+                <el-button type="danger" @click="handleQuery">全量删除</el-button>
             </el-form-item>
         </el-form>
 
         <el-row :gutter="10" class="mb8">
 
-            <el-col :span="1.5">
-                <el-form-item label="书店id">
-                    <el-input v-model="query.shop_id" placeholder="请输入要删除书店id,用,分割" clearable style="width: 240px"
-                        @keyup.enter="handleQuery" />
-                </el-form-item>
-            </el-col>
-            <el-col :span="1.5">
-                <el-button type="danger" plain @click="handleRefreshCache">根据书店id删除</el-button>
-            </el-col>
-            <el-col :span="1.5" style="line-height: 28px;">
-                <span>自动刷新(秒)</span>
-            </el-col>
-            <el-col :span="1.5">
-                <el-input-number />
-            </el-col>
-
-            <el-col :span="1.5">
-                <!-- <el-button type="primary" @click="handleQuery">开始</el-button> -->
-            </el-col>
-            <el-col :span="1.5">
-                <!-- <el-button type="primary" @click="handleQuery">手动刷新</el-button> -->
-            </el-col>
+       
             <!-- <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar> -->
         </el-row>
         <el-table v-loading="loading" :data="tableList" @selection-change="handleSelectionChange">
-            <el-table-column type="selection" width="55" align="center" />
-            <el-table-column label="序号" align="center" prop="item_id" />
+        
+            <el-table-column label="序号" align="center" prop="configId">
+                <template #default="{ row, $index }">
+                    {{ (page.current_page - 1) * page.page_size + $index + 1 }}
+                </template>
+            </el-table-column>
+          
             <el-table-column label="主图" align="center" prop="img_big">
                 <template #default="scope">
-                    <el-image style="width: 100px; height: 100px" :src="scope.row.img_big" :zoom-rate="1.2"
+                    <el-image style="width: 20px; height: 20px" :src="scope.row.pic_url" :zoom-rate="1.2"
                         :max-scale="7" :min-scale="0.2" :z-index="999" :initial-index="4" fit="cover" />
                 </template>
             </el-table-column>
-            <el-table-column label="图书id" align="center" prop="shop_id" :show-overflow-tooltip="true" />
-            <el-table-column label="图书名称" align="center" width="200" prop="item_name" :show-overflow-tooltip="true">
-                <template #default="scope">
-                    <el-link :href="scope.row.pc_url" target="_blank">{{ scope.row.item_name }}</el-link>
-                </template>
+            <!-- <el-table-column label="图书id" align="center" prop="shop_id" :show-overflow-tooltip="true" /> -->
+            <el-table-column label="图书名称" align="center" width="200" prop="title" :show-overflow-tooltip="true">
+               
             </el-table-column>
-            <el-table-column label="作者" align="center" prop="author" :show-overflow-tooltip="true" />
-            <el-table-column label="出版社" align="center" prop="publisher" :show-overflow-tooltip="true" />
-            <el-table-column label="年代" align="center" prop="pub_date" :show-overflow-tooltip="true" />
-            <el-table-column label="书店id" align="center" prop="book_id" :show-overflow-tooltip="true" />
-            <el-table-column label="书店名称" align="center" prop="shop_name" :show-overflow-tooltip="true" />
-            <el-table-column label="价格" align="center" prop="price" :show-overflow-tooltip="true" />
-            <el-table-column label="品相" align="center" prop="quality" :show-overflow-tooltip="true" />
-            <el-table-column label="发布时间" align="center" prop="configKey" :show-overflow-tooltip="true" />
-            <el-table-column label="发布状态" align="center" prop="publish_status">
-                <template #default="scope">
-                    {{ transform(publish_status, scope.row.publish_status) }}
-                </template>
-            </el-table-column>
+<!--           
             <el-table-column label="发布结果" align="center" prop="publish_result">
                 <template #default="scope">
                     {{ scope.row.publish_result == 1 ? "发布成功" : "未发布" }}
@@ -77,7 +47,7 @@
             </el-table-column>
             <el-table-column label="图书信息" align="center" prop="configKey" :show-overflow-tooltip="true" />
             <el-table-column label="图书介绍" align="center" prop="configKey" :show-overflow-tooltip="true" />
-            <el-table-column label="是否上传" align="center" prop="configKey" :show-overflow-tooltip="true" />
+            <el-table-column label="是否上传" align="center" prop="configKey" :show-overflow-tooltip="true" /> -->
             <!-- <el-table-column label="操作" align="center" width="150" class-name="small-padding fixed-width">
                 <template #default="scope">
                     <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)">删除</el-button>

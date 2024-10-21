@@ -24,8 +24,16 @@ export function useTableListFun(fetchFunction) {
       let params = { ...page, body };
    
       const response = await fetchFunction(params);
-      tableList.value = response.data.data;
-      page.total = response.data.total_records;
+      if(response.data.data){
+        tableList.value = response.data.data;
+        page.total = response.data.total_records;
+      }
+      if(response.data.items){
+        tableList.value = response.data.items;
+        page.total = response.data.total_results;
+
+      }
+   
     } catch (err) {
       console.log("errr", err);
     } finally {
