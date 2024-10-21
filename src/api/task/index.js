@@ -68,3 +68,18 @@ export function delBook(data) {
       data: data
     })
   }
+
+  // 获取在售商品 
+
+// 采集结果  /api/v1/books/query 查询图书列表 /api/v1/tb/product_list
+
+export function getProductList(data) {
+  return request({
+    url: `/tb/product_list?page_no=${data.current_page}&page_size=${data.page_size}`,
+    headers: {
+      isToken: true
+    },
+    method: 'post',
+    data: data
+  })
+}

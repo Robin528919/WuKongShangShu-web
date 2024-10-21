@@ -94,14 +94,14 @@
 </template>
 
 <script setup name="Config">
-import { listConfig, getConfig, delConfig, addConfig, updateConfig, } from "@/api/system/config";
+
 import { useTableListFun } from "@/hooks/getTabel.js"
 
 const { proxy } = getCurrentInstance();
 import { getbookGroup } from "@/api/price/index"
 //const { sys_yes_no } = proxy.useDict("sys_yes_no");
-import { getQueryBook, delBook } from "@/api/task/index"
-const { page, open, query, transform, tableList, searchFun, resetFun, closeFun, handleCurrentChange, handleSizeChange, getQueryList } = useTableListFun(getQueryBook)
+import { getProductList } from "@/api/task/index"
+const { page, open, query, transform, tableList, searchFun, resetFun, closeFun, handleCurrentChange, handleSizeChange, getQueryList } = useTableListFun(getProductList)
 
 
 
@@ -148,15 +148,6 @@ let bookGroupList = ref([])
  getGetbookGroupFun()
 
 
-/** 查询参数列表 */
-function getList() {
-    loading.value = true;
-    listConfig(proxy.addDateRange(queryParams.value, dateRange.value)).then(response => {
-        configList.value = response.rows;
-        total.value = response.total;
-        loading.value = false;
-    });
-}
 
 /** 取消按钮 */
 function cancel() {
@@ -225,47 +216,7 @@ function handleAdd() {
     title.value = "添加参数";
 }
 
-/** 修改按钮操作 */
-function handleUpdate(row) {
-    reset();
-    const configId = row.configId || ids.value;
-    getConfig(configId).then(response => {
-        form.value = response.data;
-        open.value = true;
-        title.value = "修改参数";
-    });
-}
 
-/** 提交按钮 */
-function submitForm() {
-    proxy.$refs["configRef"].validate(valid => {
-        if (valid) {
-            if (form.value.configId != undefined) {
-                updateConfig(form.value).then(response => {
-                    proxy.$modal.msgSuccess("修改成功");
-                    open.value = false;
-                    getList();
-                });
-            } else {
-                addConfig(form.value).then(response => {
-                    proxy.$modal.msgSuccess("新增成功");
-                    open.value = false;
-                    getList();
-                });
-            }
-        }
-    });
-}
-/** 删除按钮操作 */
-function handleDelete(row) {
-    const configIds = row.configId || ids.value;
-    proxy.$modal.confirm('是否确认删除参数编号为"' + configIds + '"的数据项？').then(function () {
-        return delConfig(configIds);
-    }).then(() => {
-        getList();
-        proxy.$modal.msgSuccess("删除成功");
-    }).catch(() => { });
-}
 
 
 

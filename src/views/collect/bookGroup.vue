@@ -30,7 +30,6 @@
                 <template #default="scope">
                     <!-- <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)">修改</el-button> -->
                     <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)">删除</el-button>
-                    <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)">查看</el-button>
                     <!-- <el-button type="danger"  @click="disableFun(scope.row)">禁用</el-button> -->
                 </template>
             </el-table-column>

@@ -22,7 +22,7 @@ export function useTableListFun(fetchFunction) {
     
       let body = proxy.objToArrayFun(query);
       let params = { ...page, body };
-     
+   
       const response = await fetchFunction(params);
       tableList.value = response.data.data;
       page.total = response.data.total_records;

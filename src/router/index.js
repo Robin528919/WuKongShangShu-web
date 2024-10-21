@@ -1,4 +1,8 @@
-import { createWebHistory, createWebHashHistory, createRouter } from "vue-router";
+import {
+  createWebHistory,
+  createWebHashHistory,
+  createRouter,
+} from "vue-router";
 /* Layout */
 import Layout from "@/layout";
 
@@ -121,6 +125,19 @@ export const constantRoutes = [
     ],
   },
   {
+    path: "/shop",
+    component: Layout,
+    redirect: "noRedirect",
+    children: [
+      {
+        path: "produ", // /Users/wkm/vue3c/wkbook/src/views/shop/product/index.vue
+        component: () => import("@/views/shop/product/index"),
+        name: "produ",
+        meta: { title: "在售商品", icon: "peoples", affix: true },
+      },
+    ],
+  },
+  {
     path: "/admin",
     component: Layout,
     redirect: "noRedirect",
@@ -128,7 +145,7 @@ export const constantRoutes = [
       {
         path: "word",
         component: () => import("@/views/admin/word"),
-      // component: () => import("@/views/system/user/index"),
+        // component: () => import("@/views/system/user/index"),
         name: "word",
         meta: { title: "管理员词库", icon: "peoples", affix: true },
       },
@@ -318,20 +335,18 @@ export const constantRoutes = [
       {
         path: "index",
         component: () => import("@/views/system/user/index"),
-      // component: () => import("@/views/system/user/index"),
+        // component: () => import("@/views/system/user/index"),
         name: "userm",
         meta: { title: "用户管理", icon: "peoples", affix: true },
       },
     ],
   },
-
-  
 ];
 // 动态路由，基于用户权限动态去加载
 export const dynamicRoutes = [];
 
 const router = createRouter({
-  history:createWebHashHistory(),
+  history: createWebHashHistory(),
   routes: constantRoutes,
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
