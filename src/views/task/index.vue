@@ -44,7 +44,11 @@
                     {{ transform(statusOptions, scope.row.status) }}
                 </template>
             </el-table-column>
-            <el-table-column label="结果内容" align="center" prop="result" :show-overflow-tooltip="true" />
+            <el-table-column label="结果内容" align="center" prop="result" :show-overflow-tooltip="true" >
+                <template #default="scope">
+                    {{scope.row.result.msg }}
+                </template>
+                </el-table-column>
             <el-table-column label="状态" align="center" prop="configKey" :show-overflow-tooltip="true" />
             <el-table-column label="任务开始时间" align="center" prop="task_start_time" width="180">
                 <template #default="scope">

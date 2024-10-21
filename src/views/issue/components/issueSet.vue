@@ -6,7 +6,7 @@
                 <el-input placeholder="请输入任务名称" v-model="form.task_name"></el-input>
             </el-form-item>
 
-            <el-form-item label="宝贝描述" :required="true">
+            <el-form-item label="宝贝描述" >
                 <el-input placeholder="请输入宝贝描述" v-model="form.task_params.desc"></el-input>
             </el-form-item>
 

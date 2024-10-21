@@ -34,6 +34,9 @@
     <el-form-item label="去购买:">
       <el-link type="primary"  target="_blank" href="https://fuwu.taobao.com/ser/detail.htm?service_code=FW_GOODS-1839531"> 去购买</el-link>
     </el-form-item>
+    <el-form-item label="淘标题优化:">
+      <el-link type="primary"  target="_blank" href="https://fuwu.taobao.com/ser/detail.htm?service_code=FW_GOODS-1857923"> 去购买</el-link>
+    </el-form-item>
     </el-form>
 </template>
 <script setup>
