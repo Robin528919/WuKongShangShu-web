@@ -3,9 +3,9 @@
         <el-tab-pane label="账号登陆">
             <userLogin />
         </el-tab-pane>
-        <el-tab-pane label="店铺中心">
+        <!-- <el-tab-pane label="店铺中心">
             <shopCenter />
-        </el-tab-pane>
+        </el-tab-pane> -->
     </el-tabs>
 </template>
 

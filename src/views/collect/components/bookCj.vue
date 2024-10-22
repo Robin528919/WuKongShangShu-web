@@ -17,10 +17,12 @@
                 注意: 官方违禁词库权限,需要联系管理员。作用：对书名标题进行过滤，不符合禁止发布
             </el-form-item>
             <el-form-item label="分类：" :required="true">
-                <el-select v-model="form.task_params.book_category" placeholder="选择图书分类">
+                <el-input v-model="form.task_params.book_category" placeholder="请输入分类"></el-input>
+                <!-- <el-select v-model="form.task_params.book_category" placeholder="选择图书分类">
                     <el-option v-for="item in bookType" :key="item.value" :label="item.label" :value="item.value" />
-                </el-select>
+                </el-select> -->
                 <span style="margin-left: 20px;">注意：可分分类采集（全部all，文学cat）...</span>
+                <span style="margin-left: 20px;color: red;">手动填写逗号","分隔</span>
             </el-form-item>
             <el-form-item label="图书分组：" :required="true">
                 <div style="display: flex;">
@@ -75,7 +77,7 @@ const form = reactive({
         end_time: null,
         num: 99999,
         is_vip: true,
-        book_category: "all",
+        book_category: "全部",
         name: "",
         book_group_id: "",
       

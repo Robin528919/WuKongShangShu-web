@@ -4,9 +4,11 @@
             <el-form-item label="任务名称" prop="configName">
                 <el-input v-model="query.name" placeholder="请输入任务名称" clearable style="width: 240px" />
             </el-form-item>
-            <el-form-item label="状态" prop="configType">
-                <el-select v-model="query.staus" style="width: 130px" placeholder="请选择" clearable>
-                </el-select>
+            <el-form-item label="任务类型" prop="configType">
+              <el-select v-model="query.task_type" placeholder="" style="width: 240px;" clearable> 
+                  <el-option v-for="item in task_typeArr" :key="item.value" :label="item.label" :value="item.value">
+                  </el-option>
+              </el-select>
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" icon="Search" @click="searchFun">查询</el-button>
@@ -39,22 +41,27 @@
 
             <el-table-column label="任务id" align="center" prop="task_id" :show-overflow-tooltip="true" />
             <el-table-column label="任务名称" align="center" prop="task_name" :show-overflow-tooltip="true" />
+            <el-table-column label="任务类型" align="center" prop="task_type" :show-overflow-tooltip="true">
+                <template v-slot:default="scope">
+                    {{ transform(task_typeArr, scope.row.task_type) }}
+                </template>
+            </el-table-column>
             <el-table-column label="任务状态" align="center" prop="status" :show-overflow-tooltip="true">
                 <template #default="scope">
                     {{ transform(statusOptions, scope.row.status) }}
                 </template>
             </el-table-column>
-            <el-table-column label="结果内容" align="center" prop="result" :show-overflow-tooltip="true" >
+            <el-table-column label="结果内容" align="center" prop="result" :show-overflow-tooltip="true">
                 <template #default="scope">
-                    {{scope.row.result.msg }}
+                    {{ scope.row.result.msg }}
                 </template>
-                </el-table-column>
+            </el-table-column>
             <el-table-column label="状态" align="center" prop="configKey" :show-overflow-tooltip="true" />
             <el-table-column label="任务开始时间" align="center" prop="task_start_time" width="180">
                 <template #default="scope">
                     <span>{{ parseTime(scope.row.task_start_time) }}</span>
                 </template>
-            </el-table-column> 
+            </el-table-column>
             <el-table-column label="任务结束时间" align="center" prop="task_end_time" width="180">
                 <template #default="scope">
                     <span>{{ parseTime(scope.row.task_end_time) }}</span>
@@ -62,7 +69,7 @@
             </el-table-column>
             <el-table-column label="操作" align="center" width="150" class-name="small-padding fixed-width">
                 <template #default="scope">
-                    <el-button  type="text"  @click="goRecordFun(scope.row)">查看记录</el-button>
+                    <el-button type="text" @click="goRecordFun(scope.row)">查看记录</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -88,13 +95,13 @@ const { proxy } = getCurrentInstance();
 
 const configList = ref([]);
 
-function goRecordFun(row){
+function goRecordFun(row) {
     proxy.$router.push({
-      path: '/issue/record',
-      query: {
-        id: row.task_id,
-        title: row.task_name,
-      },
+        path: '/issue/record',
+        query: {
+            id: row.task_id,
+            title: row.task_name,
+        },
     });
     // this.$router.push({ path: '/user', query: { id: 123 } });
 }
@@ -144,7 +151,20 @@ const statusOptions = ref([
     }
 
 ])
-// 
+//  任务类型
+let task_typeArr = [
+    {
+        value: "1",
+        label: "采集",
+    },
+    {
+        value: "2",
+        label: "发布",
+    },
+    {
+        value: "3",
+        label: "删除",
+    }]
 
 
 

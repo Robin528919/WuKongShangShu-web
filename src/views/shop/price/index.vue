@@ -4,8 +4,8 @@
             <el-form-item label="档位名称">
                 <el-input v-model.trim="query.name" placeholder="请输入档位名称" clearable style="width: 240px" />
             </el-form-item>
-            <el-form-item label="启用状态" prop="configType">
-                <el-select v-model="query.configType" placeholder="全部" style="width: 120px" clearable>
+            <el-form-item label="启用状态" >
+                <el-select v-model="query.is_enable" placeholder="全部" style="width: 120px" clearable>
                     <el-option v-for="dict in sys_yes_no" :key="dict.value" :label="dict.label" :value="dict.value" />
                 </el-select>
             </el-form-item>
@@ -26,10 +26,10 @@
             </el-table-column>
             <el-table-column label="档位名称" align="center" prop="name" :show-overflow-tooltip="true" />
             <el-table-column label="开始价格" align="center" prop="start_price" :show-overflow-tooltip="true" />
-            <el-table-column label="原价" align="center" prop="original_price" >
+            <el-table-column label="是否原价" align="center" prop="original_price" >
                 <template #default="scope">
-                    <el-tag v-if="scope.row.original_price" type="success">是</el-tag>
-                    <el-tag v-else type="error">否</el-tag>
+                    <el-tag v-if="scope.row.original_price" type="error" >是</el-tag>
+                    <el-tag v-else type="success" >否</el-tag>
                 </template>
             </el-table-column>
             <el-table-column label="运算符1" align="center" prop="operator1" :show-overflow-tooltip="true" >
@@ -88,10 +88,10 @@ const { page, open, query, tableList, searchFun, transform, resetFun, closeFun, 
 
 
 const sys_yes_no = [{
-    value: true,
+    value: '1',
     label: '是'
 }, {
-    value: false,
+    value: '0',
     label: '否'
 }]
 // 运算符:1-加 2-减 3-乘 4-除
