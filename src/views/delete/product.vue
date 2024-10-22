@@ -1,6 +1,6 @@
 <template>
     <el-tabs type="border-card">
-        <el-tab-pane label="授权状态">
+        <el-tab-pane label="删除图书">
             <sqStatus />
         </el-tab-pane>
         <el-tab-pane label="删除出售图书">

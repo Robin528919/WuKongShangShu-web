@@ -1,45 +1,74 @@
 <template>
     <div class="app-container">
-        <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
+        <el-form :inline="true" v-show="showSearch" label-width="100px">
             <el-form-item label="图书名称">
                 <el-input v-model="query.item_name" placeholder="图书名称" clearable style="width: 240px" />
             </el-form-item>
-            <el-form-item label="图书分组" prop="configType">
-                <el-select v-model="query.group_id" placeholder="请选择" clearable style="width: 240px">
-                    <el-option v-for="dict in bookGroupList" :key="dict.group_id" :label="dict.group_name" :value="dict.group_id" />
+            <el-form-item label="商品类目：" :required="true">
+                <el-select v-model="query.cid" filterable remote reserve-keyword style="width: 240px"
+                    placeholder="请选择发布类目" remote-show-suffix :remote-method="remoteMethod" :loading="loading">
+                    <el-option v-for="item in category_infoList" :key="item.cid" :label="item.name" :value="item.cid" />
                 </el-select>
-            </el-form-item> 
+            </el-form-item>
             <el-form-item>
                 <el-button type="primary" icon="Search" @click="searchFun">查询</el-button>
                 <el-button icon="Refresh" @click="resetFun">重置</el-button>
-                <el-button type="danger" @click="handleQuery">全量删除</el-button>
+                <el-button type="danger" @click="selectFun">多选删除</el-button>
+                <el-button type="danger" @click="selectAllFun">全量删除</el-button>
+
             </el-form-item>
         </el-form>
 
         <el-row :gutter="10" class="mb8">
-
-       
-            <!-- <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar> -->
         </el-row>
-        <el-table v-loading="loading" :data="tableList" @selection-change="handleSelectionChange">
-        
+        <el-table :data="tableList" @selection-change="handleSelectionChange">
+            <el-table-column type="selection" width="55" align="center" />
             <el-table-column label="序号" align="center" prop="configId">
                 <template #default="{ row, $index }">
                     {{ (page.current_page - 1) * page.page_size + $index + 1 }}
                 </template>
             </el-table-column>
-          
             <el-table-column label="主图" align="center" prop="img_big">
                 <template #default="scope">
-                    <el-image style="width: 20px; height: 20px" :src="scope.row.pic_url" :zoom-rate="1.2"
-                        :max-scale="7" :min-scale="0.2" :z-index="999" :initial-index="4" fit="cover" />
+                    <el-image style="width: 20px; height: 20px" :src="scope.row.pic_url" :zoom-rate="1.2" :max-scale="7"
+                        :min-scale="0.2" :z-index="999" :initial-index="4" fit="cover" />
                 </template>
             </el-table-column>
             <!-- <el-table-column label="图书id" align="center" prop="shop_id" :show-overflow-tooltip="true" /> -->
             <el-table-column label="图书名称" align="center" width="200" prop="title" :show-overflow-tooltip="true">
-               
+
             </el-table-column>
-<!--           
+            <el-table-column label="商品类目ID" align="center" prop="cid" :show-overflow-tooltip="true" />
+            <el-table-column label="卖家店铺内自定义类目ID" align="center" prop="seller_cids" :show-overflow-tooltip="true" />
+
+            <el-table-column label="是否参与会员折扣" align="center" prop="has_discount" :show-overflow-tooltip="true">
+                <template #default="scope">
+                    {{ scope.row.has_discount ? '是' : '否' }}
+                </template>
+            </el-table-column>
+            <el-table-column label="是否橱窗推荐" align="center" prop="has_showcase" :show-overflow-tooltip="true">
+                <template #default="scope">
+                    {{ scope.row.has_showcase ? '是' : '否' }}
+                </template>
+            </el-table-column>
+
+
+            <el-table-column label="商品是否在淘宝显示" align="center" prop="is_taobao" :show-overflow-tooltip="true">
+                <template #default="scope">
+                    {{ scope.row.is_taobao ? '是' : '否' }}
+                </template>
+            </el-table-column>
+
+            <el-table-column label="商品是否在外部网店显示" align="center" prop="is_ex" :show-overflow-tooltip="true">
+                <template #default="scope">
+                    {{ scope.row.is_ex ? '是' : '否' }}
+                </template>
+            </el-table-column>
+
+            <el-table-column label="起始的修改时间" width="160" align="center" prop="list_time"
+                :show-overflow-tooltip="true" />
+            <el-table-column label="结束的修改时间" width="160" align="center" prop="modified" :show-overflow-tooltip="true" />
+            <!--           
             <el-table-column label="发布结果" align="center" prop="publish_result">
                 <template #default="scope">
                     {{ scope.row.publish_result == 1 ? "发布成功" : "未发布" }}
@@ -62,60 +91,121 @@
         </div>
     </div>
 </template>
-
 <script setup name="Config">
 
 import { useTableListFun } from "@/hooks/getTabel.js"
-
+import { category_info } from "@/api/price/index"
+import { createTask } from "@/api/task/index"
 const { proxy } = getCurrentInstance();
 import { getbookGroup } from "@/api/price/index"
 //const { sys_yes_no } = proxy.useDict("sys_yes_no");
 import { getProductList } from "@/api/task/index"
+import { ElMessage, ElMessageBox } from 'element-plus'
 const { page, open, query, transform, tableList, searchFun, resetFun, closeFun, handleCurrentChange, handleSizeChange, getQueryList } = useTableListFun(getProductList)
 
 
 
 const configList = ref([]);
 
-const loading = ref(false);
+
 const showSearch = ref(true);
 const ids = ref([]);
 const single = ref(true);
-const multiple = ref(true);
+const multiple = ref([]);
 const total = ref(0);
 const title = ref("");
 const dateRange = ref([]);
 
-const data = reactive({
-    form: {},
-    queryParams: {
-        pageNum: 1,
-        pageSize: 10,
-        configName: undefined,
-        configKey: undefined,
-        configType: undefined
-    },
-    rules: {
-        configName: [{ required: true, message: "参数名称不能为空", trigger: "blur" }],
-        configKey: [{ required: true, message: "参数键名不能为空", trigger: "blur" }],
-        configValue: [{ required: true, message: "参数键值不能为空", trigger: "blur" }]
-    }
-});
 
 
 // 图书分组
 let bookGroupList = ref([])
- function getGetbookGroupFun(){
+function getGetbookGroupFun() {
     getbookGroup({
-        current_page:1,
-        page_size:10000000
+        current_page: 1,
+        page_size: 10000000
     }).then(res => {
-        console.log("group_namegroup_name",res)
+        console.log("group_namegroup_name", res)
         bookGroupList.value = res.data.data
     })
 
- }
- getGetbookGroupFun()
+}
+getGetbookGroupFun()
+
+// 获取发布类目
+let loading = ref(false)
+const category_infoList = ref([])
+const remoteMethod = async (e) => {
+    loading.value = true
+    console.log("FFFF", e)
+    let res = await category_info(e)
+    loading.value = false
+    category_infoList.value = res.data.item_cats
+}
+remoteMethod()
+
+// 删除商品
+const selectFun = async (id) => {
+    if (multiple.value.length == 0) {
+        ElMessage.warning("请选择要删除商品")
+        return
+    }
+    let res = await createTask({
+        task_type: 3,  // 删除
+        task_params: {
+            ids: multiple.value.map(item => item.num_iid),
+
+        },
+        task_name: "删除商品", // 任务名称
+        task_desc: "",// 任务描述
+    })
+    if (res.code == 200) {
+        ElMessage({
+            type: "success",
+            message: "操作成功",
+        });
+        searchFun()
+
+    }
+}
+function selectAllFun() {
+    ElMessageBox.confirm(
+        '确定全部删除么？此操作不可逆',
+        'Warning',
+        {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning',
+        }
+    )
+        .then(async () => {
+            let res = await createTask({
+                task_type: 3,  // 删除
+                task_params: {
+                    ids: [],
+
+                },
+                task_name: "删除商品", // 任务名称
+                task_desc: "",// 任务描述
+            })
+            if (res.code == 200) {
+                ElMessage({
+                    type: "success",
+                    message: "操作成功",
+                });
+                searchFun()
+
+            }
+        })
+        .catch(() => {
+            ElMessage({
+                type: 'info',
+                message: '已经取消',
+            })
+        })
+
+}
+
 
 
 
@@ -161,8 +251,7 @@ const publish_status = [
 
 /** 搜索按钮操作 */
 function handleQuery() {
-    queryParams.value.pageNum = 1;
-    getList();
+    searchFun();
 }
 
 /** 重置按钮操作 */
@@ -174,10 +263,10 @@ function resetQuery() {
 
 /** 多选框选中数据 */
 function handleSelectionChange(selection) {
-    ids.value = selection.map(item => item.configId);
-    single.value = selection.length != 1;
-    multiple.value = !selection.length;
+    multiple.value = selection
 }
+
+
 
 /** 新增按钮操作 */
 function handleAdd() {

@@ -2,6 +2,7 @@ import { pa } from "element-plus/es/locales.mjs";
 import { ref, reactive } from "vue";
 
 export function useTableListFun(fetchFunction) {
+  console.log("fetchFunctionfetchFunction",fetchFunction)
   // 拿到全局方法
   const { proxy } = getCurrentInstance();
   // 分页相关内容
@@ -17,12 +18,18 @@ export function useTableListFun(fetchFunction) {
   // 列表loading
   const loading = ref(false);
   const getQueryList = async () => {
+    let params ={}
+    let body={}
     try {
       loading.value = true;
-    
-      let body = proxy.objToArrayFun(query);
-      let params = { ...page, body };
-   
+   if(fetchFunction.name!='getProductList'){  // 不是淘宝的接口
+     body = proxy.objToArrayFun(query);
+     params = { ...page, body };
+   }else{ // 是淘宝的接口
+    params = { ...page, ...query };
+   }
+     
+     
       const response = await fetchFunction(params);
       if(response.data.data){
         tableList.value = response.data.data;

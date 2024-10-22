@@ -44,7 +44,7 @@
                     {{ transform(statusOptions, scope.row.status) }}
                 </template>
             </el-table-column>
-            <el-table-column label="结果内容11" align="center" prop="result" :show-overflow-tooltip="true" >
+            <el-table-column label="结果内容" align="center" prop="result" :show-overflow-tooltip="true" >
                 <template #default="scope">
                     <span>{{ scope.row.result.msg }}</span>
                 </template>
