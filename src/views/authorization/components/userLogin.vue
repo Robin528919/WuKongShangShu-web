@@ -31,9 +31,9 @@
       <span style="margin-left: 20px">注意：淘宝商铺必须绑定书悟空上书，才可以进行发布和删除操作</span>
     </el-form-item> -->
 
-    <el-form-item label="去购买:">
+    <!-- <el-form-item label="去购买:">
       <el-link type="primary"  target="_blank" href="https://fuwu.taobao.com/ser/detail.htm?service_code=FW_GOODS-1839531"> 去购买</el-link>
-    </el-form-item>
+    </el-form-item> -->
     <el-form-item label="淘标题优化:">
       <el-link type="primary"  target="_blank" href="https://fuwu.taobao.com/ser/detail.htm?service_code=FW_GOODS-1857923"> api购买</el-link>
     </el-form-item>

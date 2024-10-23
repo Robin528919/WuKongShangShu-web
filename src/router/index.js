@@ -209,15 +209,15 @@ export const constantRoutes = [
           icon: "dict",
         },
       },
-      {
-        path: "filterResult",
-        component: () => import("@/views/collect/filterResult"),
-        name: "filterResult",
-        meta: {
-          title: "过滤结果",
-          icon: "date-range",
-        },
-      },
+      // {
+      //   path: "filterResult",
+      //   component: () => import("@/views/collect/filterResult"),
+      //   name: "filterResult",
+      //   meta: {
+      //     title: "过滤结果",
+      //     icon: "date-range",
+      //   },
+      // },
     ],
   },
   {

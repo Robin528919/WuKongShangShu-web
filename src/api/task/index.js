@@ -74,8 +74,10 @@ export function delBook(data) {
 // 采集结果  /api/v1/books/query 查询图书列表 /api/v1/tb/product_list
 
 export function getProductList(data) {
+  console.log(" console.log(data)",data)
+  const queryString = new URLSearchParams(data).toString();
   return request({
-    url: `/tb/product_list?page_no=${data.current_page}&page_size=${data.page_size}`,
+    url: `/tb/product_list`,
     headers: {
       isToken: true
     },

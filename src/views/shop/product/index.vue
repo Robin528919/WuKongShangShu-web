@@ -1,13 +1,59 @@
 <template>
     <div class="app-container">
-        <el-form :inline="true" v-show="showSearch" label-width="100px">
-            <el-form-item label="图书名称">
-                <el-input v-model="query.item_name" placeholder="图书名称" clearable style="width: 240px" />
+        <el-form :inline="true" v-show="showSearch" label-width="160px">
+            <el-form-item label="商品标题：">
+                <el-input v-model="query.q" placeholder="图书名称" clearable style="width: 240px" />
             </el-form-item>
-            <el-form-item label="商品类目：" :required="true">
+            <el-form-item label="商品类目：">
                 <el-select v-model="query.cid" filterable remote reserve-keyword style="width: 240px"
                     placeholder="请选择发布类目" remote-show-suffix :remote-method="remoteMethod" :loading="loading">
                     <el-option v-for="item in category_infoList" :key="item.cid" :label="item.name" :value="item.cid" />
+                </el-select>
+            </el-form-item>
+            <el-form-item label="商品类目：">
+                <el-select v-model="query.cid" filterable remote reserve-keyword style="width: 240px"
+                    placeholder="请选择发布类目" remote-show-suffix :remote-method="remoteMethod" :loading="loading">
+                    <el-option v-for="item in category_infoList" :key="item.cid" :label="item.name" :value="item.cid" />
+                </el-select>
+            </el-form-item>
+            <!--  -->
+            <el-form-item label="卖家自定义类目ID:">
+                <el-input v-model="query.seller_cids" placeholder="多个之间用“,”分隔。" clearable style="width: 240px" />
+            </el-form-item>
+            <!--  -->
+            <el-form-item label="是否参与会员折扣:">
+                <el-select v-model="query.has_discount" style="width: 240px" placeholder="是否参与会员折扣">
+                    <el-option :key="1" label="是" :value="true" />
+                    <el-option :key="2" label="否" :value="false" />
+                </el-select>
+            </el-form-item>
+            <!--  -->
+            <el-form-item label="是否橱窗推荐:">
+                <el-select v-model="query.has_showcase" style="width: 240px" placeholder="是否参与会员折扣">
+                    <el-option :key="1" label="是" :value="true" />
+                    <el-option :key="2" label="否" :value="false" />
+                </el-select>
+            </el-form-item>
+            <!-- 商品是否在淘宝显示 -->
+
+            <el-form-item label="是否显示外部店:">
+                <el-select v-model="query.is_ex" style="width: 240px" placeholder="是否参与会员折扣">
+                    <el-option :key="1" label="是" :value="true" />
+                    <el-option :key="2" label="否" :value="false" />
+                </el-select>
+            </el-form-item>
+
+            <el-form-item label="组合商品:">
+                <el-select v-model="query.is_combine" style="width: 240px" placeholder="是否参与会员折扣">
+                    <el-option :key="1" label="是" :value="true" />
+                    <el-option :key="2" label="否" :value="false" />
+                </el-select>
+            </el-form-item>
+
+            <el-form-item label="商品类型:">
+                <el-select v-model="query.auction_type" style="width: 240px" placeholder="是否参与会员折扣">
+                    <el-option :key="1" label="是" :value="true" />
+                    <el-option :key="2" label="否" :value="false" />
                 </el-select>
             </el-form-item>
             <el-form-item>
@@ -15,7 +61,6 @@
                 <el-button icon="Refresh" @click="resetFun">重置</el-button>
                 <el-button type="danger" @click="selectFun">多选删除</el-button>
                 <el-button type="danger" @click="selectAllFun">全量删除</el-button>
-
             </el-form-item>
         </el-form>
 
@@ -35,10 +80,12 @@
                 </template>
             </el-table-column>
             <!-- <el-table-column label="图书id" align="center" prop="shop_id" :show-overflow-tooltip="true" /> -->
-            <el-table-column label="图书名称" align="center" width="200" prop="title" :show-overflow-tooltip="true">
+            <el-table-column label="商品标题" align="center" width="200" prop="title" :show-overflow-tooltip="true">
 
             </el-table-column>
             <el-table-column label="商品类目ID" align="center" prop="cid" :show-overflow-tooltip="true" />
+            <!-- 商品数字id -->
+            <el-table-column label="商品数字ID" align="center" prop="num_iid" :show-overflow-tooltip="true" />
             <el-table-column label="卖家店铺内自定义类目ID" align="center" prop="seller_cids" :show-overflow-tooltip="true" />
 
             <el-table-column label="是否参与会员折扣" align="center" prop="has_discount" :show-overflow-tooltip="true">

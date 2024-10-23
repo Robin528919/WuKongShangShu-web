@@ -21,7 +21,7 @@
                 <!-- <el-select v-model="form.task_params.book_category" placeholder="选择图书分类">
                     <el-option v-for="item in bookType" :key="item.value" :label="item.label" :value="item.value" />
                 </el-select> -->
-                <span style="margin-left: 20px;">注意：可分分类采集（全部all，文学cat）...</span>
+                <span style="margin-left: 20px; color: red;"> <b>注意:可分类采集,默认全部,如果指定分类，查看店铺内的分类名称</b></span>
                 <span style="margin-left: 20px;color: red;">手动填写逗号","分隔</span>
             </el-form-item>
             <el-form-item label="图书分组：" :required="true">
