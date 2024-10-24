@@ -54,7 +54,7 @@
             </el-form-item>
             <el-form-item label="发布类目：" :required="true">
                 <el-select v-model="form.task_params.category_id" filterable remote reserve-keyword
-                    placeholder="请选择发布类目" remote-show-suffix :remote-method="remoteMethod" :loading="loading">
+                    placeholder="专用" remote-show-suffix :remote-method="remoteMethod" :loading="loading">
                     <el-option v-for="item in category_infoList" :key="item.cid" :label="item.name" :value="item.cid" />
                 </el-select>
             </el-form-item>
@@ -115,7 +115,7 @@ const form = reactive({
         is_new: true,
         publish_option: 0,  // 0 直接上架  1 放入仓库
         book_group_id: "",
-        category_id: null,
+        category_id: 1,
         category: "",
         template: "",
     }
