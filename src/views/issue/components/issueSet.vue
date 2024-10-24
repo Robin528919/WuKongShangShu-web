@@ -6,28 +6,53 @@
                 <el-input placeholder="请输入任务名称" v-model="form.task_name"></el-input>
             </el-form-item>
 
-            <el-form-item label="宝贝描述" >
-                <el-input placeholder="请输入宝贝描述" v-model="form.task_params.desc"></el-input>
+            <el-form-item label="宝贝描述">
+                <div style="width: 100%; display: flex;">
+                    <el-input placeholder="请输入宝贝描述" v-model="form.task_params.desc" style="flex: 1;"></el-input>
+                    <el-button type="primary" @click="setdescFun">保存到本地</el-button>
+                </div>
             </el-form-item>
 
             <el-form-item label="标题前缀：">
                 <div style="display: flex; width: 100%;">
-                    <div  style="flex: 1;">
-                        <el-input placeholder="请输入标题前缀：" v-model="form.task_params.title_prefix"></el-input>
-                    </div>
-                 
-                    <!-- <el-button type="primary" @click="setTitle_prefix">设置缓存</el-button>
-                    <el-button type="primary"  @click="getTitle_prefix">获取缓存</el-button> -->
-
+                    <el-input placeholder="请输入标题前缀：" v-model="form.task_params.title_prefix"
+                        style="flex: 1;"></el-input>
+                    <el-button type="primary" @click="setTitle_prefix">保存到本地</el-button>
                 </div>
-               
+
             </el-form-item>
             <el-form-item label="标题过滤：">
                 <div style="display: flex; width: 100%;">
-                <el-input placeholder="请输入标题过滤" v-model="form.task_params.title_filter"></el-input>
-                <!-- <el-button  style="flex: 1;" type="primary">设置缓存</el-button>
-                <el-button type="primary">获取缓存</el-button> -->
+                    <el-input placeholder="请输入标题过滤" v-model="form.task_params.title_filter" style="flex: 1;"></el-input>
+                    <el-button type="primary" @click="setTitle_filter">保存到本地</el-button>
                 </div>
+            </el-form-item>
+            <el-form-item label="详情图片：">
+
+
+                <el-upload action="#" :file-list="fileList" list-type="picture-card" :limit="1"
+                    :on-change="onchangeFile" :auto-upload="false">
+                    <el-icon>
+                        <Plus />
+                    </el-icon>
+
+                    <template #file="{ file }">
+                        <div>
+                            <img class="el-upload-list__item-thumbnail" :src="file.url" alt="" />
+                            <span class="el-upload-list__item-actions">
+                                <span class="el-upload-list__item-preview" @click="handlePictureCardPreview(file)">
+                                    <el-icon><zoom-in /></el-icon>
+                                </span>
+                                <span v-if="!disabled" class="el-upload-list__item-delete" @click="handleRemove(file)">
+                                    <el-icon>
+                                        <Delete />
+                                    </el-icon>
+                                </span>
+                            </span>
+                        </div>
+                    </template>
+                </el-upload>
+                <el-button type="primary" @click="setPicFun">保存本地</el-button>
             </el-form-item>
             <el-form-item label="水印位置" :required="true">
                 <el-radio-group v-model="form.task_params.watermark">
@@ -53,8 +78,8 @@
                 </el-radio-group>
             </el-form-item>
             <el-form-item label="发布类目：" :required="true">
-                <el-select v-model="form.task_params.category_id" filterable remote reserve-keyword
-                    placeholder="专用" remote-show-suffix :remote-method="remoteMethod" :loading="loading">
+                <el-select v-model="form.task_params.category_id" filterable remote reserve-keyword placeholder="专用"
+                    remote-show-suffix :remote-method="remoteMethod" :loading="loading">
                     <el-option v-for="item in category_infoList" :key="item.cid" :label="item.name" :value="item.cid" />
                 </el-select>
             </el-form-item>
@@ -92,14 +117,22 @@
             <div v-html="form.task_params.detial" class="html-preview"></div>
         </el-form>
 
+        <el-dialog v-model="dialogVisible">
+            <img w-full :src="dialogImageUrl" alt="Preview Image" />
+        </el-dialog>
+
     </div>
 </template>
 
 <script setup>
 import { ref, reactive } from "vue";
-import { getbookGroup, templateS, getCategory, category_info,setcache,getcache } from "@/api/price/index"
+import { getbookGroup, templateS, getCategory, category_info, setcache, getcache, uploadImage } from "@/api/price/index"
+
 import { createTask } from "@/api/task/index"
 import { ElMessage } from "element-plus";
+
+import { Delete, Download, Plus, ZoomIn } from '@element-plus/icons-vue'
+
 const position = [{ id: 1, text: '左上角' }, { id: 2, text: '左下角' }, { id: 3, text: '右上角' }, { id: 4, text: '右下角' }, { id: 5, text: '正面' }]
 const form = reactive({
     task_type: 2,
@@ -112,33 +145,86 @@ const form = reactive({
         watermark: 1,
         stock: "", //
         num: "",
+        picture_path: '',
         is_new: true,
         publish_option: 0,  // 0 直接上架  1 放入仓库
         book_group_id: "",
         category_id: 1,
         category: "",
         template: "",
+
     }
 });
 // 设置缓存
-function setTitle_prefix(){
-    setcache({ cache_type:form.task_params.title_prefix }).then((res)=>{
-       if(res&&res.code==200){
-        ElMessage.success("设置成功");
-       }
+const fileList = ref([])
+function setTitle_prefix() {
+    setcache({ cache_type: form.task_params.title_prefix }, 'prefix').then((res) => {
+        if (res && res.code == 200) {
+            ElMessage.success("设置成功");
+        }
 
     })
 }
 // 获取缓存 
-function getTitle_prefix(){
-    getcache({ cache_type:form.task_params.title_prefix }).then((res)=>{
-       if(res&&res.code==200){
-        
-        form.task_params.title_prefix = res.data.cache_type;
-       }
+function getTitle_prefix() {
+    getcache('prefix').then((res) => {
+        if (res && res.code == 200) {
+            form.task_params.title_prefix = res.data.cache_type;
+        }
 
     })
 }
+getTitle_prefix()
+// 设置宝贝描述
+function setdescFun() {
+    setcache({ desc: form.task_params.desc }, "desc").then((res) => {
+        if (res && res.code == 200) {
+            ElMessage.success("设置成功");
+
+        }
+    })
+}
+// 获取宝贝描述
+function getdescFun() {
+    getcache('desc').then((res) => {
+        form.task_params.desc = res.data.desc;
+    })
+}
+getdescFun()
+
+
+// 设置宝贝描述
+function setTitle_filter() {
+    setcache({ desc: form.task_params.title_filter }, "filter").then((res) => {
+        if (res && res.code == 200) {
+            ElMessage.success("设置成功");
+        }
+    })
+}
+// 获取宝贝描述
+function getTitleFilter() {
+    getcache('filter').then((res) => {
+        form.task_params.title_filter = res.data.desc;
+    })
+}
+getTitleFilter()
+
+function setPicFun() {
+    setcache({ desc: form.task_params.picture_path }, "pic").then((res) => {
+        if (res && res.code == 200) {
+            ElMessage.success("设置成功");
+        }
+    })
+
+}
+function getPicFun() {
+    getcache('pic').then((res) => {
+        form.task_params.picture_path = res.data.desc;
+        fileList.value = [{ name: 'xiang', url: form.task_params.picture_path }]
+    })
+}
+getPicFun()
+
 
 
 // 图书分组
@@ -202,6 +288,42 @@ const sureIssuFun = async () => {
 
     }
 }
+// 上传图片相关逻辑
+
+const dialogImageUrl = ref('')
+const dialogVisible = ref(false)
+const disabled = ref(false)
+
+const handleRemove = (file) => {
+    fileList.value=[]
+}
+const handlePictureCardPreview = (file) => {
+
+    dialogImageUrl.value = file.url
+    dialogVisible.value = true
+}
+
+
+
+const onchangeFile = (file) => {
+    console.log("3333", file)
+    console.log(file.raw)
+    let formdata = new FormData()
+    formdata.append("image", file.raw)
+    uploadImage(formdata).then((res) => {
+        if (res.code == 200 && res.data.picture) {
+            form.task_params.picture_path = res.data.picture.picture_path
+            fileList.value = [{ name: 'xiang', url: res.data.picture.picture_path }]
+            ElMessage.success("上传成功")
+        }
+
+    })
+}
+
+
+
+
+
 
 
 </script>
