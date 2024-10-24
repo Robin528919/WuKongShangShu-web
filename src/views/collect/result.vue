@@ -1,57 +1,50 @@
 <template>
     <div class="app-container">
-        <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
+        <el-form :inline="true" v-show="showSearch" label-width="68px">
             <el-form-item label="图书名称">
                 <el-input v-model="query.item_name" placeholder="图书名称" clearable style="width: 240px" />
             </el-form-item>
-            <el-form-item label="图书分组" prop="configType">
+            <el-form-item label="图书分组">
                 <el-select v-model="query.group_id" placeholder="请选择" clearable style="width: 240px">
-                    <el-option v-for="dict in bookGroupList" :key="dict.group_id" :label="dict.group_name" :value="dict.group_id" />
+                    <el-option v-for="dict in bookGroupList" :key="dict.group_id" :label="dict.group_name"
+                        :value="dict.group_id" />
                 </el-select>
-            </el-form-item> 
+            </el-form-item>
+
+
+            <el-form-item label="发布状态">
+                <el-select v-model="query.publish_status" placeholder="请选择" clearable style="width: 240px">
+                    <el-option v-for="dict in publish_status" :key="dict.value" :label="dict.label"
+                        :value="dict.value" />
+                </el-select>
+            </el-form-item>
+            <el-form-item label="书店id">
+                <el-input v-model="query.shop_id" placeholder="请输入要删除书店id,用,分割" clearable style="width: 240px" />
+            </el-form-item>
+
             <el-form-item>
                 <el-button type="primary" icon="Search" @click="searchFun">查询</el-button>
                 <el-button icon="Refresh" @click="resetFun">重置</el-button>
-                <el-button type="danger" @click="handleQuery">清空采集所有数据</el-button>
+                <el-button type="danger" @click="delAllFun">清空指定分组所有数据</el-button>
+                <el-button type="danger" @click="deltiFun">根据条件删除(除分组外)</el-button>
+                <el-button type="danger" @click="delselectFun">多选删除</el-button>
             </el-form-item>
         </el-form>
 
-        <el-row :gutter="10" class="mb8">
-
-            <el-col :span="1.5">
-                <el-form-item label="书店id">
-                    <el-input v-model="query.shop_id" placeholder="请输入要删除书店id,用,分割" clearable style="width: 240px"
-                        @keyup.enter="handleQuery" />
-                </el-form-item>
-            </el-col>
-            <el-col :span="1.5">
-                <el-button type="danger" plain @click="handleRefreshCache">根据书店id删除</el-button>
-            </el-col>
-            <el-col :span="1.5" style="line-height: 28px;">
-                <span>自动刷新(秒)</span>
-            </el-col>
-            <el-col :span="1.5">
-                <el-input-number />
-            </el-col>
-
-            <el-col :span="1.5">
-                <!-- <el-button type="primary" @click="handleQuery">开始</el-button> -->
-            </el-col>
-            <el-col :span="1.5">
-                <!-- <el-button type="primary" @click="handleQuery">手动刷新</el-button> -->
-            </el-col>
-            <!-- <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar> -->
-        </el-row>
         <el-table v-loading="loading" :data="tableList" @selection-change="handleSelectionChange">
             <el-table-column type="selection" width="55" align="center" />
-            <el-table-column label="序号" align="center" prop="item_id" />
+            <el-table-column label="序号" width="100">
+                <template #default="{ row, $index }">
+                    {{ (page.current_page - 1) * page.page_size + $index + 1 }}
+                </template>
+            </el-table-column>
             <el-table-column label="主图" align="center" prop="img_big">
                 <template #default="scope">
                     <el-image style="width: 100px; height: 100px" :src="scope.row.img_big" :zoom-rate="1.2"
                         :max-scale="7" :min-scale="0.2" :z-index="999" :initial-index="4" fit="cover" />
                 </template>
             </el-table-column>
-            <el-table-column label="图书id" align="center" prop="shop_id" :show-overflow-tooltip="true" />
+            <el-table-column label="图书id" align="center" prop="book_id" :show-overflow-tooltip="true" />
             <el-table-column label="图书名称" align="center" width="200" prop="item_name" :show-overflow-tooltip="true">
                 <template #default="scope">
                     <el-link :href="scope.row.pc_url" target="_blank">{{ scope.row.item_name }}</el-link>
@@ -60,7 +53,7 @@
             <el-table-column label="作者" align="center" prop="author" :show-overflow-tooltip="true" />
             <el-table-column label="出版社" align="center" prop="publisher" :show-overflow-tooltip="true" />
             <el-table-column label="年代" align="center" prop="pub_date" :show-overflow-tooltip="true" />
-            <el-table-column label="书店id" align="center" prop="book_id" :show-overflow-tooltip="true" />
+            <el-table-column label="书店id" align="center" prop="shop_id" :show-overflow-tooltip="true" />
             <el-table-column label="书店名称" align="center" prop="shop_name" :show-overflow-tooltip="true" />
             <el-table-column label="价格" align="center" prop="price" :show-overflow-tooltip="true" />
             <el-table-column label="品相" align="center" prop="quality" :show-overflow-tooltip="true" />
@@ -94,14 +87,15 @@
 </template>
 
 <script setup name="Config">
-import { listConfig, getConfig, delConfig, addConfig, updateConfig, } from "@/api/system/config";
+
 import { useTableListFun } from "@/hooks/getTabel.js"
 
 const { proxy } = getCurrentInstance();
 import { getbookGroup } from "@/api/price/index"
 //const { sys_yes_no } = proxy.useDict("sys_yes_no");
-import { getQueryBook, delBook } from "@/api/task/index"
-const { page, open, query, transform, tableList, searchFun, resetFun, closeFun, handleCurrentChange, handleSizeChange, getQueryList } = useTableListFun(getQueryBook)
+import { getQueryBook, delBook, seleDelBook } from "@/api/task/index"
+import { ElMessage } from "element-plus";
+const { page, open, query, transform, tableList, searchFun, resetFun, closeFun, handleCurrentChange, handleSizeChange } = useTableListFun(getQueryBook)
 
 
 
@@ -111,7 +105,7 @@ const loading = ref(false);
 const showSearch = ref(true);
 const ids = ref([]);
 const single = ref(true);
-const multiple = ref(true);
+const multiple = ref([]);
 const total = ref(0);
 const title = ref("");
 const dateRange = ref([]);
@@ -135,17 +129,17 @@ const data = reactive({
 
 // 图书分组
 let bookGroupList = ref([])
- function getGetbookGroupFun(){
+function getGetbookGroupFun() {
     getbookGroup({
-        current_page:1,
-        page_size:10000000
+        current_page: 1,
+        page_size: 10000000
     }).then(res => {
-        console.log("group_namegroup_name",res)
+        console.log("group_namegroup_name", res)
         bookGroupList.value = res.data.data
     })
 
- }
- getGetbookGroupFun()
+}
+getGetbookGroupFun()
 
 
 /** 查询参数列表 */
@@ -158,24 +152,9 @@ function getList() {
     });
 }
 
-/** 取消按钮 */
-function cancel() {
-    open.value = false;
-    reset();
-}
 
-/** 表单重置 */
-function reset() {
-    form.value = {
-        configId: undefined,
-        configName: undefined,
-        configKey: undefined,
-        configValue: undefined,
-        configType: "Y",
-        remark: undefined
-    };
-    proxy.resetForm("configRef");
-}
+
+
 // :0-等待发布 2-发布成功 3-发布失败 4-同步失败
 
 const publish_status = [
@@ -213,9 +192,7 @@ function resetQuery() {
 
 /** 多选框选中数据 */
 function handleSelectionChange(selection) {
-    ids.value = selection.map(item => item.configId);
-    single.value = selection.length != 1;
-    multiple.value = !selection.length;
+    multiple.value = selection
 }
 
 /** 新增按钮操作 */
@@ -267,6 +244,59 @@ function handleDelete(row) {
     }).catch(() => { });
 }
 
+// 删除所有数据 delAllFun
+
+function delAllFun() {
+    if (!query.group_id) {
+        return proxy.$modal.msgError("请选择分组");
+    }
+    proxy.$modal.confirm('是否确认删除整个分组数据？').then(function () {
+        delBook([query.group_id]).then(res => {
+            if (res.code == 200) {
+                ElMessage.success("删除成功");
+                searchFun()
+            }
+        })
+    }).catch(() => { });
+}
+// 根据条件删除  除分组外
+
+function deltiFun() {
+    let body = proxy.objToArrayFun(query);
+    console.log("deltiFun",body)
+    proxy.$modal.confirm('确定删除数据？').then(function () {
+        delBook(body).then(res => {
+            if (res.code == 200) {
+                ElMessage.success("删除成功");
+                searchFun()
+            }
+        })
+    }).catch(() => { });
+
+}
+
+// 根据条件删除
+function delselectFun() {
+
+    console.log("delselectFundelselectFun", multiple)
+    if (multiple.value.length <= 0) {
+        return ElMessage.warning("请选择要删除的数据");
+    }
+
+    proxy.$modal.confirm('确定删除数据？').then(() => {
+        let query = {
+            book_ids: multiple.value.map(item => item.book_id)
+        }
+
+        seleDelBook(multiple.value.map(item => item.book_id)).then(res => {
+            if (res.code == 200) {
+                ElMessage.success("删除成功");
+                searchFun()
+            }
+        })
+    }).catch(() => { });
+
+}
 
 
 

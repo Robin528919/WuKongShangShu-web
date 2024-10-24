@@ -1,15 +1,15 @@
 <template>
     <div class="app-container">
         <el-form :inline="true" v-show="showSearch" label-width="68px">
-            <el-form-item label="指令查询" prop="configName">
+            <el-form-item label="任务名称" prop="configName">
                 <el-input v-model="query.configName" placeholder="请输入参数名称" clearable style="width: 240px" />
             </el-form-item>
 
-            <el-form-item label="状态" prop="configType">
+            <!-- <el-form-item label="状态" prop="configType">
                 <el-select v-model="query.configType" placeholder="系统内置" clearable>
                     <el-option v-for="dict in sys_yes_no" :key="dict.value" :label="dict.label" :value="dict.value" />
                 </el-select>
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item>
                 <el-button type="primary" icon="Search" @click="searchFun">查询</el-button>
                 <el-button icon="Refresh" @click="resetFun">重置</el-button>
@@ -17,22 +17,6 @@
         </el-form>
 
         <el-row :gutter="10" class="mb8">
-            <el-col :span="1.5">
-                <el-button type="danger" plain @click="handleRefreshCache">清空违禁词所有数据</el-button>
-            </el-col>
-            <el-col :span="1.5" style="line-height: 28px;">
-                <span>自动刷新(秒)</span>
-            </el-col>
-            <el-col :span="1.5">
-                <el-input-number />
-            </el-col>
-
-            <el-col :span="1.5">
-                <el-button type="primary" @click="handleQuery">开始</el-button>
-            </el-col>
-            <el-col :span="1.5">
-                <el-button type="primary" @click="handleQuery">手动刷新</el-button>
-            </el-col>
             <el-col :span="1.5">
                 <el-button type="primary" @click="handleQuery">一键停止采集指令</el-button>
             </el-col>
@@ -59,7 +43,7 @@
             <!-- :0-待执行 1-执行中 2-执行完成 3-执行失败 4-已取消 5-已暂停 6-已恢复 7-已超时 8-已取消 -->
             <el-table-column label="任务状态" align="center" prop="status" :show-overflow-tooltip="true">
                 <template #default="scope">
-                    {{ transform(statusOptions,scope.row.status) }}
+                    {{ transform(statusOptions, scope.row.status) }}
                 </template>
             </el-table-column>
             <el-table-column label="采集结果" align="center" prop="result" width="180">
@@ -73,7 +57,7 @@
                     <span>{{ parseTime(scope.row.task_start_time) }}</span>
                 </template>
             </el-table-column>
-          
+
             <el-table-column label="任务结束时间" align="center" prop="task_end_time">
                 <template #default="scope">
                     <span>{{ parseTime(scope.row.task_end_time) }}</span>
@@ -81,10 +65,7 @@
             </el-table-column>
             <el-table-column label="操作" align="center" width="150" class-name="small-padding fixed-width">
                 <template #default="scope">
-                    <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
-                        v-hasPermi="['system:config:edit']">修改</el-button>
-                    <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)"
-                        v-hasPermi="['system:config:remove']">删除</el-button>
+                    <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)">停止采集</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -107,7 +88,8 @@ import { useTableListFun } from "@/hooks/getTabel.js"
 import { reactive, } from "vue";
 
 const { proxy } = getCurrentInstance();
-import { getQuery, } from "@/api/task/index"
+import { getQuery, stop } from "@/api/task/index"
+import { ElMessage } from "element-plus";
 
 const { page, open, query, tableList, searchFun, resetFun, closeFun, handleCurrentChange, handleSizeChange, getQueryList } = useTableListFun(getQuery)
 
@@ -135,9 +117,16 @@ function addFun() {
 /** 修改按钮操作 */
 let editObj = reactive({})
 function handleUpdate(row) {
-    editObj = row
-    open.value = true
-    title.value = "修改"
+    console.log("handleUpdate", row)
+    stop(row.task_id).then((res) => {
+        
+        if (res.code == 200) {
+          
+            ElMessage.success("操作成功");
+            searchFun()
+        }
+
+    })
 }
 /** 多选框选中数据 */
 function handleSelectionChange(selection) {
@@ -186,10 +175,10 @@ const statusOptions = [
     },
 ]
 
-function transform(data ,code) {
-    let str=""
+function transform(data, code) {
+    let str = ""
     data.forEach(item => {
-        item.value==code && (str=item.label)
+        item.value == code && (str = item.label)
     })
     return str
 }
