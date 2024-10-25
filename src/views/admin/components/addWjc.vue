@@ -2,7 +2,7 @@
     <el-dialog title="批量新增违禁词" v-model="visible" draggable width="500px" destroy-on-close append-to-body @close="cancel">
         <el-form ref="configRef" :model="form" label-width="120px">
             <el-form-item label="上传违禁词附件：">
-                <el-upload :limit="1" :on-change="handlePreviewFun">
+                <el-upload  :auto-upload="false" :limit="1" :on-change="handlePreviewFun">
                     <el-button type="primary">上传违禁词文件</el-button>
                     <template #tip>
                         <div class="el-upload__tip">
