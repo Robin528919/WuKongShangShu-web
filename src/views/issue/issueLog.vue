@@ -4,10 +4,7 @@
             <el-form-item label="任务名称" prop="configName">
                 <el-input v-model="query.name" placeholder="请输入任务名称" clearable style="width: 240px" />
             </el-form-item>
-            <el-form-item label="状态" prop="configType">
-                <el-select v-model="query.staus" style="width: 130px" placeholder="请选择" clearable>
-                </el-select>
-            </el-form-item>
+          
             <el-form-item>
                 <el-button type="primary" icon="Search" @click="searchFun">查询</el-button>
                 <el-button icon="Refresh" @click="resetFun">重置</el-button>
@@ -39,6 +36,11 @@
 
             <el-table-column label="任务id" align="center" prop="task_id" :show-overflow-tooltip="true" />
             <el-table-column label="任务名称" align="center" prop="task_name" :show-overflow-tooltip="true" />
+            <el-table-column label="任务类型" align="center" prop="task_type" :show-overflow-tooltip="true">
+                <template #default="scope">
+                    <span>{{ transform( task_typeOptions, scope.row.task_type) }}</span>
+                </template>
+            </el-table-column>
             <el-table-column label="任务状态" align="center" prop="status" :show-overflow-tooltip="true">
                 <template #default="scope">
                     {{ transform(statusOptions, scope.row.status) }}
@@ -82,7 +84,7 @@ import { useTableListFun } from "@/hooks/getTabel.js"
 import { getQuery } from "@/api/task/index"
 
 
-const { page, open, transform, loading, query, tableList, searchFun, resetFun, closeFun, handleCurrentChange, handleSizeChange, getQueryList } = useTableListFun(getQuery)
+const { page, open, transform, loading, query, tableList, searchFun, resetFun, closeFun, handleCurrentChange, handleSizeChange, getQueryList } = useTableListFun(getQuery,{task_type:2})
 const { proxy } = getCurrentInstance();
 //const { sys_yes_no } = proxy.useDict("sys_yes_no");
 
@@ -103,6 +105,22 @@ const showSearch = ref(true);
 const ids = ref([]);
 const single = ref(true);
 const multiple = ref(true);
+// 采集任务类型 
+const task_typeOptions = [
+    {
+        label: "采集",
+        value: 1
+    },
+    {
+        label: "发布",
+        value: 2
+    },
+    {
+        label: "删除",
+        value: 3
+    }
+]
+
 
 // :0-待执行 1-执行中 2-执行完成 3-执行失败 4-已取消 5-已暂停 6-已恢复 7-已超时 8-已取消
 const statusOptions = ref([

@@ -1,71 +1,78 @@
-import request from '@/utils/request'
+import request from "@/utils/request";
 
 // /api/v1/word 增加词库
 
 export function addWord(data) {
-    return request({
-      url: '/word',
-      headers: {
-        isToken: true
-      },
-      method: 'post',
-      data: data
-    })
-  }
+  return request({
+    url: "/word",
+    headers: {
+      isToken: true,
+    },
+    method: "post",
+    data: data,
+  });
+}
 
-  // /api/v1/word 删除词库
+// /api/v1/word 删除词库
 
 export function delWord(data) {
-    return request({
-      url: '/word',
-      headers: {
-        isToken: true
-      },
-      method: 'delete',
-      data: data
-    })
-  }
+  return request({
+    url: "/word",
+    headers: {
+      isToken: true,
+    },
+    method: "delete",
+    data: data,
+  });
+}
 // 更新词库
-  export function putWord(data) {
-    return request({
-      url: '/word',
-      headers: {
-        isToken: true
-      },
-      method: 'put',
-      data: data
-    })
-  }
+export function putWord(data) {
+  return request({
+    url: "/word",
+    headers: {
+      isToken: true,
+    },
+    method: "put",
+    data: data,
+  });
+}
 
-  // 查询词库 /api/v1/word/query
-  export function getQuery(data) {
-    return request({
-      url: `/word/query?page=${data.current_page}&page_size=${data.page_size}`,
-      headers: {
-        isToken: true
-      },
-      method: 'post',
-      data: data.body
-    })
-  }
+// 查询词库 /api/v1/word/query
+export function getQuery(data) {
+  return request({
+    url: `/word/query?page=${data.current_page}&page_size=${data.page_size}`,
+    headers: {
+      isToken: true,
+    },
+    method: "post",
+    data: data.body,
+  });
+}
 
-  // 清空违禁词  http://120.27.8.117/api/v1/word/all
-  export function delAllWord(data) {
-    return request({
-      url: '/word/all',
-      headers: {
-        isToken: true
-      },
-      method: 'delete',
-      data: data
-    })
-  }
+// 清空违禁词  http://120.27.8.117/api/v1/word/all
+export function delAllWord(data) {
+  return request({
+    url: "/word/all",
+    headers: {
+      isToken: true,
+    },
+    method: "delete",
+    data: data,
+  });
+}
 
-
-
-
-
-
+// 上传违禁词附件 http://120.27.8.117/api/v1/word/upload
+export function uploadWord(data) {
+  return request({
+    url: "/word/upload",
+    headers: {
+      isToken: true,
+      "Content-Type": "multipart/form-data",
+    },
+    method: "post",
+    data: data,
+  });
+}
 
 // 登录方法
 export function login(username, password, code, uuid) {
@@ -73,44 +80,43 @@ export function login(username, password, code, uuid) {
     username,
     password,
     code,
-    uuid
-  }
+    uuid,
+  };
   return request({
-    url: '/login',
+    url: "/login",
     headers: {
       isToken: false,
-      repeatSubmit: false
+      repeatSubmit: false,
     },
-    method: 'post',
-    data: data
-  })
+    method: "post",
+    data: data,
+  });
 }
 
 // 注册方法 /api/v1/user/register
 export function register(data) {
   return request({
-    url: '/user/register',
+    url: "/user/register",
     headers: {
-      isToken: false
+      isToken: false,
     },
-    method: 'post',
-    data: data
-  })
+    method: "post",
+    data: data,
+  });
 }
 
 // 获取用户详细信息
 export function getInfo() {
   return request({
-    url: '/getInfo',
-    method: 'get'
-  })
+    url: "/getInfo",
+    method: "get",
+  });
 }
 
 // 退出方法
 export function logout() {
   return request({
-    url: '/logout',
-    method: 'post'
-  })
+    url: "/logout",
+    method: "post",
+  });
 }
-

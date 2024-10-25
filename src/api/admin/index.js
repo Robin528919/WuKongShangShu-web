@@ -48,7 +48,30 @@ export function delWord(data) {
       data: data.body
     })
   }
+// 清空违禁词  http://120.27.8.117/api/v1/word/all
+export function delAllWord(data) {
+  return request({
+    url: '/admin/vip/word/all',
+    headers: {
+      isToken: true
+    },
+    method: 'delete',
+    data: data
+  })
+}
 
+// 
+export function uploadWord(data) {
+  return request({
+    url: "/admin/vip/word/upload",
+    headers: {
+      isToken: true,
+      "Content-Type": "multipart/form-data",
+    },
+    method: "post",
+    data: data,
+  });
+}
 
 
 

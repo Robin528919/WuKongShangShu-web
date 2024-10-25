@@ -6,7 +6,7 @@
                     <el-button type="primary">上传违禁词文件</el-button>
                     <template #tip>
                         <div class="el-upload__tip">
-                            只能支持.txt文件,注意格式事例:a,v,b,c,你,国家
+                            只能支持.txt文件
                         </div>
                     </template>
                 </el-upload>
@@ -32,7 +32,8 @@
 </template>
 <script setup>
 import { ref, reactive } from "vue"
-import { addWord } from "@/api/violate/index";
+import { addWord ,} from "@/api/violate/index";
+import { addWord, uploadWord} from "@/api/admin/index";
 import { Message } from "@element-plus/icons-vue";
 import { ElMessage } from "element-plus";
 
@@ -50,15 +51,15 @@ const form = reactive({
     words: '',
 })
 const handlePreviewFun = (file) => {
-    const reader = new FileReader();
+    let fromDate = new FormData();
+    fromDate.append("file", file.raw);
+    uploadWord(fromDate).then(res => {
+        if (res.code == 200) {
+            ElMessage.success("新增违禁成功")
+            emit('close')
 
-    // 定义加载完成后的回调函数
-    reader.onload =  (e)=> {
-         form.words += e.target.result; // 文件内容
-       
-    };
-    // 读取文件为文本
-    reader.readAsText(file.raw);
+        }
+    })
 }
 // 提交
 const submitForm = async () => {

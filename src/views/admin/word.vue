@@ -28,7 +28,7 @@
                 <el-button type="primary" @click="moreAddFun">批量新增</el-button>
             </el-col>
             <el-col :span="1.5">
-                <el-button type="danger" plain icon="Refresh" @click="handleRefreshCache">清空违禁词所有数据</el-button>
+                <el-button type="danger" plain icon="Refresh" @click="delectAllFun">清空违禁词所有数据</el-button>
             </el-col>
             <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
         </el-row>
@@ -41,11 +41,6 @@
             </el-table-column>
             <el-table-column label="违禁词id" align="center" prop="word_id" :show-overflow-tooltip="true" />
             <el-table-column label="违禁词" align="center" prop="word" :show-overflow-tooltip="true" />
-            <!-- <el-table-column label="是否启用" align="center" prop="configType">
-                <template #default="scope">
-                    <dict-tag :options="sys_yes_no" :value="scope.row.configType" />
-                </template>
-</el-table-column> -->
             <el-table-column label="创建时间" align="center" prop="createTime" width="180">
                 <template #default="scope">
                     <span>{{ parseTime(scope.row.created_time) }}</span>
@@ -64,8 +59,6 @@
                 :total="page.total">
             </el-pagination>
         </div>
-
-        <!-- 添加或修改参数配置对话框 -->
         <el-dialog :title="title" v-model="open" width="500px" append-to-body>
             <el-form ref="configRef" label-width="80px">
                 <el-form-item label="违禁词：" :required="true">
@@ -81,16 +74,11 @@
                 </div>
             </template>
         </el-dialog>
-        <!-- 批量上传违禁词 -->
         <addWjc :open="addWjcStatus" v-if="addWjcStatus" @close="addWjcStatusFun" />
-        <!-- 上传文件按钮 -->
         <uploadWjc :open="uploadWjcStatus" v-if="uploadWjcStatus" @close="uploadWjcStatus = false" />
-
     </div>
 </template>
-
 <script setup>
-
 // 
 import { addWord, delWord, putWord, getQuery } from "@/api/admin/index";
 // 批量上新
@@ -109,9 +97,7 @@ const showSearch = ref(true);
 const ids = ref([]);
 const single = ref(true);
 const multiple = ref(true);
-
 const title = ref("");
-
 // 批量新增按钮
 const addWjcStatus = ref(false)
 // 上传文件按钮
@@ -148,7 +134,14 @@ function handleAdd() {
 
 /** 删除按钮操作 */
 const handleDelete = async (row) => {
-    const configIds = [row.word_id] || ids.value;
+    console.log('ids.valu', ids.value)
+    let configIds = null
+    if (row && row.word_id) {
+        configIds = [row.word_id]
+    } else {
+        configIds = ids.value;
+    }
+
     if (configIds.length == 0) {
         ElMessage.warning("请选择要删除的违禁词")
         return
@@ -183,7 +176,7 @@ const modifyFun = async () => {
 }
 function handleSizeChange(size) {
     page.current_page = 1
-    page.page_size =size
+    page.page_size = size
     getList()
 
 }
@@ -225,6 +218,18 @@ function getList() {
     });
 }
 
+// 清空所有数据
+function delectAllFun() {
+    proxy.$modal.confirm('是否清空所有违禁词').then(async () => {
+        let res = await delAllWord()
+        if (res.code == 200) {
+            proxy.$modal.msgSuccess("清空成功")
+            getList()
+        }
+    })
+
+}
+
 /** 取消按钮 */
 function cancel() {
     open.value = false;
@@ -245,13 +250,16 @@ function handleQuery() {
 
 /** 重置按钮操作 */
 function resetQuery() {
-    page.current_page=1
+    page.current_page = 1
     query.word = ''
 }
 
 /** 多选框选中数据 */
 function handleSelectionChange(selection) {
+    console.log("selectionselection", selection)
     ids.value = selection.map(item => item.word_id);
+    console.log("idsids", ids.value)
+
     single.value = selection.length != 1;
     multiple.value = !selection.length;
 }
