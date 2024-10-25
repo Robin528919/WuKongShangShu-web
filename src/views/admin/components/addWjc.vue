@@ -32,7 +32,7 @@
 </template>
 <script setup>
 import { ref, reactive } from "vue"
-import { addWord ,} from "@/api/violate/index";
+
 import { addWord, uploadWord} from "@/api/admin/index";
 import { Message } from "@element-plus/icons-vue";
 import { ElMessage } from "element-plus";
