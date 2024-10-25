@@ -276,43 +276,43 @@ export const constantRoutes = [
     ],
   },
 
-  {
-    path: "/delete",
-    component: Layout,
-    redirect: "noRedirect",
-    hidden: false,
-    alwaysShow: true,
-    meta: { title: "删除数据", icon: "build" },
-    children: [
-      {
-        path: "product",
-        component: () => import("@/views/delete/product"),
-        name: "product",
-        meta: {
-          title: "删除商品",
-          icon: "build",
-        },
-      },
-      {
-        path: "statistics",
-        component: () => import("@/views/delete/statistics"),
-        name: "statistics",
-        meta: {
-          title: "删除统计",
-          icon: "build",
-        },
-      },
-      {
-        path: "dellog",
-        component: () => import("@/views/delete/dellog"),
-        name: "dellog",
-        meta: {
-          title: "删除日志",
-          icon: "build",
-        },
-      },
-    ],
-  },
+  // {
+  //   path: "/delete",
+  //   component: Layout,
+  //   redirect: "noRedirect",
+  //   hidden: false,
+  //   alwaysShow: true,
+  //   meta: { title: "删除数据", icon: "build" },
+  //   children: [
+  //     {
+  //       path: "product",
+  //       component: () => import("@/views/delete/product"),
+  //       name: "product",
+  //       meta: {
+  //         title: "删除商品",
+  //         icon: "build",
+  //       },
+  //     },
+  //     {
+  //       path: "statistics",
+  //       component: () => import("@/views/delete/statistics"),
+  //       name: "statistics",
+  //       meta: {
+  //         title: "删除统计",
+  //         icon: "build",
+  //       },
+  //     },
+  //     {
+  //       path: "dellog",
+  //       component: () => import("@/views/delete/dellog"),
+  //       name: "dellog",
+  //       meta: {
+  //         title: "删除日志",
+  //         icon: "build",
+  //       },
+  //     },
+  //   ],
+  // },
   {
     path: "/user",
     component: Layout,

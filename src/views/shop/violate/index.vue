@@ -21,11 +21,15 @@
             <el-col :span="1.5">
                 <el-button type="danger" plain icon="Delete" @click="handleDelete">删除</el-button>
             </el-col>
+
             <!-- <el-col :span="1.5">
                 <el-button type="primary" @click="uploadWjcStatus = true">上传违禁词 {{ uploadWjcStatus }}</el-button>
             </el-col> -->
             <el-col :span="1.5">
                 <el-button type="primary" @click="moreAddFun">批量新增</el-button>
+            </el-col>
+            <el-col :span="1.5">
+                <el-button type="danger" plain icon="Delete" @click="delectAllFun">清空违禁词</el-button>
             </el-col>
             <!-- <el-col :span="1.5">
                 <el-button type="danger" plain icon="Refresh" @click="handleRefreshCache">清空违禁词所有数据</el-button>
@@ -90,9 +94,9 @@
 </template>
 
 <script setup>
-import { listConfig, getConfig, delConfig, addConfig, updateConfig, } from "@/api/system/config";
+
 // 
-import { addWord, delWord, putWord, getQuery } from "@/api/violate/index";
+import { addWord, delWord, putWord, getQuery, delAllWord } from "@/api/violate/index";
 // 批量上新
 import addWjc from "./components/addWjc.vue"
 import uploadWjc from "./components/uploadWjc.vue"
@@ -116,9 +120,6 @@ const title = ref("");
 const addWjcStatus = ref(false)
 // 上传文件按钮
 const uploadWjcStatus = ref(false)
-
-
-
 // 批量新增违禁词
 const moreAddFun = () => {
     addWjcStatus.value = true
@@ -148,10 +149,10 @@ function handleAdd() {
 
 /** 删除按钮操作 */
 const handleDelete = async (row) => {
-    let  configIds = null
-    if(row&&row.word_id){
+    let configIds = null
+    if (row && row.word_id) {
         configIds = [row.word_id]
-    }else{
+    } else {
         configIds = ids.value;
     }
     if (configIds.length == 0) {
@@ -188,7 +189,7 @@ const modifyFun = async () => {
 }
 function handleSizeChange(size) {
     page.current_page = 1
-    page.page_size =size
+    page.page_size = size
     getList()
 
 }
@@ -250,7 +251,7 @@ function handleQuery() {
 
 /** 重置按钮操作 */
 function resetQuery() {
-    page.current_page=1
+    page.current_page = 1
     query.word = ''
 }
 
@@ -260,7 +261,17 @@ function handleSelectionChange(selection) {
     single.value = selection.length != 1;
     multiple.value = !selection.length;
 }
+// 清空所有数据
+function delectAllFun() {
+    proxy.$modal.confirm('是否清空所有违禁词').then(async () => {
+        let res = await delAllWord()
+        if (res.code == 200) {
+            proxy.$modal.msgSuccess("清空成功")
+            getList()
+        }
+    })
 
+}
 
 
 

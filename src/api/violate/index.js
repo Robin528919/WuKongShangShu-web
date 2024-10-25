@@ -49,6 +49,19 @@ export function delWord(data) {
     })
   }
 
+  // 清空违禁词  http://120.27.8.117/api/v1/word/all
+  export function delAllWord(data) {
+    return request({
+      url: '/word/all',
+      headers: {
+        isToken: true
+      },
+      method: 'delete',
+      data: data
+    })
+  }
+
+
 
 
 

@@ -1,15 +1,21 @@
 <template>
     <div class="app-container">
         <el-form :inline="true" v-show="showSearch" label-width="68px">
-            <el-form-item label="任务名称" prop="configName">
-                <el-input v-model="query.configName" placeholder="请输入参数名称" clearable style="width: 240px" />
+            <el-form-item label="任务名称" >
+                <el-input v-model="query.task_name" placeholder="请输入参数名称" clearable style="width: 240px" />
             </el-form-item>
-
-            <!-- <el-form-item label="状态" prop="configType">
-                <el-select v-model="query.configType" placeholder="系统内置" clearable>
-                    <el-option v-for="dict in sys_yes_no" :key="dict.value" :label="dict.label" :value="dict.value" />
+            <el-form-item label="任务类型" >
+                <el-select v-model="query.task_type" placeholder="请选择任务类型" style="width: 240px" :disabled="true">
+                    <el-option v-for="item in task_typeOptions" :key="item.value" :label="item.label" :value="item.value">
+                    </el-option>
                 </el-select>
-            </el-form-item> -->
+            </el-form-item> 
+            <el-form-item label="任务状态" >
+                <el-select v-model="query.status" placeholder="请选择任务类型" style="width: 240px">
+                    <el-option v-for="item in statusOptions" :key="item.value" :label="item.label" :value="item.value">
+                    </el-option>
+                </el-select>
+            </el-form-item>
             <el-form-item>
                 <el-button type="primary" icon="Search" @click="searchFun">查询</el-button>
                 <el-button icon="Refresh" @click="resetFun">重置</el-button>
@@ -18,7 +24,7 @@
 
         <el-row :gutter="10" class="mb8">
             <el-col :span="1.5">
-                <el-button type="primary" @click="handleQuery">一键停止采集指令</el-button>
+                <!-- <el-button type="primary" @click="handleQuery">一键停止采集指令</el-button> -->
             </el-col>
             <!-- <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar> -->
         </el-row>
@@ -32,7 +38,7 @@
             </el-table-column>
             <el-table-column label="任务类型" align="center" prop="task_type" :show-overflow-tooltip="true">
                 <template #default="scope">
-                    <span>{{ scope.row.task_type == 1 ? '采集' : '发布' }}</span>
+                    <span>{{ transform( task_typeOptions, scope.row.task_type) }}</span>
                 </template>
             </el-table-column>
             <el-table-column label="任务名称" align="center" prop="task_name" :show-overflow-tooltip="true" />
@@ -85,13 +91,15 @@ import { useTableListFun } from "@/hooks/getTabel.js"
 
 
 
-import { reactive, } from "vue";
+import { onMounted, reactive, } from "vue";
 
 const { proxy } = getCurrentInstance();
 import { getQuery, stop } from "@/api/task/index"
 import { ElMessage } from "element-plus";
 
-const { page, open, query, tableList, searchFun, resetFun, closeFun, handleCurrentChange, handleSizeChange, getQueryList } = useTableListFun(getQuery)
+const { page, open, query, tableList, searchFun, resetFun, closeFun, handleCurrentChange, handleSizeChange } = useTableListFun(getQuery,{task_type:1})
+
+
 
 
 
@@ -134,6 +142,22 @@ function handleSelectionChange(selection) {
     single.value = selection.length != 1;
     multiple.value = !selection.length;
 }
+// 任务类型 1采集 2发布 3删除
+const task_typeOptions = [
+    {
+        label: "采集",
+        value: 1
+    },
+    {
+        label: "发布",
+        value: 2
+    },
+    {
+        label: "删除",
+        value: 3
+    }
+]
+
 // :0-待执行 1-执行中 2-执行完成 3-执行失败 4-已取消 5-已暂停 6-已恢复 7-已超时 8-已取消 
 const statusOptions = [
     {

@@ -1,8 +1,8 @@
 import { pa } from "element-plus/es/locales.mjs";
 import { ref, reactive } from "vue";
 
-export function useTableListFun(fetchFunction) {
-  console.log("fetchFunctionfetchFunction",fetchFunction)
+export function useTableListFun(fetchFunction, deparams) {
+  console.log("fetchFunctionfetchFunction", fetchFunction);
   // 拿到全局方法
   const { proxy } = getCurrentInstance();
   // 分页相关内容
@@ -18,36 +18,42 @@ export function useTableListFun(fetchFunction) {
   // 列表loading
   const loading = ref(false);
   const getQueryList = async () => {
-    let params ={}
-    let body={}
+    let params = {};
+    let body = {};
     try {
       loading.value = true;
-   if(fetchFunction.name!='getProductList'){  // 不是淘宝的接口
-     body = proxy.objToArrayFun(query);
-     params = { ...page, body };
-   }else{ // 是淘宝的接口
-    params = { ...page, ...query };
-   }
-     
-     
+      if (fetchFunction.name != "getProductList") {
+        // 不是淘宝的接口
+        if (deparams && Object.keys(deparams).length > 0) {
+          query = Object.assign(query, deparams);
+        }
+        body = proxy.objToArrayFun(query);
+
+        params = { ...page, body };
+
+        params = { ...page, body };
+      } else {
+        // 是淘宝的接口
+
+        params = { ...page, ...query };
+      }
+
       const response = await fetchFunction(params);
-      if(response.data.data){
+      if (response.data.data) {
         tableList.value = response.data.data;
         page.total = response.data.total_records;
       }
-      if(response.data.items){
+      if (response.data.items) {
         tableList.value = response.data.items;
         page.total = response.data.total_results;
-
       }
-   
     } catch (err) {
       console.log("errr", err);
     } finally {
       loading.value = false;
     }
   };
-  
+
   // 获取列表数据
   getQueryList();
 
@@ -59,13 +65,12 @@ export function useTableListFun(fetchFunction) {
   // 重置
 
   const resetFun = () => {
-    console.log("queryquery",query)
+    console.log("queryquery", query);
     for (let key in query) {
       if (query.hasOwnProperty(key)) {
-        query[key] = ''; 
+        query[key] = "";
       }
     }
-   
   };
   // 分页相关--------------------------------------------------
   function handleCurrentChange(e) {
@@ -81,22 +86,18 @@ export function useTableListFun(fetchFunction) {
 
   // 关闭弹出--------------
   const open = ref(false);
- const closeFun=()=>{
-  open.value = false
-  getQueryList();
+  const closeFun = () => {
+    open.value = false;
+    getQueryList();
+  };
 
-  
-
-
- }
-
- const transform=(data ,code)=> {
-  let str=""
-  data.forEach(item => {
-      item.value==code && (str=item.label)
-  })
-  return str
-}
+  const transform = (data, code) => {
+    let str = "";
+    data.forEach((item) => {
+      item.value == code && (str = item.label);
+    });
+    return str;
+  };
   return {
     transform,
     open,

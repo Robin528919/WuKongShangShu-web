@@ -3,9 +3,7 @@
         <el-tab-pane label="图书采集">
             <bookCj />
         </el-tab-pane>
-        <el-tab-pane label="分组采集">
-            <groupCj />
-        </el-tab-pane>
+       
     </el-tabs>
 </template>
 
