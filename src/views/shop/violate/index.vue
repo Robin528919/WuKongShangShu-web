@@ -31,9 +31,7 @@
             <el-col :span="1.5">
                 <el-button type="danger" plain icon="Delete" @click="delectAllFun">清空违禁词</el-button>
             </el-col>
-            <el-col :span="1.5">
-                <el-button type="primary" plain icon="Plus" @click="handleAdd">上传违禁词txt文件</el-button>
-            </el-col>
+         
             <!-- <el-col :span="1.5">
                 <el-button type="danger" plain icon="Refresh" @click="handleRefreshCache">清空违禁词所有数据</el-button>
             </el-col> -->
