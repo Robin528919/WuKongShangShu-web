@@ -65,7 +65,9 @@
             <el-table-column label="操作" align="center" width="150" class-name="small-padding fixed-width">
                 <template #default="scope">
                     <el-button  type="text"  @click="goRecordFun(scope.row)">查看记录</el-button>
+                    <el-button  type="text"  @click="stopFun(scope.row)">停止任务</el-button>
                 </template>
+                
             </el-table-column>
         </el-table>
         <div style="display: flex; justify-content: end;">
@@ -81,14 +83,25 @@
 
 import { useTableListFun } from "@/hooks/getTabel.js"
 
-import { getQuery } from "@/api/task/index"
+import { getQuery,stop } from "@/api/task/index"
 
 
 const { page, open, transform, loading, query, tableList, searchFun, resetFun, closeFun, handleCurrentChange, handleSizeChange, getQueryList } = useTableListFun(getQuery,{task_type:2})
 const { proxy } = getCurrentInstance();
+import { ElMessage } from "element-plus";
 //const { sys_yes_no } = proxy.useDict("sys_yes_no");
 
 const configList = ref([]);
+
+function stopFun(row) {
+    stop(row.task_id).then((res) => {
+        if (res.code == 200) {
+            ElMessage.success("操作成功");
+            searchFun()
+        }
+
+    })
+}
 
 function goRecordFun(row){
     proxy.$router.push({

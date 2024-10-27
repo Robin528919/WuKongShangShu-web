@@ -28,8 +28,6 @@
                 </div>
             </el-form-item>
             <el-form-item label="详情图片：">
-
-
                 <el-upload action="#" :file-list="fileList" list-type="picture-card" :limit="1"
                     :on-change="onchangeFile" :auto-upload="false">
                     <el-icon>
@@ -86,10 +84,15 @@
 
 
             <el-form-item label="图书分组：" :required="true">
-                <el-select v-model="form.task_params.book_group_id" placeholder="请选择图书分组">
+                <div style="display: flex; width: 100%;">
+                    <el-select style="flex: 1;" v-model="form.task_params.book_group_id" placeholder="请选择图书分组">
                     <el-option v-for="item in bookList" :key="item.group_id" :label="item.group_name"
                         :value="item.group_id" />
                 </el-select>
+                <el-button type="primary" @click="getbookGroupFun">刷新分组</el-button>
+
+                </div>
+               
             </el-form-item>
 
             <el-form-item label="选择分类：" :required="true">
@@ -110,12 +113,12 @@
                 <el-button type="primary" @click="sureIssuFun">确定发布</el-button>
             </el-form-item>
         </el-form>
-        <el-form label-width="80px" style="width: 50%; margin-left: 50px;">
+        <!-- <el-form label-width="80px" style="width: 50%; margin-left: 50px;">
             <el-form-item label="宝贝详情">
                 <el-input placeholder="请输入html" type="textarea" v-model="form.task_params.detial"></el-input>
             </el-form-item>
             <div v-html="form.task_params.detial" class="html-preview"></div>
-        </el-form>
+        </el-form> -->
 
         <el-dialog v-model="dialogVisible">
             <img w-full :src="dialogImageUrl" alt="Preview Image" />

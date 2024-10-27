@@ -1,8 +1,14 @@
 <template>
     <div class="app-container">
         <el-form ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
-            <el-form-item label="违禁词">
-                <el-input v-model="query.word" placeholder="请输入参数名称" clearable style="width: 240px" />
+            <el-form-item label="图书名称">
+                <el-input v-model="query.book_name" placeholder="请输入参数名称" clearable style="width: 240px" />
+            </el-form-item>
+            <el-form-item label="原价">
+                <el-input v-model="query.original_price" placeholder="请输入参数名称" clearable style="width: 240px" />
+            </el-form-item>
+            <el-form-item label="加价">
+                <el-input v-model="query.add_price" placeholder="请输入参数名称" clearable style="width: 240px" />
             </el-form-item>
             <!-- <el-form-item label="启用状态" prop="configType">
                 <el-select v-model="queryParams.configType" placeholder="系统内置" clearable>
@@ -10,8 +16,8 @@
                 </el-select>
             </el-form-item> -->
             <el-form-item>
-                <el-button type="primary" icon="page" @click="getList">搜索</el-button>
-                <el-button icon="Refresh" @click="resetQuery">重置</el-button>
+                <el-button type="primary" icon="page" @click="searchFun">搜索</el-button>
+                <el-button icon="Refresh" @click="resetFun">重置</el-button>
             </el-form-item>
         </el-form>
 
@@ -41,9 +47,9 @@
             <el-table-column label="图书名称" align="center" prop="book_name" :show-overflow-tooltip="true" />
             <el-table-column label="原价" align="center" prop="original_price" :show-overflow-tooltip="true" />
             <el-table-column label="加价" align="center" prop="add_price" :show-overflow-tooltip="true" />
-
             <el-table-column label="发布结果" align="center" prop="publish_result" :show-overflow-tooltip="true" />
             <el-table-column label="淘宝链接" align="center" prop="tb_url" :show-overflow-tooltip="true">
+                
                 <template #default="scope">
                     <el-link :href="scope.row.tb_url" :underline="false" target="_blank">
                         {{ scope.row.tb_url }}
