@@ -86,13 +86,13 @@
             <el-form-item label="图书分组：" :required="true">
                 <div style="display: flex; width: 100%;">
                     <el-select style="flex: 1;" v-model="form.task_params.book_group_id" placeholder="请选择图书分组">
-                    <el-option v-for="item in bookList" :key="item.group_id" :label="item.group_name"
-                        :value="item.group_id" />
-                </el-select>
-                <el-button type="primary" @click="getbookGroupFun">刷新分组</el-button>
+                        <el-option v-for="item in bookList" :key="item.group_id" :label="item.group_name"
+                            :value="item.group_id" />
+                    </el-select>
+                    <el-button type="primary" @click="getbookGroupFun">刷新分组</el-button>
 
                 </div>
-               
+
             </el-form-item>
 
             <el-form-item label="选择分类：" :required="true">
@@ -213,18 +213,34 @@ function getTitleFilter() {
 getTitleFilter()
 
 function setPicFun() {
-    setcache({ desc: form.task_params.picture_path }, "pic").then((res) => {
-        if (res && res.code == 200) {
-            ElMessage.success("设置成功");
-        }
-    })
+    let sid = JSON.parse(localStorage.getItem('tbMsg')) && JSON.parse(localStorage.getItem('tbMsg')).sid
+    if (sid) {
+        setcache({ desc: form.task_params.picture_path }, `pic_${sid}`).then((res) => {
+            if (res && res.code == 200) {
+                ElMessage.success("设置成功");
+            }
+        })
+    } else {
+
+    }
+
+
+
+
 
 }
 function getPicFun() {
-    getcache('pic').then((res) => {
-        form.task_params.picture_path = res.data.desc;
-        fileList.value = [{ name: 'xiang', url: form.task_params.picture_path }]
-    })
+    let sid = JSON.parse(localStorage.getItem('tbMsg')) && JSON.parse(localStorage.getItem('tbMsg')).sid
+    if (sid) {
+        getcache(`pic_${sid}`).then((res) => {
+            form.task_params.picture_path = res.data.desc;
+            fileList.value = [{ name: 'xiang', url: form.task_params.picture_path }]
+        })
+
+    } else {
+        ElMessage.warning("请先授权店铺")
+    }
+
 }
 getPicFun()
 
@@ -298,7 +314,7 @@ const dialogVisible = ref(false)
 const disabled = ref(false)
 
 const handleRemove = (file) => {
-    fileList.value=[]
+    fileList.value = []
 }
 const handlePictureCardPreview = (file) => {
 

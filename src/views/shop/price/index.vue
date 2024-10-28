@@ -26,6 +26,7 @@
             </el-table-column>
             <el-table-column label="档位名称" align="center" prop="name" :show-overflow-tooltip="true" />
             <el-table-column label="开始价格" align="center" prop="start_price" :show-overflow-tooltip="true" />
+            <el-table-column label="结束价格" align="center" prop="end_price" :show-overflow-tooltip="true" />
             <el-table-column label="是否原价" align="center" prop="original_price" >
                 <template #default="scope">
                     <el-tag v-if="scope.row.original_price" type="error" >是</el-tag>
