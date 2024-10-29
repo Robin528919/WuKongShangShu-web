@@ -28,16 +28,13 @@ export function useTableListFun(fetchFunction, deparams) {
           query = Object.assign(query, deparams);
         }
         body = proxy.objToArrayFun(query);
-
         params = { ...page, body };
-
-        params = { ...page, body };
+        console.log("不是淘宝接口----------");
       } else {
-        // 是淘宝的接口
-
+        // 是淘宝的接口  不转数组
+        console.log("淘宝接口----------");
         params = { ...page, ...query };
       }
-
       const response = await fetchFunction(params);
       if (response.data.data) {
         tableList.value = response.data.data;

@@ -10,26 +10,20 @@
                     <el-option v-for="item in category_infoList" :key="item.cid" :label="item.name" :value="item.cid" />
                 </el-select>
             </el-form-item>
-            <el-form-item label="商品类目：">
-                <el-select v-model="query.cid" filterable remote reserve-keyword style="width: 240px"
-                    placeholder="请选择发布类目" remote-show-suffix :remote-method="remoteMethod" :loading="loading">
-                    <el-option v-for="item in category_infoList" :key="item.cid" :label="item.name" :value="item.cid" />
-                </el-select>
-            </el-form-item>
             <!--  -->
             <el-form-item label="卖家自定义类目ID:">
-                <el-input v-model="query.seller_cids" placeholder="多个之间用“,”分隔。" clearable style="width: 240px" />
+                <el-input v-model="query.seller_cids" placeholder="多个之间用“,”分隔。"  clearable style="width: 240px" />
             </el-form-item>
             <!--  -->
             <el-form-item label="是否参与会员折扣:">
-                <el-select v-model="query.has_discount" style="width: 240px" placeholder="是否参与会员折扣">
+                <el-select v-model="query.has_discount" style="width: 240px" clearable placeholder="请选择是否参与会员折扣">
                     <el-option :key="1" label="是" :value="true" />
                     <el-option :key="2" label="否" :value="false" />
                 </el-select>
             </el-form-item>
             <!--  -->
             <el-form-item label="是否橱窗推荐:">
-                <el-select v-model="query.has_showcase" style="width: 240px" placeholder="是否参与会员折扣">
+                <el-select v-model="query.has_showcase" style="width: 240px" clearable placeholder="请选择是否橱窗推荐">
                     <el-option :key="1" label="是" :value="true" />
                     <el-option :key="2" label="否" :value="false" />
                 </el-select>
@@ -37,23 +31,23 @@
             <!-- 商品是否在淘宝显示 -->
 
             <el-form-item label="是否显示外部店:">
-                <el-select v-model="query.is_ex" style="width: 240px" placeholder="是否参与会员折扣">
+                <el-select v-model="query.is_ex" style="width: 240px" clearable placeholder="是否显示外部店">
                     <el-option :key="1" label="是" :value="true" />
                     <el-option :key="2" label="否" :value="false" />
                 </el-select>
             </el-form-item>
 
             <el-form-item label="组合商品:">
-                <el-select v-model="query.is_combine" style="width: 240px" placeholder="是否参与会员折扣">
+                <el-select v-model="query.is_combine" style="width: 240px" clearable placeholder="是否是组合商品">
                     <el-option :key="1" label="是" :value="true" />
                     <el-option :key="2" label="否" :value="false" />
                 </el-select>
             </el-form-item>
 
             <el-form-item label="商品类型:">
-                <el-select v-model="query.auction_type" style="width: 240px" placeholder="是否参与会员折扣">
-                    <el-option :key="1" label="是" :value="true" />
-                    <el-option :key="2" label="否" :value="false" />
+                <el-select v-model="query.auction_type" style="width: 240px" clearable placeholder="商品类型">
+                    <el-option :key="1" label="拍卖" value="a" />
+                    <el-option :key="2" label="一口价" value="b" />
                 </el-select>
             </el-form-item>
             <el-form-item>
