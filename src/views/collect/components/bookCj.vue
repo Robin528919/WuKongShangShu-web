@@ -44,7 +44,7 @@
                     start-placeholder="开始日期" @change="changeTime" end-placeholder="结束日期"></el-date-picker>
             </el-form-item>
             <el-form-item label="采集数量：">
-                <el-input-number v-model="form.task_params.num" :min="1" :max="10000000" />
+                <el-input-number v-model="form.task_params.num" :min="1" :max="10000000000" style="width: 240px;" />
             </el-form-item>
             <!-- <el-form-item label="任务描述：" :required="true">
                 <el-input type="textarea" v-model="form.task_desc" />
@@ -75,7 +75,7 @@ const form = reactive({
         shop_ids: "",
         start_time: null,
         end_time: null,
-        num: 99999,
+        num: 99999999,
         is_vip: true,
         book_category: "全部",
         name: "",
