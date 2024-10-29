@@ -22,7 +22,8 @@ export function useTableListFun(fetchFunction, deparams) {
     let body = {};
     try {
       loading.value = true;
-      if (fetchFunction.name != "getProductList") {
+      console.log("fetchFunction",fetchFunction)
+      
         // 不是淘宝的接口
         if (deparams && Object.keys(deparams).length > 0) {
           query = Object.assign(query, deparams);
@@ -30,9 +31,9 @@ export function useTableListFun(fetchFunction, deparams) {
         body = proxy.objToArrayFun(query);
         params = { ...page, body };
         console.log("不是淘宝接口----------");
-      } else {
-        // 是淘宝的接口  不转数组
-        console.log("淘宝接口----------");
+      
+      if(deparams&&deparams.isTb){
+      
         params = { ...page, ...query };
       }
       const response = await fetchFunction(params);

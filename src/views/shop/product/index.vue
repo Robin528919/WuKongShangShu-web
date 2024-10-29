@@ -142,7 +142,7 @@ import { getbookGroup } from "@/api/price/index"
 //const { sys_yes_no } = proxy.useDict("sys_yes_no");
 import { getProductList } from "@/api/task/index"
 import { ElMessage, ElMessageBox } from 'element-plus'
-const { page, open, query, transform, tableList, searchFun, resetFun, closeFun, handleCurrentChange, handleSizeChange, getQueryList } = useTableListFun(getProductList)
+const { page, open, query, transform, tableList, searchFun, resetFun, closeFun, handleCurrentChange, handleSizeChange, getQueryList } = useTableListFun(getProductList,{isTb:true})
 
 
 
