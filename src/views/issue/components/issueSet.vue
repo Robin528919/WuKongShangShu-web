@@ -83,7 +83,7 @@
             </el-form-item>
 
 
-            <el-form-item label="图书分组：" :required="true">
+            <el-form-item label="图书分组：" >
                 <div style="display: flex; width: 100%;">
                     <el-select style="flex: 1;" v-model="form.task_params.book_group_id" placeholder="请选择图书分组">
                         <el-option v-for="item in bookList" :key="item.group_id" :label="item.group_name"
@@ -152,7 +152,7 @@ const form = reactive({
         is_new: true,
         publish_option: 0,  // 0 直接上架  1 放入仓库
         book_group_id: "",
-        category_id: 1,
+        category_id: 33,
         category: "",
         template: "",
 
@@ -295,9 +295,6 @@ const sureIssuFun = async () => {
     if (!form.task_params.num) return ElMessage.warning("宝贝库存必填写!")
     if (!form.task_params.stock) return ElMessage.warning("发布数量必填写!")
     if (!form.task_params.category_id) return ElMessage.warning("发布类目必填写!")
-
-
-    if (!form.task_params.book_group_id) return ElMessage.warning("图书分组必须填写!")
     if (!form.task_params.stock) return ElMessage.warning("分类必须选择!")
     if (!form.task_params.category_id) return ElMessage.warning("运费模版必选!")
 
