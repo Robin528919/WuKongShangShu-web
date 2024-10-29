@@ -10,7 +10,7 @@
                 </el-select>
             </el-form-item> -->
             <el-form-item>
-                <el-button type="primary" icon="page" @click="getList">搜索</el-button>
+                <el-button type="primary" icon="Search" @click="getList">搜索</el-button>
                 <el-button icon="Refresh" @click="resetQuery">重置</el-button>
             </el-form-item>
         </el-form>

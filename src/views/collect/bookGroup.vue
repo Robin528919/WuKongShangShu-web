@@ -2,7 +2,7 @@
     <div class="app-container">
         <el-form ref="queryRef" :model="query" :inline="true" v-show="showSearch" label-width="68px">
             <el-form-item label="分组名称">
-                <el-input v-model.trim="query.name" placeholder="请输入档位名称" clearable style="width: 240px" />
+                <el-input v-model.trim="query.group_name" placeholder="请输入档位名称" clearable style="width: 240px" />
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" icon="Search" @click="searchFun">搜索</el-button>

@@ -1,8 +1,8 @@
 <template>
     <div class="app-container">
         <el-form :model="query" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
-            <el-form-item label="任务名称" prop="configName">
-                <el-input v-model="query.name" placeholder="请输入任务名称" clearable style="width: 240px" />
+            <el-form-item label="任务名称" >
+                <el-input v-model="query.task_name" placeholder="请输入任务名称" clearable style="width: 240px" />
             </el-form-item>
           
             <el-form-item>
