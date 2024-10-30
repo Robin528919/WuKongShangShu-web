@@ -44,6 +44,9 @@ export function useTableListFun(fetchFunction, deparams) {
       if (response.data.items) {
         tableList.value = response.data.items;
         page.total = response.data.total_results;
+      }else{
+        tableList.value = []
+        page.total = 0;
       }
     } catch (err) {
       console.log("errr", err);

@@ -50,12 +50,13 @@
                     <el-option :key="2" label="一口价" value="b" />
                 </el-select>
             </el-form-item>
-            <el-form-item label="选择分类：" :required="true">
-                <el-select v-model="query.aa" placeholder="选择分类" style="width: 240px" >
+            <!-- seller_gids -->
+             <el-form-item label="选择分类：">
+                <el-select v-model="query.seller_cids" clearable placeholder="选择分类" style="width: 240px" >
                     <el-option v-for="item in categoryList" :key="item.cid" :label="item.name" :value="item.cid">
                     </el-option>
                 </el-select>
-            </el-form-item>
+            </el-form-item> 
             <el-form-item>
                 <el-button type="primary" icon="Search" @click="searchFun">查询</el-button>
                 <el-button icon="Refresh" @click="resetFun">重置</el-button>
@@ -331,7 +332,11 @@ function handleAdd() {
 const categoryList = ref([])
 const categoryListFun = async () => {
     let res = await getCategory({ current_page: 1, page_size: 10000 })
-    categoryList.value = res.data.seller_cats
+    categoryList.value = res.data.seller_cats.map(item=>{
+        item.cid = item.cid.toString()
+        return item
+    })
+    console.log("toString()toString()",categoryList.value)
 }
 categoryListFun()
 
