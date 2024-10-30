@@ -33,20 +33,20 @@
         </el-row> -->
         <el-table v-loading="loading" :data="tableList" @selection-change="handleSelectionChange">
             <el-table-column type="selection" width="55" align="center" />
-            <el-table-column label="序号" align="center" prop="configId">
+            <el-table-column label="序号" align="center" width="80" prop="configId">
                 <template #default="{ row, $index }">
                     {{ (page.current_page - 1) * page.page_size + $index + 1 }}
                 </template>
             </el-table-column>
 
-            <el-table-column label="任务id" align="center" prop="task_id" :show-overflow-tooltip="true" />
-            <el-table-column label="任务名称" align="center" prop="task_name" :show-overflow-tooltip="true" />
-            <el-table-column label="任务类型" align="center" prop="task_type" :show-overflow-tooltip="true">
+            <el-table-column label="任务id" align="center" width="80" prop="task_id" :show-overflow-tooltip="true" />
+            <el-table-column label="任务名称" align="center" width="120" prop="task_name" :show-overflow-tooltip="true" />
+            <el-table-column label="任务类型" width="100" align="center" prop="task_type" :show-overflow-tooltip="true">
                 <template v-slot:default="scope">
                     {{ transform(task_typeArr, scope.row.task_type) }}
                 </template>
             </el-table-column>
-            <el-table-column label="任务状态" align="center" prop="status" :show-overflow-tooltip="true">
+            <el-table-column label="任务状态" width="100" align="center" prop="status" :show-overflow-tooltip="true">
                 <template #default="scope">
                     {{ transform(statusOptions, scope.row.status) }}
                 </template>
@@ -56,7 +56,7 @@
                     {{ scope.row.result.msg }}
                 </template>
             </el-table-column>
-            <el-table-column label="状态" align="center" prop="configKey" :show-overflow-tooltip="true" />
+            <!-- <el-table-column label="状态" align="center" prop="configKey" :show-overflow-tooltip="true" /> -->
             <el-table-column label="任务开始时间" align="center" prop="task_start_time" width="180">
                 <template #default="scope">
                     <span>{{ parseTime(scope.row.task_start_time) }}</span>
@@ -171,7 +171,13 @@ let task_typeArr = [
     {
         value: "3",
         label: "删除",
-    }]
+    },
+    {
+        value: "4",
+        label: "违规词检测",
+    }
+
+]
 
 
 

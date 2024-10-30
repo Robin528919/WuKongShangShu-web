@@ -10,11 +10,15 @@
                         :value="dict.group_id" />
                 </el-select>
             </el-form-item>
-
-
             <el-form-item label="发布状态">
                 <el-select v-model="query.publish_status" placeholder="请选择" clearable style="width: 240px">
                     <el-option v-for="dict in publish_status" :key="dict.value" :label="dict.label"
+                        :value="dict.value" />
+                </el-select>
+            </el-form-item>
+            <el-form-item label="是否违规">
+                <el-select v-model="query.is_illegal" placeholder="请选择" clearable style="width: 240px">
+                    <el-option v-for="dict in is_violation" :key="dict.value" :label="dict.label"
                         :value="dict.value" />
                 </el-select>
             </el-form-item>
@@ -57,7 +61,15 @@
             <el-table-column label="书店名称" align="center" prop="shop_name" :show-overflow-tooltip="true" />
             <el-table-column label="价格" align="center" prop="price" :show-overflow-tooltip="true" />
             <el-table-column label="品相" align="center" prop="quality" :show-overflow-tooltip="true" />
-            <el-table-column label="发布时间" align="center" prop="configKey" :show-overflow-tooltip="true" />
+
+            <el-table-column label="是否违规" align="center" prop="is_illegal" :show-overflow-tooltip="true">
+                <template #default="scope">
+                  <el-tag  v-if="scope.row.is_illegal" type="error"> 是</el-tag>
+                  <el-tag  v-else type="success"> 否</el-tag>
+                </template>
+            </el-table-column>
+            <el-table-column label="违规词" align="center" prop="illegal_words" :show-overflow-tooltip="true" />
+         
             <el-table-column label="发布状态" align="center" prop="publish_status">
                 <template #default="scope">
                     {{ transform(publish_status, scope.row.publish_status) }}
@@ -177,6 +189,19 @@ const publish_status = [
     }
 ]
 
+// 是否违规 1-是 2-否
+
+const is_violation = [
+    {
+        label: "是",
+        value: 1
+    },
+    {
+        label: "否",
+        value: '0'
+    }
+]
+
 /** 搜索按钮操作 */
 function handleQuery() {
     queryParams.value.pageNum = 1;
@@ -263,7 +288,7 @@ function delAllFun() {
 
 function deltiFun() {
     let body = proxy.objToArrayFun(query);
-    console.log("deltiFun",body)
+    console.log("deltiFun", body)
     proxy.$modal.confirm('确定删除数据？').then(function () {
         delBook(body).then(res => {
             if (res.code == 200) {

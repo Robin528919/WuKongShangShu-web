@@ -3,7 +3,10 @@
     <el-form ref="configRef" :model="form" label-width="120px">
 
       <el-form-item label="水印预览">
-        <div class="sypic"></div>
+        <div class="box">
+          <img :class="'shuiyin' + form.position" :src="imageUrl" class="avatar"  alt="">
+          <img style="height: 100px;width: 100px; border-radius: 10px;" src="../../../assets/images/profile.jpg" alt="">
+        </div>
         <!-- <el-input v-model="form.name" placeholder="请输入档位名称(不可重复)" /> -->
       </el-form-item>
       <el-form-item label="上传水印图片" :required="true">
@@ -75,7 +78,7 @@ const imageUrl = ref('')
 const beforeAvatarUpload = (rawFile) => {
   form.file = rawFile
   imageUrl.value = URL.createObjectURL(rawFile)
- 
+
 }
 const submitForm = async () => {
   if (!form.file) return proxy.$modal.msgWarning("请上传图片!")
@@ -97,6 +100,9 @@ function cancel() {
 onMounted(() => {
   if (props.title == '修改水印') {
     form = props.editObj
+    imageUrl.value = import.meta.env.VITE_APP_BASE_API +'/' + form.image_url
+    console.log("修改水印",form)
+
     // if(form.is_enable){
     //   form.is_enable=1
     // }else{
@@ -132,10 +138,55 @@ const updateFun = async () => {
   display: block;
 }
 
-.sypic {
-  height: 100px;
-  width: 100px;
-  border: 1px solid yellow;
+
+
+.box {
+    height: 100px;
+    width: 100px;
+    border: 1px solid yellow;
+    margin-left: 20px;
+    position: relative;
+
+    .shuiyin1 {
+        position: absolute;
+        height: 40px;
+        width: 40px;
+        top: 0;
+        left: 0;
+    }
+
+    .shuiyin2 {
+        position: absolute;
+        height: 40px;
+        width: 40px;
+        bottom: 0;
+        left: 0;
+    }
+
+    .shuiyin3 {
+        position: absolute;
+        height: 40px;
+        width: 40px;
+        right: 0;
+        top: 0;
+    }
+    .shuiyin4 {
+        position: absolute;
+        height: 40px;
+        width: 40px;
+        right: 0;
+        bottom: 0;
+    }
+
+    .shuiyin5 {
+        position: absolute;
+        height: 40px;
+        width: 40px;
+        right: 50%;
+        bottom: 50%;
+        transform: translate(50%, 50%);
+    }
+
 }
 </style>
 

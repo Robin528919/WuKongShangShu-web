@@ -30,7 +30,7 @@
                 <template #default="scope">
                     <!-- <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)">修改</el-button> -->
                     <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)">删除</el-button>
-                    <!-- <el-button type="danger"  @click="disableFun(scope.row)">禁用</el-button> -->
+                    <el-button link type="danger"  @click="weiguiFun(scope.row)">违规检测</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -55,6 +55,10 @@ import { reactive, } from "vue";
 
 const { proxy } = getCurrentInstance();
 import { delBookGroup,getbookGroup,batchEnable } from "@/api/price/index"
+import { createTask } from "@/api/task/index"
+import { ElMessage } from "element-plus";
+
+
 
 const { page,open, query, tableList, searchFun,resetFun,closeFun,handleCurrentChange,handleSizeChange,getQueryList} = useTableListFun(getbookGroup)
 
@@ -72,6 +76,27 @@ const showSearch = ref(true);
 const ids = ref([]);
 const single = ref(true);
 const multiple = ref(true);
+// 违规 检测
+
+ const weiguiFun= async (row)=>{
+    let res = await createTask({
+        task_type: 4,  // 删除
+        task_params: {
+            book_group_id:row.group_id
+        },
+        task_name: "违规检测", // 任务名称
+        task_desc: "",// 任务描述
+    })
+    if(res&&res.code==200){
+        ElMessage({
+            type: "success",
+            message: "操作成功",
+        });
+    }
+
+}
+
+
 // 新增价格管理 弹出层相关内容-------------------
 
 const title = ref("");

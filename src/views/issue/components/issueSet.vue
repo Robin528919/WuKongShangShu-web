@@ -90,7 +90,6 @@
                             :value="item.group_id" />
                     </el-select>
                     <el-button type="primary" @click="getbookGroupFun">刷新分组</el-button>
-
                 </div>
 
             </el-form-item>

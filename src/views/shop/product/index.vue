@@ -50,6 +50,12 @@
                     <el-option :key="2" label="一口价" value="b" />
                 </el-select>
             </el-form-item>
+            <el-form-item label="选择分类：" :required="true">
+                <el-select v-model="query.aa" placeholder="选择分类" style="width: 240px" >
+                    <el-option v-for="item in categoryList" :key="item.cid" :label="item.name" :value="item.cid">
+                    </el-option>
+                </el-select>
+            </el-form-item>
             <el-form-item>
                 <el-button type="primary" icon="Search" @click="searchFun">查询</el-button>
                 <el-button icon="Refresh" @click="resetFun">重置</el-button>
@@ -138,7 +144,7 @@ import { useTableListFun } from "@/hooks/getTabel.js"
 import { category_info } from "@/api/price/index"
 import { createTask } from "@/api/task/index"
 const { proxy } = getCurrentInstance();
-import { getbookGroup } from "@/api/price/index"
+import { getbookGroup ,getCategory} from "@/api/price/index"
 //const { sys_yes_no } = proxy.useDict("sys_yes_no");
 import { getProductList } from "@/api/task/index"
 import { ElMessage, ElMessageBox } from 'element-plus'
@@ -321,6 +327,12 @@ function handleAdd() {
 
 
 
-
+// 店铺分类
+const categoryList = ref([])
+const categoryListFun = async () => {
+    let res = await getCategory({ current_page: 1, page_size: 10000 })
+    categoryList.value = res.data.seller_cats
+}
+categoryListFun()
 
 </script>

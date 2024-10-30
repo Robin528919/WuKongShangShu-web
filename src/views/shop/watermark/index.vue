@@ -18,12 +18,15 @@
         <el-row :gutter="10" class="mb8">
             <el-col :span="2" style="line-height: 100px;">水印位置:</el-col>
             <el-col :span="22" style="display: flex;">
-                <el-radio-group v-model="radio">
+                <el-radio-group v-model="radio" @change="handlePosition">
                     <el-radio v-for="item in position" :key="item.id" :value="item.id">{{ item.text }}</el-radio>
                 </el-radio-group>
                 <div style="display: flex;align-items: center;margin-left: 20px;">
-                    <el-button type="primary">水印预览</el-button>
-                    <div class="box"></div>
+                    <div class="box">
+                        <img :class="'shuiyin'+radio " src="../../../assets/logo/logo.png" alt="">
+                        <img style="height: 100px;width: 100px; border-radius: 10px;"
+                            src="../../../assets/images/profile.jpg" alt="">
+                    </div>
                 </div>
             </el-col>
         </el-row>
@@ -36,17 +39,21 @@
             </el-table-column>
             <el-table-column label="水印名称" align="center" prop="name" :show-overflow-tooltip="true" />
             <el-table-column label="水印id" align="center" prop="watermark_id" :show-overflow-tooltip="true" />
-            <el-table-column label="水印图片" align="center" prop="image_url" :show-overflow-tooltip="true" />
+            <el-table-column label="水印图片" align="center" prop="image_url" :show-overflow-tooltip="true">
+                <template #default="scope">
+                    <img style="height: 100%; width: 100%;" :src="computedImg(scope.row.image_url)" alt="">
+                </template>
+            </el-table-column>
             <el-table-column label="水印位置" align="center" prop="position" :show-overflow-tooltip="true">
                 <template #default="scope">
                     {{ translateFun(scope.row.position, position) }}
                 </template>
             </el-table-column>
             <el-table-column label="排序" align="center" prop="sort" :show-overflow-tooltip="true" />
-            <el-table-column label="是否禁用" align="center" prop="is_enable" :show-overflow-tooltip="true" >
+            <el-table-column label="是否禁用" align="center" prop="is_enable" :show-overflow-tooltip="true">
                 <template #default="scope">
-                <el-tag type="success" v-if="scope.row.is_enable" > 是</el-tag>
-                <el-tag type="error" v-else > 否</el-tag>
+                    <el-tag type="success" v-if="scope.row.is_enable"> 是</el-tag>
+                    <el-tag type="error" v-else> 否</el-tag>
                 </template>
             </el-table-column>
             <el-table-column label="操作" align="center" width="150" class-name="small-padding fixed-width">
@@ -73,15 +80,34 @@ import { delwatermark, getwatermarkList, batchEnable } from "@/api/price/index"
 const { page, open, query, tableList, searchFun, resetFun, closeFun, handleCurrentChange, handleSizeChange, getQueryList } = useTableListFun(getwatermarkList)
 const { proxy } = getCurrentInstance();
 import addPop from "./addPop"
+import { computed } from "vue";
 const loading = ref(false);
 const ids = ref([]);
 const single = ref(true);
 const multiple = ref(true);
 const title = ref("");
 const position = [{ id: 1, text: '左上角' }, { id: 2, text: '左下角' }, { id: 3, text: '右上角' }, { id: 4, text: '右下角' }, { id: 5, text: '正面' }]
-const radio = ref(null)
+const radio = ref(1)
 
+const handlePosition = (val) => {
+    if (val == 1) {
 
+    }
+    if (val == 2) {
+
+    }
+    if (val == 2) {
+
+    }
+    if (val == 4) {
+
+}
+}
+
+const computedImg=(str)=>{
+    return import.meta.env.VITE_APP_BASE_API +'/' + str
+
+}
 function translateFun(num, position) {
     let str = ''
     position.forEach(item => {
@@ -110,7 +136,7 @@ function handleAdd() {
 /** 修改按钮操作 */
 let editObj = reactive({})
 function handleUpdate(row) {
-    editObj=row
+    editObj = row
     open.value = true
     title.value = "修改水印"
 }
@@ -140,5 +166,47 @@ function handleDelete(row) {
     width: 100px;
     border: 1px solid yellow;
     margin-left: 20px;
+    position: relative;
+
+    .shuiyin1 {
+        position: absolute;
+        height: 40px;
+        width: 40px;
+        top: 0;
+        left: 0;
+    }
+
+    .shuiyin2 {
+        position: absolute;
+        height: 40px;
+        width: 40px;
+        bottom: 0;
+        left: 0;
+    }
+
+    .shuiyin3 {
+        position: absolute;
+        height: 40px;
+        width: 40px;
+        right: 0;
+        top: 0;
+    }
+    .shuiyin4 {
+        position: absolute;
+        height: 40px;
+        width: 40px;
+        right: 0;
+        bottom: 0;
+    }
+
+    .shuiyin5 {
+        position: absolute;
+        height: 40px;
+        width: 40px;
+        right: 50%;
+        bottom: 50%;
+        transform: translate(50%, 50%);
+    }
+
 }
 </style>
