@@ -35,11 +35,11 @@
                 </template>
             </el-table-column>
 
-            <el-table-column label="水印" align="center" prop="watermark_img" width="180">
+            <!-- <el-table-column label="水印" align="center" prop="watermark_img" width="180">
                 <template #default="scope" >
-                    <img style="height: 100px; width: 100px; object-fit: contain;" :src="scope.row.watermark_img" alt="">
+                    <img style="height: 100px; width: 100px; object-fit: contain;" :src="computedImg(scope.row.watermark_img)" alt="">
                 </template>
-            </el-table-column>
+            </el-table-column> -->
             <el-table-column label="淘宝店铺ID" align="center" prop="shop_id" :show-overflow-tooltip="true" />
             <el-table-column label="淘宝店铺名称" align="center" prop="shop_name" :show-overflow-tooltip="true" />
 
@@ -85,6 +85,12 @@ import { getReleaseRecord } from "@/api/admin/index"
 const { page, open, query, tableList, searchFun, resetFun, closeFun, handleCurrentChange, handleSizeChange, getQueryList } = useTableListFun(getReleaseRecord)
 
 console.log("getQueryList", getQueryList)
+
+const computedImg=(str)=>{
+    return import.meta.env.VITE_APP_BASE_API +'/' + str
+
+}
+
 
 const sys_yes_no = [{
     value: true,
