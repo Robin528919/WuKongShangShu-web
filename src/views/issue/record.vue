@@ -16,7 +16,7 @@
                 </el-select>
             </el-form-item> -->
             <el-form-item>
-                <el-button type="primary" icon="page" @click="searchFun">搜索</el-button>
+                <el-button type="primary" icon="Search" @click="searchFun">搜索</el-button>
                 <el-button icon="Refresh" @click="resetFun">重置</el-button>
             </el-form-item>
         </el-form>
@@ -32,6 +32,11 @@
             <el-table-column label="原图" align="center" prop="original_img" :show-overflow-tooltip="true">
                 <template #default="scope">
                     <img style="height: 100px; width: 100px; object-fit: contain;" :src="scope.row.original_img" alt="">
+                </template>
+            </el-table-column>
+            <el-table-column label="水印图片" align="center" prop="original_img" :show-overflow-tooltip="true">
+                <template #default="scope">
+                    <img style="height: 100px; width: 100px; object-fit: contain;" :src="computedImg(scope.row.watermarks[0])" alt="">
                 </template>
             </el-table-column>
 

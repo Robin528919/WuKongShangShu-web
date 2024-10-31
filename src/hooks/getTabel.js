@@ -22,7 +22,7 @@ export function useTableListFun(fetchFunction, deparams) {
     let body = {};
     try {
       loading.value = true;
-      console.log("fetchFunction",fetchFunction)
+     
       
         // 不是淘宝的接口
         if (deparams && Object.keys(deparams).length > 0) {
@@ -44,6 +44,11 @@ export function useTableListFun(fetchFunction, deparams) {
       if (response.data.items) {
         tableList.value = response.data.items;
         page.total = response.data.total_results;
+      }
+      if(deparams&&deparams.isTb&&!response.data.items){
+        tableList.value = []
+        page.total = response.data.total_results;
+
       }
     } catch (err) {
       console.log("errr", err);

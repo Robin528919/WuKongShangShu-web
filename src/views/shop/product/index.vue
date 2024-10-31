@@ -62,6 +62,7 @@
                 <el-button icon="Refresh" @click="resetFun">重置</el-button>
                 <el-button type="danger" @click="selectFun">多选删除</el-button>
                 <el-button type="danger" @click="selectAllFun">全量删除</el-button>
+                <el-button type="danger" @click="anTiaojian">按查询条件删除</el-button>
             </el-form-item>
         </el-form>
 
@@ -253,61 +254,54 @@ function selectAllFun() {
         })
 
 }
+// 
+function anTiaojian(){
+    ElMessageBox.confirm(
+        '确定按照条件删除？此操作不可逆',
+        '警告',
+        {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning',
+        }
+    )
+        .then(async () => {
+            delete query.isTb
+            let res = await createTask({
+                task_type: 3,  // 删除
+                task_params: {
+                   ...query
+                },
+                task_name: "按照查询条件删除", // 任务名称
+                task_desc: "",// 任务描述
+            })
+            if (res.code == 200) {
+                ElMessage({
+                    type: "success",
+                    message: "操作成功",
+                });
+                searchFun()
 
+            }
+        })
+        .catch(() => {
+            ElMessage({
+                type: 'info',
+                message: '已经取消',
+            })
+        })
 
-
-
-/** 取消按钮 */
-function cancel() {
-    open.value = false;
-    reset();
 }
 
-/** 表单重置 */
-function reset() {
-    form.value = {
-        configId: undefined,
-        configName: undefined,
-        configKey: undefined,
-        configValue: undefined,
-        configType: "Y",
-        remark: undefined
-    };
-    proxy.resetForm("configRef");
-}
-// :0-等待发布 2-发布成功 3-发布失败 4-同步失败
 
-const publish_status = [
-    {
-        label: "等待发布",
-        value: 0
-    },
-    {
-        label: "发布成功",
-        value: 2
-    },
-    {
-        label: "发布失败",
-        value: 3
-    },
-    {
-        label: "同步失败",
-        value: 4
 
-    }
-]
 
-/** 搜索按钮操作 */
-function handleQuery() {
-    searchFun();
-}
 
-/** 重置按钮操作 */
-function resetQuery() {
-    dateRange.value = [];
-    proxy.resetForm("queryRef");
-    handleQuery();
-}
+
+
+
+/*=
+
 
 /** 多选框选中数据 */
 function handleSelectionChange(selection) {
@@ -316,12 +310,7 @@ function handleSelectionChange(selection) {
 
 
 
-/** 新增按钮操作 */
-function handleAdd() {
-    reset();
-    open.value = true;
-    title.value = "添加参数";
-}
+
 
 
 

@@ -43,6 +43,9 @@
                 <el-date-picker v-model="timeArr" value-format="YYYY-MM-DD" type="daterange" range-separator="-"
                     start-placeholder="开始日期" @change="changeTime" end-placeholder="结束日期"></el-date-picker>
             </el-form-item>
+            <el-form-item label="起始页：">
+                <el-input-number v-model="form.task_params.page" :min="1" :max="10000000000" style="width: 240px;" />
+            </el-form-item>
             <el-form-item label="采集数量：">
                 <el-input-number v-model="form.task_params.num" :min="1" :max="10000000000" style="width: 240px;" />
             </el-form-item>
@@ -80,6 +83,7 @@ const form = reactive({
         book_category: "全部",
         name: "",
         book_group_id: "",
+        page:1,
       
 
     },
@@ -138,50 +142,12 @@ const submitFun = async () => {
 
     }
 }
-// 发布任务
-
-const publishFun = async () => {
-
-    form.task_params.shop_ids = form.task_params.shop_ids.split(",")
-    let obj = {
-        "shop_ids": [
-            757192
-
-        ],
-        "start_time": null,
-        "end_time": null,
-        "num": 100,
-        "is_vip": false,
-        "book_category": "all",
-        "name": "精包增织题图"
-    }
-    let res = await publish(form)
-    if (res.code == 200) {
-       
-        ElMessage.success("发布任务成功")
-    }
-}
 
 
 
 
-const bookType = [{
-    value: 'all',
-    label: '全部'
 
-}, {
-    value: 'cat',
-    label: '文学'
-}]
 
-const taskType = [{
-    value: 1,
-    label: '任务类型1'
-
-}, {
-    value:2,
-    label: '任务类型2'
-}]
 
 </script>
 <style scoped lang='scss'>
