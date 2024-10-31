@@ -10,6 +10,9 @@
             <el-form-item label="加价">
                 <el-input v-model="query.add_price" placeholder="请输入参数名称" clearable style="width: 240px" />
             </el-form-item>
+            <el-form-item label="任务ID">
+                <el-input v-model="query.task_id" placeholder="请输入参数名称" clearable style="width: 240px" />
+            </el-form-item>
             <!-- <el-form-item label="启用状态" prop="configType">
                 <el-select v-model="queryParams.configType" placeholder="系统内置" clearable>
                     <el-option v-for="dict in sys_yes_no" :key="dict.value" :label="dict.label" :value="dict.value" />
