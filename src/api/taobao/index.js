@@ -84,3 +84,15 @@ export function getTemplate(data) {
     })
   }
 
+// 获取授权信息
+
+export function tbInfo(data) {
+  return request({
+    url: "tb/info",
+    headers: {
+      isToken: true
+    },
+    method: 'get',
+   // data: data
+  })
+}

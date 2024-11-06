@@ -172,19 +172,19 @@ function getList() {
 const publish_status = [
     {
         label: "等待发布",
-        value: 0
+        value: '0'
     },
     {
         label: "发布成功",
-        value: 2
+        value: '2'
     },
     {
         label: "发布失败",
-        value: 3
+        value: '3'
     },
     {
         label: "同步失败",
-        value: 4
+        value: '4'
 
     }
 ]
