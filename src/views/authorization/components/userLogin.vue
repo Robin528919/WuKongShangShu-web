@@ -72,7 +72,7 @@ const getTbMsg = async () => {
 getTbMsg()
 
 //  获取淘宝信息成功{
-const tbinfoDetail = ref(null)
+const tbinfoDetail = ref({})
 function tbInfoFun(){
   tbInfo().then(res => {
     tbinfoDetail.value = res.data

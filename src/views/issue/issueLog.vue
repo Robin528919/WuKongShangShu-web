@@ -172,7 +172,11 @@ const statusOptions = ref([
     {
         value: "8",
         label: "已取消",
-    }
+    },
+    {
+        label: "任务初始化中",
+        value: 9
+    },
 
 ])
 // 

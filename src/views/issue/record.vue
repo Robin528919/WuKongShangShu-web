@@ -53,8 +53,8 @@
 
             <el-table-column label="图书ID" align="center" prop="book_id" :show-overflow-tooltip="true" />
             <el-table-column label="图书名称" align="center" prop="book_name" :show-overflow-tooltip="true" />
-            <el-table-column label="原价" align="center" prop="original_price" :show-overflow-tooltip="true" />
-            <el-table-column label="加价" align="center" prop="add_price" :show-overflow-tooltip="true" />
+            <el-table-column label="原价" align="center" prop="original_price" width="80" :show-overflow-tooltip="true" />
+            <el-table-column label="加价" align="center" prop="add_price" width="80" :show-overflow-tooltip="true" />
             <el-table-column label="发布结果" align="center" prop="publish_result" :show-overflow-tooltip="true" />
             <el-table-column label="淘宝链接" align="center" prop="tb_url" :show-overflow-tooltip="true">
                 

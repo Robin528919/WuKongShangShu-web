@@ -197,6 +197,10 @@ const statusOptions = [
         label: "已超时",
         value: 8
     },
+    {
+        label: "任务初始化中",
+        value: 9
+    },
 ]
 
 function transform(data, code) {
