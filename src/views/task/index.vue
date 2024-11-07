@@ -17,20 +17,7 @@
                 <el-button type="danger" plain>清空采集过滤数据</el-button> -->
             </el-form-item>
         </el-form>
-        <!-- <el-row :gutter="10" class="mb8">
-            <el-col :span="1.5" style="line-height: 28px;">
-                <span>自动刷新(秒)</span>
-            </el-col>
-            <el-col :span="1.5">
-                <el-input-number />
-            </el-col>
-            <el-col :span="1.5">
-                <el-button type="primary">开始</el-button>
-            </el-col>
-            <el-col :span="1.5">
-                <el-button type="primary" @click="handleQuery">手动刷新</el-button>
-            </el-col>
-        </el-row> -->
+       
         <el-table v-loading="loading" :data="tableList" @selection-change="handleSelectionChange">
             <el-table-column type="selection" width="55" align="center" />
             <el-table-column label="序号" align="center" width="80" prop="configId">

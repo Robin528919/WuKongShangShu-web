@@ -20,7 +20,7 @@
             </el-form-item> -->
             <el-form-item>
                 <el-button type="primary" icon="Search" @click="searchFun">搜索</el-button>
-                <el-button icon="Refresh" @click="resetFun">重置</el-button>
+                <el-button icon="Refresh" @click="resetFunaa">重置</el-button>
             </el-form-item>
         </el-form>
 
@@ -39,7 +39,8 @@
             </el-table-column>
             <el-table-column label="水印图片" align="center" prop="original_img" :show-overflow-tooltip="true">
                 <template #default="scope">
-                    <img style="height: 100px; width: 100px; object-fit: contain;" :src="computedImg(scope.row.watermarks[0])" alt="">
+                    <img style="height: 100px; width: 100px; object-fit: contain;"
+                        :src="computedImg(scope.row.watermarks[0])" alt="">
                 </template>
             </el-table-column>
 
@@ -55,9 +56,22 @@
             <el-table-column label="图书名称" align="center" prop="book_name" :show-overflow-tooltip="true" />
             <el-table-column label="原价" align="center" prop="original_price" width="80" :show-overflow-tooltip="true" />
             <el-table-column label="加价" align="center" prop="add_price" width="80" :show-overflow-tooltip="true" />
-            <el-table-column label="发布结果" align="center" prop="publish_result" :show-overflow-tooltip="true" />
+            <el-table-column label="发布结果" align="center" prop="publish_result" width="200">
+                <template #default="scope">
+                    <el-popover placement="top-start" title="发布接口详情" :width="300" trigger="hover"
+                        :content="scope.row.publish_result">
+                        <template #reference>
+                            <div
+                                style="white-space: nowrap; overflow: hidden;  text-overflow: ellipsis;  width: 200px;">
+                                {{ scope.row.publish_result }}</div>
+                        </template>
+                    </el-popover>
+
+                </template>
+
+            </el-table-column>
             <el-table-column label="淘宝链接" align="center" prop="tb_url" :show-overflow-tooltip="true">
-                
+
                 <template #default="scope">
                     <el-link :href="scope.row.tb_url" :underline="false" target="_blank">
                         {{ scope.row.tb_url }}
@@ -85,17 +99,48 @@ import { useTableListFun } from "@/hooks/getTabel.js"
 
 
 
-import { reactive, } from "vue";
-
+import { onMounted, reactive, } from "vue";
+import { useRoute } from "vue-router";
+const route = useRoute();
+console.log("route.query", route.query)
 const { proxy } = getCurrentInstance();
 import { getReleaseRecord } from "@/api/admin/index"
+let urlQuery = route.query
+let parms = {
+    task_id: urlQuery.task_id
+}
+if (urlQuery.id) {
+    parms = {
+        task_id: urlQuery.id
+    }
+} else {
+    parms = {}
+}
 
-const { page, open, query, tableList, searchFun, resetFun, closeFun, handleCurrentChange, handleSizeChange, getQueryList } = useTableListFun(getReleaseRecord)
+
+const { page, open, query, tableList, searchFun, resetFun, closeFun, handleCurrentChange, handleSizeChange, getQueryList } = useTableListFun(getReleaseRecord, parms)
+
+const resetFunaa = () => {
+    // 获取当前的哈希路径部分，不包含查询参数
+
+    if (urlQuery.id) {
+        query.task_id = ''
+        const newHash = window.location.hash.split('?')[0];
+        window.location.href = `${window.location.origin}${window.location.pathname}${newHash}`;
+        window.location.reload();
+    } else {
+        resetFun()
+    }
+}
+
+
+
+
 
 console.log("getQueryList", getQueryList)
 
-const computedImg=(str)=>{
-    return import.meta.env.VITE_APP_BASE_API +'/' + str
+const computedImg = (str) => {
+    return import.meta.env.VITE_APP_BASE_API + '/' + str
 
 }
 

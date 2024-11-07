@@ -2,7 +2,7 @@ import { pa } from "element-plus/es/locales.mjs";
 import { ref, reactive } from "vue";
 
 export function useTableListFun(fetchFunction, deparams) {
-  console.log("fetchFunctionfetchFunction", fetchFunction);
+  console.log("fetchFunctionfetchFunction", deparams);
   // 拿到全局方法
   const { proxy } = getCurrentInstance();
   // 分页相关内容
@@ -22,18 +22,16 @@ export function useTableListFun(fetchFunction, deparams) {
     let body = {};
     try {
       loading.value = true;
-     
-      
-        // 不是淘宝的接口
-        if (deparams && Object.keys(deparams).length > 0) {
-          query = Object.assign(query, deparams);
-        }
-        body = proxy.objToArrayFun(query);
-        params = { ...page, body };
-        console.log("不是淘宝接口----------");
-      
-      if(deparams&&deparams.isTb){
-      
+
+      // 不是淘宝的接口
+      if (deparams && Object.keys(deparams).length > 0) {
+        query = Object.assign(query, deparams);
+      }
+      body = proxy.objToArrayFun(query);
+      params = { ...page, body };
+      console.log("不是淘宝接口----------");
+
+      if (deparams && deparams.isTb) {
         params = { ...page, ...query };
       }
       const response = await fetchFunction(params);
@@ -45,10 +43,9 @@ export function useTableListFun(fetchFunction, deparams) {
         tableList.value = response.data.items;
         page.total = response.data.total_results;
       }
-      if(deparams&&deparams.isTb&&!response.data.items){
-        tableList.value = []
+      if (deparams && deparams.isTb && !response.data.items) {
+        tableList.value = [];
         page.total = response.data.total_results;
-
       }
     } catch (err) {
       console.log("errr", err);
@@ -68,7 +65,7 @@ export function useTableListFun(fetchFunction, deparams) {
   // 重置
 
   const resetFun = () => {
-    console.log("queryquery", query);
+ 
     for (let key in query) {
       if (query.hasOwnProperty(key)) {
         query[key] = "";
