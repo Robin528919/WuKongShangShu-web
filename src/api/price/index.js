@@ -265,7 +265,7 @@ export function getcache(data) {
   });
 }
 
-export function setcache(data,cache_type) {
+export function setcache(data, cache_type) {
   return request({
     url: `cache?cache_type=${cache_type}`,
     headers: {
@@ -288,4 +288,24 @@ export function uploadImage(data) {
     data: data, //data: data
   });
 }
- 
+
+// api 调用记录 price/index  /api/v1/api/call/logs
+
+export function getCallLogs(data) {
+  
+  let str = "";
+  if (data && data.body && Array.isArray(data.body)) {
+    data.body.forEach((item) => {
+      str += item.field + "=" + item.value + "&";
+    });
+  }
+  console.log("paramsparams",data, str);
+  return request({
+    url: `/api/call/logs?${str}`,
+    headers: {
+      isToken: true,
+    },
+    method: "get",
+    //params: data,
+  });
+}

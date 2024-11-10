@@ -122,7 +122,6 @@ const { page, open, query, tableList, searchFun, resetFun, closeFun, handleCurre
 
 const resetFunaa = () => {
     // 获取当前的哈希路径部分，不包含查询参数
-
     if (urlQuery.id) {
         query.task_id = ''
         const newHash = window.location.hash.split('?')[0];

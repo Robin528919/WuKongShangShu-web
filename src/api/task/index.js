@@ -100,3 +100,15 @@ export function stop(id) {
     method: "post",
   });
 }
+// 获取库存商品 /api/v1/tb/inventory_list
+
+export function getInventoryList(data) {
+  return request({
+    url: `/tb/inventory_list`,
+    headers: {
+      isToken: true,
+    },
+    method: "post",
+    data: data,
+  });
+}

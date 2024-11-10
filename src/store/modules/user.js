@@ -5,6 +5,7 @@ import defAva from "@/assets/images/profile.jpg";
 const useUserStore = defineStore("user", {
   state: () => ({
     token: getToken(),
+    is_superuser: localStorage.getItem("is_superuser")?localStorage.getItem("is_superuser"):0,
     id: "",
     name: "",
     avatar: "",
@@ -26,6 +27,8 @@ const useUserStore = defineStore("user", {
           .then((res) => {
             setToken(res.data.token);
             this.token = res.data.token;
+            this.is_superuser = res.data.is_superuser;
+            localStorage.setItem("is_superuser",res.data.is_superuser);
             resolve();
           })
           .catch((error) => {

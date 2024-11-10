@@ -38,7 +38,7 @@ service.interceptors.request.use(
     }
     // get请求映射params参数
     if ((config.method === "get" && config.params)) {
-      let url = config.url + "?" + tansParams(config.data);
+      let url = config.url + "?" + tansParams(config.params);
       console.log("is_enableis_enable",url)
       url = url.slice(0, -1);
       config.params = {};

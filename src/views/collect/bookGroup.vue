@@ -21,16 +21,12 @@
             </el-table-column>
             <el-table-column label="分组名称" align="center" prop="group_name" :show-overflow-tooltip="true" />
             <el-table-column label="分组描述" align="center" prop="description" :show-overflow-tooltip="true" />
-            <!-- <el-table-column label="创建时间" align="center" prop="createTime" width="180">
-                <template #default="scope">
-                    <span>{{ parseTime(scope.row.createTime) }}</span>
-                </template>
-            </el-table-column> -->
             <el-table-column label="操作" align="center" width="250" class-name="small-padding fixed-width">
                 <template #default="scope">
                     <!-- <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)">修改</el-button> -->
+                    <el-button link type="primary" icon="View" @click="lookResult(scope.row)">查看</el-button>
                     <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)">删除</el-button>
-                    <el-button link type="danger"  @click="weiguiFun(scope.row)">违规检测</el-button>
+                    <el-button link type="danger" @click="weiguiFun(scope.row)">违规检测</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -54,20 +50,22 @@ import addPop from "./components/addPop.vue"
 import { reactive, } from "vue";
 
 const { proxy } = getCurrentInstance();
-import { delBookGroup,getbookGroup,batchEnable } from "@/api/price/index"
+import { delBookGroup, getbookGroup, batchEnable } from "@/api/price/index"
 import { createTask } from "@/api/task/index"
 import { ElMessage } from "element-plus";
+const router = useRouter();
+const lookResult = (row) => {
+    router.push({ path: '/collect/result', query: { group_id: row.group_id } })
+}
 
+const { page, open, query, tableList, searchFun, resetFun, closeFun, handleCurrentChange, handleSizeChange, getQueryList } = useTableListFun(getbookGroup)
 
-
-const { page,open, query, tableList, searchFun,resetFun,closeFun,handleCurrentChange,handleSizeChange,getQueryList} = useTableListFun(getbookGroup)
-
-console.log("getQueryList",getQueryList)
+console.log("getQueryList", getQueryList)
 
 const sys_yes_no = [{
     value: true,
     label: '是'
-},{
+}, {
     value: false,
     label: '否'
 }]
@@ -78,16 +76,16 @@ const single = ref(true);
 const multiple = ref(true);
 // 违规 检测
 
- const weiguiFun= async (row)=>{
+const weiguiFun = async (row) => {
     let res = await createTask({
         task_type: 4,  // 删除
         task_params: {
-            book_group_id:row.group_id
+            book_group_id: row.group_id
         },
         task_name: "违规检测", // 任务名称
         task_desc: "",// 任务描述
     })
-    if(res&&res.code==200){
+    if (res && res.code == 200) {
         ElMessage({
             type: "success",
             message: "操作成功",
@@ -107,7 +105,7 @@ function addFun() {
 /** 修改按钮操作 */
 let editObj = reactive({})
 function handleUpdate(row) {
-    editObj=row
+    editObj = row
     open.value = true
     title.value = "修改"
 }
@@ -118,49 +116,20 @@ function handleSelectionChange(selection) {
     multiple.value = !selection.length;
 }
 
-// 批量启用 禁用价格
-
-const someDisableFun = async ()=>{
-    if(ids.value.length==0) return  proxy.$modal.msgWarning("请选择要操作的数据")
-  let res = await batchEnable({
-    ids:ids.value,
-    is_enable:0
-  })
-  if(res.code==200){
-    proxy.$modal.msgSuccess("操作成功");
-    getQueryList()
-  }
-}
-// 启用价格
-
-const someTrueFun = async ()=>{
-    if(ids.value.length==0) return  proxy.$modal.msgWarning("请选择要操作的数据")
-  let res = await batchEnable({
-    ids:ids.value,
-    is_enable:1
-  })
-  if(res.code==200){
-    proxy.$modal.msgSuccess("操作成功");
-    getQueryList()
-  }
-}
-
-
-
 
 
 
 /** 删除按钮操作 */
 function handleDelete(row) {
     const configIds = row.group_id || ids.value;
-    proxy.$modal.confirm('确定删除').then(async ()=> {
-         let res = await delBookGroup(configIds);
-         console.log("删除成功----",res)
-         if(res.code==200){
+    proxy.$modal.confirm('确定删除').then(async () => {
+        let res = await delBookGroup(configIds);
+        console.log("删除成功----", res)
+        if (res.code == 200) {
             proxy.$modal.msgSuccess("删除成功");
-           getQueryList()
-            
-         }
+            getQueryList()
+
+        }
     })
 }
 

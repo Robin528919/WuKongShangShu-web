@@ -206,6 +206,7 @@ export function handleTree(data, id, parentId, children) {
 * @param {*} params  参数
 */
 export function tansParams(params) {
+  console.log("tansParamstansParams",params)
   let result = ''
   for (const propName of Object.keys(params)) {
     const value = params[propName];

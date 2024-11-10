@@ -5,7 +5,7 @@
                 <el-input v-model="query.item_name" placeholder="图书名称" clearable style="width: 240px" />
             </el-form-item>
             <el-form-item label="图书分组">
-                <el-select v-model="query.group_id" placeholder="请选择" clearable style="width: 240px">
+                <el-select v-model="query.group_id" placeholder="请选择"  style="width: 240px">
                     <el-option v-for="dict in bookGroupList" :key="dict.group_id" :label="dict.group_name"
                         :value="dict.group_id" />
                 </el-select>
@@ -28,7 +28,7 @@
 
             <el-form-item>
                 <el-button type="primary" icon="Search" @click="searchFun">查询</el-button>
-                <el-button icon="Refresh" @click="resetFun">重置</el-button>
+                <el-button icon="Refresh" @click="resetFuna">重置</el-button>
                 <el-button type="danger" @click="delAllFun">清空指定分组所有数据</el-button>
                 <el-button type="danger" @click="deltiFun">根据条件删除(除分组外)</el-button>
                 <el-button type="danger" @click="delselectFun">多选删除</el-button>
@@ -107,7 +107,14 @@ import { getbookGroup } from "@/api/price/index"
 //const { sys_yes_no } = proxy.useDict("sys_yes_no");
 import { getQueryBook, delBook, seleDelBook } from "@/api/task/index"
 import { ElMessage } from "element-plus";
-const { page, open, query, transform, tableList, searchFun, resetFun, closeFun, handleCurrentChange, handleSizeChange } = useTableListFun(getQueryBook)
+const route = useRoute();
+console.log("/collect/result",route.query);
+let parmas={}
+if(route.query&&route.query.group_id){
+    parmas.group_id = Number(route.query.group_id) 
+}
+
+const { page, open, query, transform, tableList, searchFun, resetFun,  handleCurrentChange, handleSizeChange } = useTableListFun(getQueryBook,parmas)
 
 
 
@@ -122,22 +129,17 @@ const total = ref(0);
 const title = ref("");
 const dateRange = ref([]);
 
-const data = reactive({
-    form: {},
-    queryParams: {
-        pageNum: 1,
-        pageSize: 10,
-        configName: undefined,
-        configKey: undefined,
-        configType: undefined
-    },
-    rules: {
-        configName: [{ required: true, message: "参数名称不能为空", trigger: "blur" }],
-        configKey: [{ required: true, message: "参数键名不能为空", trigger: "blur" }],
-        configValue: [{ required: true, message: "参数键值不能为空", trigger: "blur" }]
+function resetFuna() {
+    // 获取当前的哈希路径部分，不包含查询参数
+    if (route.query&&route.query.group_id) {
+        query.group_id = ''
+        const newHash = window.location.hash.split('?')[0];
+        window.location.href = `${window.location.origin}${window.location.pathname}${newHash}`;
+        window.location.reload();
+    } else {
+        resetFun()
     }
-});
-
+}
 
 // 图书分组
 let bookGroupList = ref([])

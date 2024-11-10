@@ -138,14 +138,27 @@ export const constantRoutes = [
     ],
   },
   {
-    path: "/admin",
+    path: "/shop",
     component: Layout,
     redirect: "noRedirect",
     children: [
       {
+        path: "store", // /Users/wkm/vue3c/wkbook/src/views/shop/product/index.vue
+        component: () => import("@/views/shop/product/store"),
+        name: "store",
+        meta: { title: "库存商品", icon: "international", affix: true },
+      },
+    ],
+  },
+  {
+    path: "/admin",
+    component: Layout,
+    redirect: "noRedirect",
+    hidden: localStorage.getItem("is_superuser")==1?false:true,
+    children: [
+      {
         path: "word",
         component: () => import("@/views/admin/word"),
-        // component: () => import("@/views/system/user/index"),
         name: "word",
         meta: { title: "管理员词库", icon: "peoples", affix: true },
       },
@@ -331,13 +344,29 @@ export const constantRoutes = [
     path: "/userm",
     component: Layout,
     redirect: "noRedirect",
+    hidden: localStorage.getItem("is_superuser")==1?false:true,
     children: [
       {
         path: "index",
         component: () => import("@/views/system/user/index"),
         // component: () => import("@/views/system/user/index"),
         name: "userm",
-        meta: { title: "用户管理", icon: "peoples", affix: true },
+        meta: { title: "用户管理", icon: "peoples" },
+      },
+    ],
+  },
+  {
+    path: "/userm",
+    component: Layout,
+    redirect: "noRedirect",
+    //hidden: localStorage.getItem("is_superuser")==1?false:true,
+    children: [
+      {
+        path: "apiRecord",
+        component: () => import("@/views/system/user/apiRecord"),
+        // component: () => import("@/views/system/user/index"),
+        name: "apiRecord",
+        meta: { title: "API记录", icon: "peoples" },
       },
     ],
   },
