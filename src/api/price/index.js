@@ -309,3 +309,37 @@ export function getCallLogs(data) {
     //params: data,
   });
 }
+
+// /api/v1/admin/api/call/logs
+
+export function getCallLogsAdmin(data) {
+  
+  let str = "";
+  if (data && data.body && Array.isArray(data.body)) {
+    data.body.forEach((item) => {
+      str += item.field + "=" + item.value + "&";
+    });
+  }
+  console.log("paramsparams",data, str);
+  return request({
+    url: `/admin/api/call/logs?${str}`,
+    headers: {
+      isToken: true,
+    },
+    method: "get",
+    //params: data,
+  });
+}
+
+// 管理员-任务 /api/v1/admin/tasks/query  /api/v1/admin/tasks/query
+
+export function getTaskListAdmin(data) {
+  return request({
+    url: "/admin/tasks/query",
+    headers: {
+      isToken: true,
+    },
+    method: "post",
+    data: data,
+  });
+}

@@ -112,3 +112,32 @@ export function getInventoryList(data) {
     data: data,
   });
 }
+
+
+
+// 查询任务列表
+export function getTaskListAdmin(data) {
+  return request({
+    url: `/admin/tasks/query?page=${data.current_page}&page_size=${data.page_size}`,
+    headers: {
+      isToken: true,
+    },
+    method: "post",
+    data: data.body,
+  });
+}
+
+// /api/v1/admin/tasks/stop/{task_id} 查询 房贷首付是的
+
+
+// 停止采集 /api/v1/admin/tasks/stop/{task_id}
+export function stopAdmin(id) {
+  return request({
+    url: `/admin/tasks/stop/${id}`,
+    headers: {
+      isToken: true,
+    },
+    method: "post",
+  });
+}
+

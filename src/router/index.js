@@ -163,18 +163,44 @@ export const constantRoutes = [
       },
     ],
   },
+  // 
+
+  
   {
     path: "/admin",
     component: Layout,
     redirect: "noRedirect",
+    meta: { title: "管理员菜单", icon: "lock" },
     hidden: localStorage.getItem("is_superuser")==1?false:true,
     children: [
       {
         path: "word",
         component: () => import("@/views/admin/word"),
         name: "word",
-        meta: { title: "管理员词库", icon: "peoples", affix: true },
+        meta: { title: "管理员词库", icon: "peoples",  },
       },
+      {  // 查询任务 /Users/wkm/vue3c/wkbook/src/views/admin/task.vue
+        path: "admintask",
+        component: () => import("@/views/admin/task"),
+        name: "admintask",
+        meta: { title: "管理员任务", icon: "peoples", },
+      },
+      {
+        path: "adApiRecord",  // src/views/admin/adApiRecord.vue
+        component: () => import("@/views/admin/adApiRecord"),
+        // component: () => import("@/views/system/user/index"),
+        name: "adApiRecord",
+        meta: { title: "管理员API记录", icon: "peoples" },
+      },
+      {
+        path: "index",
+        component: () => import("@/views/system/user/index"),
+        // component: () => import("@/views/system/user/index"),
+        name: "userm",
+        meta: { title: "用户管理", icon: "peoples" },
+      },
+
+
     ],
   },
   {
@@ -353,36 +379,22 @@ export const constantRoutes = [
       },
     ],
   },
-  {
-    path: "/userm",
-    component: Layout,
-    redirect: "noRedirect",
-    hidden: localStorage.getItem("is_superuser")==1?false:true,
-    children: [
-      {
-        path: "index",
-        component: () => import("@/views/system/user/index"),
-        // component: () => import("@/views/system/user/index"),
-        name: "userm",
-        meta: { title: "用户管理", icon: "peoples" },
-      },
-    ],
-  },
-  {
-    path: "/userm",
-    component: Layout,
-    redirect: "noRedirect",
-    hidden: localStorage.getItem("is_superuser")==1?false:true,
-    children: [
-      {
-        path: "index",
-        component: () => import("@/views/system/user/index"),
-        // component: () => import("@/views/system/user/index"),
-        name: "userm",
-        meta: { title: "用户管理", icon: "peoples" },
-      },
-    ],
-  },
+  // {
+  //   path: "/userm",
+  //   component: Layout,
+  //   redirect: "noRedirect",
+  //   hidden: localStorage.getItem("is_superuser")==1?false:true,
+  //   children: [
+  //     {
+  //       path: "index",
+  //       component: () => import("@/views/system/user/index"),
+  //       // component: () => import("@/views/system/user/index"),
+  //       name: "userm",
+  //       meta: { title: "用户管理", icon: "peoples" },
+  //     },
+  //   ],
+  // },
+ 
   {
     path: "/userm",
     component: Layout,
@@ -398,6 +410,8 @@ export const constantRoutes = [
       },
     ],
   },
+
+  
 ];
 // 动态路由，基于用户权限动态去加载
 export const dynamicRoutes = [];
@@ -415,3 +429,4 @@ const router = createRouter({
 });
 
 export default router;
+
