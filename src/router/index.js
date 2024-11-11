@@ -74,6 +74,19 @@ export const constantRoutes = [
       },
     ],
   },
+
+  {
+    path: "",
+    component: Layout,
+    children: [
+      {
+        path: "/topup", // /Users/wkm/vue3c/wkbook/src/views/topup/index.vue
+        component: () => import("@/views/topup/index"),
+        name: "topup",
+        meta: { title: "充值", icon: "dashboard" },
+      },
+    ],
+  },
   {
     path: "/shop",
     component: Layout,
@@ -337,6 +350,21 @@ export const constantRoutes = [
         component: () => import("@/views/system/user/profile/index"),
         name: "Profile",
         meta: { title: "个人中心", icon: "user" },
+      },
+    ],
+  },
+  {
+    path: "/userm",
+    component: Layout,
+    redirect: "noRedirect",
+    hidden: localStorage.getItem("is_superuser")==1?false:true,
+    children: [
+      {
+        path: "index",
+        component: () => import("@/views/system/user/index"),
+        // component: () => import("@/views/system/user/index"),
+        name: "userm",
+        meta: { title: "用户管理", icon: "peoples" },
       },
     ],
   },
