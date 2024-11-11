@@ -1,5 +1,6 @@
 <template>
     <div class="app-container">
+        <!-- 库存商品11111 -->
         <el-form :inline="true" v-show="showSearch" label-width="160px">
             <el-form-item label="商品标题：">
                 <el-input v-model="query.q" placeholder="图书名称" clearable style="width: 240px" />
@@ -203,6 +204,7 @@ const selectFun = async (id) => {
         task_type: 3,  // 删除
         task_params: {
             ids: multiple.value.map(item => item.num_iid),
+            is_in_stock:true ,
 
         },
         task_name: "删除商品", // 任务名称
@@ -232,6 +234,7 @@ function selectAllFun() {
                 task_type: 3,  // 删除
                 task_params: {
                     ids: [],
+                    is_in_stock:true ,
 
                 },
                 task_name: "删除商品", // 任务名称
@@ -270,7 +273,9 @@ function anTiaojian(){
             let res = await createTask({
                 task_type: 3,  // 删除
                 task_params: {
-                   ...query
+                   ...query,
+                   is_in_stock:true ,
+                   
                 },
                 task_name: "按照查询条件删除", // 任务名称
                 task_desc: "",// 任务描述

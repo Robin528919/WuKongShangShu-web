@@ -201,8 +201,10 @@ const selectFun = async (id) => {
     }
     let res = await createTask({
         task_type: 3,  // 删除
+
         task_params: {
             ids: multiple.value.map(item => item.num_iid),
+            is_in_stock:false ,
 
         },
         task_name: "删除商品", // 任务名称
@@ -232,6 +234,7 @@ function selectAllFun() {
                 task_type: 3,  // 删除
                 task_params: {
                     ids: [],
+                    is_in_stock:false ,
 
                 },
                 task_name: "删除商品", // 任务名称
@@ -270,7 +273,8 @@ function anTiaojian(){
             let res = await createTask({
                 task_type: 3,  // 删除
                 task_params: {
-                   ...query
+                   ...query,
+                   is_in_stock:false,
                 },
                 task_name: "按照查询条件删除", // 任务名称
                 task_desc: "",// 任务描述
