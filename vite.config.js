@@ -31,10 +31,10 @@ export default defineConfig(({ mode, command }) => {
       open: true,
       proxy: {
         // https://cn.vitejs.dev/config/#server-proxy "http://120.27.8.117/api/v1",
-        "/prod-api": {
-          target: "http://vue.ruoyi.vip", //http://vue.ruoyi.vip/dev-api/captchaImage
+        "/api": {
+          target: "http://120.27.8.117", //http://vue.ruoyi.vip/dev-api/captchaImage
           changeOrigin: true,
-          // rewrite: (p) => p.replace(/^\/prod-api/, '')
+          rewrite: (path) => path.replace(/^\/api/, ''), // 确保路径正确
         },
       },
     },

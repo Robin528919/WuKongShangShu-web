@@ -316,15 +316,6 @@ export const constantRoutes = [
           icon: "build",
         },
       },
-      {
-        path: "issueJf",
-        component: () => import("@/views/issue/issueJf"),
-        name: "issueJf",
-        meta: {
-          title: "发布计费",
-          icon: "money",
-        },
-      },
     ],
   },
 

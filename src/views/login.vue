@@ -54,9 +54,9 @@ const { proxy } = getCurrentInstance();
 console.log("proxy", proxy)
 /*
   email: "wkm@123.com",
-    password: "123456",
+    password: "123456",  .. 2422144784@qq.com jdy13254
       email: "admin123@qq.com",
-    password: "admin123",
+    password: "admin123", 
 */
 const loginForm = ref({
     email: "",

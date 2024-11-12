@@ -40,8 +40,7 @@
                     <el-tag v-else type="error">失败</el-tag>
                 </template>
             </el-table-column>
-            <el-table-column label="描述" align="center" prop="remark" :show-overflow-tooltip="true" />
-            <el-table-column label="余额" align="center" prop="balance" :show-overflow-tooltip="true" />
+
             <!-- <el-table-column label="密码" align="center" prop="start_price" :show-overflow-tooltip="true" /> -->
             <!-- <el-table-column label="原价" align="center" prop="original_price" :show-overflow-tooltip="true" />
             <el-table-column label="运算符1" align="center" prop="operator1" :show-overflow-tooltip="true" />
@@ -56,13 +55,12 @@
                 </template>
             </el-table-column>
             -->
-            <el-table-column label="操作" align="center" width="250" class-name="small-padding fixed-width">
+            <!-- <el-table-column label="操作" align="center" width="250" class-name="small-padding fixed-width">
                 <template #default="scope">
                     <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)">修改</el-button>
-                    <!-- <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)">删除</el-button>
-                    <el-button type="danger"  @click="disableFun(scope.row)">禁用</el-button> -->
+                   
                 </template>
-            </el-table-column>
+            </el-table-column> -->
         </el-table>
         <div style="display: flex; justify-content: end;">
             <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
@@ -80,7 +78,7 @@
 import { useTableListFun } from "@/hooks/getTabel.js"
 import { getCallLogs } from "@/api/price/index"
 import addPop from "./addPop.vue"
-
+import { getUser } from "@/api/price/index"
 import { reactive, } from "vue";
 
 const { proxy } = getCurrentInstance();
