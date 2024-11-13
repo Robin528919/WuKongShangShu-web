@@ -9,35 +9,37 @@
                         </div>
                     </template>
                     <div>
-                        <!-- <div class="text-center">
-                            <userAvatar />
-                        </div> -->
                         <ul class="list-group list-group-striped">
                             <li class="list-group-item">
                                 <svg-icon icon-class="user" />用户名称
                                 <div class="pull-right">{{ state.user.userName }}</div>
                             </li>
                             <li class="list-group-item">
+                                <svg-icon icon-class="user" />用户id
+                                <div class="pull-right">{{ state.user.user_id }}</div>
+                            </li>
+                            <li class="list-group-item">
                                 <svg-icon icon-class="phone" />手机号码
-                                <div class="pull-right">{{ state.user.phonenumber }}</div>
+                                <div class="pull-right">{{ state.user.phone }}</div>
                             </li>
                             <li class="list-group-item">
                                 <svg-icon icon-class="email" />用户邮箱
-                                <div class="pull-right">{{ state.user.email }}</div>
+                                <div class="pull-right">{{state.user.email }}</div>
                             </li>
                             <li class="list-group-item">
                                 <svg-icon icon-class="peoples" />账号状态
-                                <div class="pull-right">正常</div>
+                                <div class="pull-right">{{state.user.status==0?'正常':'冻结'  }}</div>
                             </li>
                             <li class="list-group-item">
                                 <svg-icon icon-class="money" />账户余额
-                                <div class="pull-right">0.00元</div>
+                                <div class="pull-right"> {{ state.user.balance }}</div>
                             </li>
                             <li class="list-group-item">
-                                <svg-icon icon-class="date" />创建日期
-                                <div class="pull-right">{{ state.user.createTime }}</div>
+                                <svg-icon icon-class="date" />会员到期时间
+                                <div class="pull-right">{{ state.user.expire_time }}</div>
                             </li>
                         </ul>
+                        <el-button type="primary" @click="topUPStatus=true">立刻充值</el-button>
                     </div>
                 </el-card>
             </el-col>
@@ -60,6 +62,7 @@
                 </el-card>
             </el-col>
         </el-row>
+        <topUP :show="topUPStatus"  v-if="topUPStatus" @close="topUPStatus=false"/>
     </div>
 </template>
 
@@ -67,17 +70,25 @@
 import userAvatar from "./userAvatar";
 import userInfo from "./userInfo";
 import resetPwd from "./resetPwd";
-import { getUserProfile } from "@/api/system/user";
+import topUP from "@/views/topup/index";
 
+
+import { getUserInfo } from "@/api/price/index"
+
+
+import Cookies from "js-cookie";
 const activeTab = ref("resetPwd");
+
+const topUPStatus = ref(false)
 const state = reactive({
     user: {},
     roleGroup: {},
     postGroup: {}
 });
-
+const email = ref( Cookies.get("email"))
+ 
 function getUser() {
-    getUserProfile().then(response => {
+    getUserInfo().then(response => {
         state.user = response.data;
         state.roleGroup = response.roleGroup;
         state.postGroup = response.postGroup;

@@ -75,18 +75,18 @@ export const constantRoutes = [
     ],
   },
 
-  {
-    path: "",
-    component: Layout,
-    children: [
-      {
-        path: "/topup", // /Users/wkm/vue3c/wkbook/src/views/topup/index.vue
-        component: () => import("@/views/topup/index"),
-        name: "topup",
-        meta: { title: "充值", icon: "dashboard" },
-      },
-    ],
-  },
+  // {
+  //   path: "",
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: "/topup", // /Users/wkm/vue3c/wkbook/src/views/topup/index.vue
+  //       component: () => import("@/views/topup/index"),
+  //       name: "topup",
+  //       meta: { title: "充值", icon: "dashboard" },
+  //     },
+  //   ],
+  // },
   {
     path: "/shop",
     component: Layout,

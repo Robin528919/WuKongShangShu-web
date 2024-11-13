@@ -343,3 +343,29 @@ export function getTaskListAdmin(data) {
     data: data,
   });
 }
+
+// /api/v1/user/change_password
+
+export function change_passwordApi(data) {
+  console.log("change_passwordApi---",data)
+  return request({
+    url: "/user/change_password",
+    headers: {
+      isToken: true,
+    },
+    method: "post",
+    data: data,
+  });
+}
+
+// 获取用户信息
+
+export function getUserInfo() {
+  return request({
+    url: "/user",
+    headers: {
+      isToken: true,
+    },
+    method: "get",
+  });
+}

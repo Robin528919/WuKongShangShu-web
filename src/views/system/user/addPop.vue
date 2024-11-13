@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :title="title" destroy-on-close v-model="visible" width="500px" append-to-body>
+  <el-dialog :title="title" destroy-on-close v-model="visible" width="500px" @close="cancel" append-to-body>
     <el-form ref="configRef" label-width="80px">
 
       <el-form-item label="邮箱" :required="true">
@@ -15,8 +15,12 @@
         <el-input type="text" v-model="form.remark" />
       </el-form-item>
       <el-form-item label="余额">
-        <el-input-number v-model="form.balance" />
+        <el-input-number v-model="form.balance" min="0" />
       </el-form-item>
+      <el-form-item label="会员时间">
+        <el-input-number v-model="form.expire_days"  min="0"  />
+      </el-form-item>
+
 
 
 

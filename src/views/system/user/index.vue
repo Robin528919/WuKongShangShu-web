@@ -34,6 +34,8 @@
             </el-table-column>
             <el-table-column label="描述" align="center" prop="remark" :show-overflow-tooltip="true" />
             <el-table-column label="余额" align="center" prop="balance" :show-overflow-tooltip="true" />
+            
+            <el-table-column label="会员到期时间" align="center" prop="expire_time" :show-overflow-tooltip="true" />
             <!-- <el-table-column label="密码" align="center" prop="start_price" :show-overflow-tooltip="true" /> -->
             <!-- <el-table-column label="原价" align="center" prop="original_price" :show-overflow-tooltip="true" />
             <el-table-column label="运算符1" align="center" prop="operator1" :show-overflow-tooltip="true" />
