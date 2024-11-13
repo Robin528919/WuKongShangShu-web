@@ -30,7 +30,6 @@ const useUserStore = defineStore("user", {
             this.token = res.data.token;
             this.is_superuser = res.data.is_superuser;
             localStorage.setItem("is_superuser",res.data.is_superuser);
-            debugger
             resolve();
           })
           .catch((error) => {
