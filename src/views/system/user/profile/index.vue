@@ -9,9 +9,9 @@
                         </div>
                     </template>
                     <div>
-                        <div class="text-center">
+                        <!-- <div class="text-center">
                             <userAvatar />
-                        </div>
+                        </div> -->
                         <ul class="list-group list-group-striped">
                             <li class="list-group-item">
                                 <svg-icon icon-class="user" />用户名称
@@ -45,16 +45,17 @@
                 <el-card>
                     <template v-slot:header>
                         <div class="clearfix">
-                            <span>基本资料</span>
+                            <span>修改密码</span>
                         </div>
                     </template>
                     <el-tabs v-model="activeTab">
-                        <el-tab-pane label="基本资料" name="userinfo">
+                        <!-- <el-tab-pane label="基本资料" name="userinfo">
                             <userInfo :user="state.user" />
-                        </el-tab-pane>
-                        <el-tab-pane label="修改密码" name="resetPwd">
-                            <resetPwd />
-                        </el-tab-pane>
+                        </el-tab-pane> -->
+                        <resetPwd />
+                        <!-- <el-tab-pane label="修改密码" name="resetPwd">
+                          
+                        </el-tab-pane> -->
                     </el-tabs>
                 </el-card>
             </el-col>
@@ -68,7 +69,7 @@ import userInfo from "./userInfo";
 import resetPwd from "./resetPwd";
 import { getUserProfile } from "@/api/system/user";
 
-const activeTab = ref("userinfo");
+const activeTab = ref("resetPwd");
 const state = reactive({
     user: {},
     roleGroup: {},

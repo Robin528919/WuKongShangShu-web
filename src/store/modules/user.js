@@ -25,10 +25,12 @@ const useUserStore = defineStore("user", {
           password,
         })
           .then((res) => {
+            console.log("user/profileuser/profile",res)
             setToken(res.data.token);
             this.token = res.data.token;
             this.is_superuser = res.data.is_superuser;
             localStorage.setItem("is_superuser",res.data.is_superuser);
+            debugger
             resolve();
           })
           .catch((error) => {
