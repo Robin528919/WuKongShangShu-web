@@ -177,6 +177,10 @@ const statusOptions = ref([
         label: "任务初始化中",
         value: 9
     },
+    {
+        label: "停止中",
+        value: 10
+    },
 
 ])
 // 

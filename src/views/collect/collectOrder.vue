@@ -201,6 +201,10 @@ const statusOptions = [
         label: "任务初始化中",
         value: 9
     },
+    {
+        label: "停止中",
+        value: 10
+    },
 ]
 
 function transform(data, code) {
