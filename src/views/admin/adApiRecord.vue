@@ -1,17 +1,20 @@
 <template>
     <div class="app-container">
         <!-- v-show="showSearch" -->
-        <el-form ref="queryRef" :inline="true" label-width="68px">
+        <el-form ref="queryRef" :inline="true" label-width="100px">
             <el-form-item label="api名称">
                 <el-input v-model.trim="query.api_name" placeholder="请输入档位名称" clearable style="width: 240px" />
             </el-form-item>
             <el-form-item label="用户">
                 <!-- <el-input v-model.trim="query.user_id" placeholder="请输入档位名称" clearable style="width: 240px" /> -->
-                <el-select v-model="query.user_id" filterable remote reserve-keyword clearable
-                    placeholder="请选择用户" remote-show-suffix :remote-method="remoteMethod"
-                    :loading="loading" style="width: 240px">
+                <el-select v-model="query.user_id" filterable remote reserve-keyword clearable placeholder="请选择用户"
+                    remote-show-suffix :remote-method="remoteMethod" :loading="loading" style="width: 240px">
                     <el-option v-for="item in userList" :key="item.user_id" :label="item.email" :value="item.user_id" />
                 </el-select>
+            </el-form-item>
+            <el-form-item label="API调用时间">
+                <el-date-picker v-model="timeDate" @change="chageTimeFun" format="YYYY-MM-DD HH:mm:ss" value-format="YYYY-MM-DD HH:mm:ss" type="datetimerange" range-separator="到"
+                    start-placeholder="开始时间" end-placeholder="结束时间" />
             </el-form-item>
             <el-form-item label="是否收费">
                 <el-select v-model="query.is_charge" placeholder="全部" style="width: 120px" clearable>
@@ -19,9 +22,10 @@
                     <el-option :key="false" label="否" :value="'0'" />
                 </el-select>
             </el-form-item>
+          
             <el-form-item>
                 <el-button type="primary" icon="Search" @click="searchFun">搜索</el-button>
-                <el-button icon="Refresh" @click="resetFun">重置</el-button>
+                <el-button icon="Refresh" @click="resetFunTime">重置</el-button>
             </el-form-item>
         </el-form>
         <el-table v-loading="loading" :data="tableList" @selection-change="handleSelectionChange">
@@ -73,18 +77,23 @@ const { proxy } = getCurrentInstance();
 const { page, open, query, tableList, searchFun, resetFun, closeFun, handleCurrentChange, handleSizeChange, getQueryList } = useTableListFun(getCallLogsAdmin)
 
 
-const sys_yes_no = [{
-    value: true,
-    label: '是'
-}, {
-    value: false,
-    label: '否'
-}]
+const timeDate = ref([])
 const loading = ref(false);
 const showSearch = ref(true);
 const ids = ref([]);
 const single = ref(true);
 const multiple = ref(true);
+// 时间选择
+function chageTimeFun(arr){
+    if(arr&&Array.isArray(arr)){
+        query.start_time = arr[0]
+        query.end_time = arr[1]
+    }else{
+        query.start_time = ""
+        query.end_time = ""
+    }
+
+}
 // 新增价格管理 弹出层相关内容-------------------
 
 // 获取用户
@@ -138,6 +147,11 @@ function handleSelectionChange(selection) {
     ids.value = selection.map(item => item.configId);
     single.value = selection.length != 1;
     multiple.value = !selection.length;
+}
+
+const resetFunTime = ()=>{
+    resetFun()
+    timeDate.value = []
 }
 
 

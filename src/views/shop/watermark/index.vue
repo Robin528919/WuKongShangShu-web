@@ -41,7 +41,7 @@
             <el-table-column label="水印id" align="center" prop="watermark_id" :show-overflow-tooltip="true" />
             <el-table-column label="水印图片" align="center" prop="image_url" :show-overflow-tooltip="true">
                 <template #default="scope">
-                    <img style="height: 100%; width: 100%;" :src="computedImg(scope.row.image_url)" alt="">
+                    <img style="height: 100px; width: 100px;" :src="computedImg(scope.row.image_url)" alt="">
                 </template>
             </el-table-column>
             <el-table-column label="水印位置" align="center" prop="position" :show-overflow-tooltip="true">

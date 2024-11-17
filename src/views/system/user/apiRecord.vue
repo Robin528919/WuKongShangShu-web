@@ -1,9 +1,13 @@
 <template>
     <div class="app-container">
         <!-- v-show="showSearch" -->
-        <el-form ref="queryRef"  :inline="true"  label-width="68px">
+        <el-form ref="queryRef"  :inline="true"  label-width="100px">
             <el-form-item label="api名称">
                 <el-input v-model.trim="query.api_name" placeholder="请输入档位名称" clearable style="width: 240px" />
+            </el-form-item>
+            <el-form-item label="API调用时间">
+                <el-date-picker v-model="timeDate" @change="chageTimeFun" format="YYYY-MM-DD HH:mm:ss" value-format="YYYY-MM-DD HH:mm:ss" type="datetimerange" range-separator="到"
+                    start-placeholder="开始时间" end-placeholder="结束时间" />
             </el-form-item>
              <el-form-item label="是否收费" >
                 <el-select v-model="query.is_charge" placeholder="全部" style="width: 120px" clearable>
@@ -13,7 +17,7 @@
             </el-form-item> 
             <el-form-item>
                 <el-button type="primary" icon="Search" @click="searchFun">搜索</el-button>
-                <el-button icon="Refresh" @click="resetFun">重置</el-button>
+                <el-button icon="Refresh" @click="resetFunTime">重置</el-button>
                 <!-- <el-button type="primary" @click="addFun">新增</el-button>
                 <el-button type="danger" @click="handleQuery">批量禁用</el-button>
                 <el-button type="success" @click="handleQuery">批量启用</el-button> -->
@@ -100,6 +104,18 @@ const ids = ref([]);
 const single = ref(true);
 const multiple = ref(true);
 // 新增价格管理 弹出层相关内容-------------------
+const timeDate = ref([])
+// 时间选择
+function chageTimeFun(arr){
+    if(arr&&Array.isArray(arr)){
+        query.start_time = arr[0]
+        query.end_time = arr[1]
+    }else{
+        query.start_time = ""
+        query.end_time = ""
+    }
+
+}
 
 const title = ref("");
 function addFun() {
@@ -119,6 +135,12 @@ function handleSelectionChange(selection) {
     ids.value = selection.map(item => item.configId);
     single.value = selection.length != 1;
     multiple.value = !selection.length;
+}
+
+
+const resetFunTime = ()=>{
+    resetFun()
+    timeDate.value = []
 }
 
 
