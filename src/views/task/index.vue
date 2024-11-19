@@ -35,7 +35,8 @@
             </el-table-column>
             <el-table-column label="任务状态" width="100" align="center" prop="status" :show-overflow-tooltip="true">
                 <template #default="scope">
-                    {{ transform(statusOptions, scope.row.status) }}
+                    {{   task_statusArr[scope.row.status] }}
+                    <!-- {{ transform(statusOptions, scope.row.status) }} -->
                 </template>
             </el-table-column>
             <el-table-column label="结果内容" align="center" prop="result" :show-overflow-tooltip="true">
@@ -76,6 +77,8 @@ import { getQuery ,stop} from "@/api/task/index"
 import { ElMessage } from "element-plus";
 const { page, open, transform, loading, query, tableList, searchFun, resetFun, closeFun, handleCurrentChange, handleSizeChange, getQueryList } = useTableListFun(getQuery)
 const { proxy } = getCurrentInstance();
+
+const task_statusArr = JSON.parse(localStorage.getItem("codeArr")).task_status 
 //const { sys_yes_no } = proxy.useDict("sys_yes_no");
 function stopFun(row) {
     stop(row.task_id).then((res) => {

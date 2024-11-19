@@ -43,7 +43,7 @@
             </el-table-column>
             <el-table-column label="任务状态" align="center" prop="status" :show-overflow-tooltip="true">
                 <template #default="scope">
-                    {{ transform(statusOptions, scope.row.status) }}
+                    {{  task_statusArr[scope.row.status] }}
                 </template>
             </el-table-column>
             <el-table-column label="结果内容" align="center" prop="result" :show-overflow-tooltip="true" >
@@ -90,7 +90,7 @@ const { page, open, transform, loading, query, tableList, searchFun, resetFun, c
 const { proxy } = getCurrentInstance();
 import { ElMessage } from "element-plus";
 //const { sys_yes_no } = proxy.useDict("sys_yes_no");
-
+const task_statusArr = JSON.parse(localStorage.getItem("codeArr")).task_status 
 const configList = ref([]);
 
 function stopFun(row) {

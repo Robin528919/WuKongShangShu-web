@@ -242,7 +242,8 @@ function delAllFun() {
         return proxy.$modal.msgError("请选择分组");
     }
     proxy.$modal.confirm('是否确认删除整个分组数据？').then(function () {
-        delBook([query.group_id]).then(res => {
+        let body = proxy.objToArrayFun(query);
+        delBook(body).then(res => {
             if (res.code == 200) {
                 ElMessage.success("删除成功");
                 searchFun()
