@@ -188,10 +188,15 @@ export const constantRoutes = [
       {
         path: "adApiRecord",  // src/views/admin/adApiRecord.vue
         component: () => import("@/views/admin/adApiRecord"),
-        // component: () => import("@/views/system/user/index"),
         name: "adApiRecord",
         meta: { title: "管理员API记录", icon: "peoples" },
+      }, {
+        path: "issueRecord",  // src/views/admin/adApiRecord.vue
+        component: () => import("@/views/admin/issueRecord"),
+        name: "issueRecord",
+        meta: { title: "管理员发布记录", icon: "peoples" },
       },
+
       {
         path: "index",
         component: () => import("@/views/system/user/index"),

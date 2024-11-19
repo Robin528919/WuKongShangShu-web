@@ -132,4 +132,13 @@ export function getReleaseRecord(data) {
     data: data.body
   })
 }
+// 管理员发布记录
+
+export function getAdminReleaseRecord(data) {
+  return request({
+    url: `/admin/release/record/query?page=${data.current_page}&page_size=${data.page_size}`,
+    method: 'post',
+    data: data.body
+  })
+}
 

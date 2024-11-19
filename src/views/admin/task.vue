@@ -17,7 +17,6 @@
                 <el-button type="danger" plain>清空采集过滤数据</el-button> -->
             </el-form-item>
         </el-form>
-       
         <el-table v-loading="loading" :data="tableList" @selection-change="handleSelectionChange">
             <el-table-column type="selection" width="55" align="center" />
             <el-table-column label="序号" align="center" width="80" prop="configId">
@@ -25,8 +24,8 @@
                     {{ (page.current_page - 1) * page.page_size + $index + 1 }}
                 </template>
             </el-table-column>
-
             <el-table-column label="任务id" align="center" width="80" prop="task_id" :show-overflow-tooltip="true" />
+            <el-table-column label="用户邮箱" align="center" width="160" prop="email" :show-overflow-tooltip="true" />
             <el-table-column label="任务名称" align="center" width="120" prop="task_name" :show-overflow-tooltip="true" />
             <el-table-column label="任务类型" width="100" align="center" prop="task_type" :show-overflow-tooltip="true">
                 <template v-slot:default="scope">
@@ -90,7 +89,7 @@ const configList = ref([]);
 
 function goRecordFun(row) {
     proxy.$router.push({
-        path: '/issue/record',
+        path: '/admin/issueRecord',
         query: {
             id: row.task_id,
             title: row.task_name,

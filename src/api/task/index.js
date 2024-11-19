@@ -141,3 +141,13 @@ export function stopAdmin(id) {
   });
 }
 
+// /api/v1/admin/release/record/query /api/v1/admin/release/record/query
+export function releaseRecord(id) {
+  return request({
+    url: `/admin/release/record/query`,
+    headers: {
+      isToken: true,
+    },
+    method: "post",
+  });
+}
