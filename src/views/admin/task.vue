@@ -5,7 +5,7 @@
                 <el-input v-model="query.name" placeholder="请输入任务名称" clearable style="width: 240px" />
             </el-form-item>
             <el-form-item label="任务类型" prop="configType">
-              <el-select v-model="query.task_type" placeholder="" style="width: 240px;" clearable> 
+              <el-select v-model="query.task_type" placeholder="" style="width: 240px;" clearable>
                   <el-option v-for="item in task_typeArr" :key="item.value" :label="item.label" :value="item.value">
                   </el-option>
               </el-select>
@@ -25,7 +25,7 @@
                 </template>
             </el-table-column>
             <el-table-column label="任务id" align="center" width="80" prop="task_id" :show-overflow-tooltip="true" />
-            <el-table-column label="用户邮箱" align="center" width="160" prop="email" :show-overflow-tooltip="true" />
+            <el-table-column label="用户邮箱" align="center" width="160" prop="user.email" :show-overflow-tooltip="true" />
             <el-table-column label="任务名称" align="center" width="120" prop="task_name" :show-overflow-tooltip="true" />
             <el-table-column label="任务类型" width="100" align="center" prop="task_type" :show-overflow-tooltip="true">
                 <template v-slot:default="scope">
