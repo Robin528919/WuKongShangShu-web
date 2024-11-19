@@ -1,6 +1,6 @@
 <template>
     <div class="app-container">
-        <el-form :inline="true" v-show="showSearch" label-width="68px">
+        <el-form :inline="true"  label-width="68px">
             <el-form-item label="图书名称">
                 <el-input v-model="query.item_name" placeholder="图书名称" clearable style="width: 240px" />
             </el-form-item>
@@ -114,20 +114,12 @@ if(route.query&&route.query.group_id){
     parmas.group_id = Number(route.query.group_id) 
 }
 
-const { page, open, query, transform, tableList, searchFun, resetFun,  handleCurrentChange, handleSizeChange } = useTableListFun(getQueryBook,parmas)
-
-
-
-const configList = ref([]);
-
-const loading = ref(false);
-const showSearch = ref(true);
+const { page, open, query,loading, transform, tableList, searchFun, resetFun,  handleCurrentChange, handleSizeChange } = useTableListFun(getQueryBook,parmas)
 const ids = ref([]);
-const single = ref(true);
+
 const multiple = ref([]);
-const total = ref(0);
-const title = ref("");
-const dateRange = ref([]);
+
+
 
 function resetFuna() {
     // 获取当前的哈希路径部分，不包含查询参数
@@ -156,15 +148,7 @@ function getGetbookGroupFun() {
 getGetbookGroupFun()
 
 
-/** 查询参数列表 */
-function getList() {
-    loading.value = true;
-    listConfig(proxy.addDateRange(queryParams.value, dateRange.value)).then(response => {
-        configList.value = response.rows;
-        total.value = response.total;
-        loading.value = false;
-    });
-}
+
 
 
 
@@ -210,35 +194,15 @@ function handleQuery() {
     getList();
 }
 
-/** 重置按钮操作 */
-function resetQuery() {
-    dateRange.value = [];
-    proxy.resetForm("queryRef");
-    handleQuery();
-}
 
 /** 多选框选中数据 */
 function handleSelectionChange(selection) {
     multiple.value = selection
 }
 
-/** 新增按钮操作 */
-function handleAdd() {
-    reset();
-    open.value = true;
-    title.value = "添加参数";
-}
 
-/** 修改按钮操作 */
-function handleUpdate(row) {
-    reset();
-    const configId = row.configId || ids.value;
-    getConfig(configId).then(response => {
-        form.value = response.data;
-        open.value = true;
-        title.value = "修改参数";
-    });
-}
+
+
 
 /** 提交按钮 */
 function submitForm() {
@@ -304,12 +268,9 @@ function deltiFun() {
 
 // 根据条件删除
 function delselectFun() {
-
-    console.log("delselectFundelselectFun", multiple)
     if (multiple.value.length <= 0) {
         return ElMessage.warning("请选择要删除的数据");
     }
-
     proxy.$modal.confirm('确定删除数据？').then(() => {
         let query = {
             book_ids: multiple.value.map(item => item.book_id)

@@ -299,9 +299,10 @@ export function getCallLogs(data) {
       str += item.field + "=" + item.value + "&";
     });
   }
-  console.log("paramsparams",data, str);
+
+  console.log("paramsparams",data, str,data.current_page);
   return request({
-    url: `/api/call/logs?${str}`,
+    url: `/api/call/logs?${str}page=${data.current_page}&page_size=${data.page_size}`,
     headers: {
       isToken: true,
     },
@@ -313,7 +314,7 @@ export function getCallLogs(data) {
 // /api/v1/admin/api/call/logs
 
 export function getCallLogsAdmin(data) {
-  
+  console.log("data",data)
   let str = "";
   if (data && data.body && Array.isArray(data.body)) {
     data.body.forEach((item) => {
@@ -322,7 +323,7 @@ export function getCallLogsAdmin(data) {
   }
   console.log("paramsparams",data, str);
   return request({
-    url: `/admin/api/call/logs?${str}`,
+    url: `/admin/api/call/logs?${str}page=${data.current_page}&page_size=${data.page_size}`,
     headers: {
       isToken: true,
     },
