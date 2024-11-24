@@ -54,7 +54,7 @@ function submit() {
             removeToken()
             localStorage.removeItem("is_superuser")
             localStorage.removeItem("tbMsg")
-            location.href = '/index';
+            location.href = '/#login';
           }, 1000)
         }
 
