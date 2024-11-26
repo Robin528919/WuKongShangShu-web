@@ -32,6 +32,12 @@
                     <el-tag v-else type="error">禁用</el-tag>
                 </template>
             </el-table-column>
+            <el-table-column label="是否是管理员" align="center" prop="status" :show-overflow-tooltip="true" >
+                <template #default="scope">
+                    <el-tag v-if="scope.row.is_superuser" type="success">是</el-tag>
+                    <el-tag v-else type="error">否</el-tag>
+                </template>
+            </el-table-column>
             <el-table-column label="描述" align="center" prop="remark" :show-overflow-tooltip="true" />
             <el-table-column label="余额" align="center" prop="balance" :show-overflow-tooltip="true" />
             

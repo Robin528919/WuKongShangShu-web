@@ -11,7 +11,7 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="设置管理" :required="true">
+      <el-form-item label="设置管理" >
         <el-select v-model="form.is_superuser" placeholder="">
           <el-option v-for="item in superuser" :key="item.value" :label="item.label" :value="item.value">
           </el-option>
@@ -72,11 +72,11 @@ const options = [
 ]
 const  superuser= [
   {
-    value: '0',
+    value: false,
     label: "否"
   },
   {
-    value: '1',
+    value: true,
     label: "是"
   },
 ]
