@@ -33,6 +33,7 @@ export function useTableListFun(fetchFunction, deparams) {
 
       if (deparams && deparams.isTb) {
         params = { ...page, ...query };
+        params.page_no = params.current_page
       }
       const response = await fetchFunction(params);
       if (response.data.data) {

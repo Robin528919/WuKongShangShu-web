@@ -11,6 +11,12 @@
           </el-option>
         </el-select>
       </el-form-item>
+      <el-form-item label="设置管理" :required="true">
+        <el-select v-model="form.is_superuser" placeholder="">
+          <el-option v-for="item in superuser" :key="item.value" :label="item.label" :value="item.value">
+          </el-option>
+        </el-select>
+      </el-form-item>
       <el-form-item label="描述">
         <el-input type="text" v-model="form.remark" />
       </el-form-item>
@@ -62,6 +68,16 @@ const options = [
   {
     value: 1,
     label: "冻结"
+  },
+]
+const  superuser= [
+  {
+    value: '0',
+    label: "否"
+  },
+  {
+    value: '1',
+    label: "是"
   },
 ]
 const visible = ref(props.open)

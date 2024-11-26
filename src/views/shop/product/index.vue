@@ -6,7 +6,7 @@
             </el-form-item>
             <el-form-item label="商品类目：">
                 <el-select v-model="query.cid" filterable remote reserve-keyword style="width: 240px"
-                    placeholder="请选择发布类目" remote-show-suffix :remote-method="remoteMethod" :loading="loading">
+                    placeholder="请选择发布类目" remote-show-suffix :remote-method="remoteMethod" :loading="loadinga">
                     <el-option v-for="item in category_infoList" :key="item.cid" :label="item.name" :value="item.cid" />
                 </el-select>
             </el-form-item>
@@ -68,7 +68,7 @@
 
         <el-row :gutter="10" class="mb8">
         </el-row>
-        <el-table :data="tableList" @selection-change="handleSelectionChange">
+        <el-table v-loading="loading" :data="tableList" @selection-change="handleSelectionChange">
             <el-table-column type="selection" width="55" align="center" />
             <el-table-column label="序号" align="center" prop="configId">
                 <template #default="{ row, $index }">
@@ -150,7 +150,7 @@ import { getbookGroup ,getCategory} from "@/api/price/index"
 //const { sys_yes_no } = proxy.useDict("sys_yes_no");
 import { getProductList } from "@/api/task/index"
 import { ElMessage, ElMessageBox } from 'element-plus'
-const { page, open, query, transform, tableList, searchFun, resetFun, closeFun, handleCurrentChange, handleSizeChange, getQueryList } = useTableListFun(getProductList,{isTb:true})
+const { page, open, query,loading, transform, tableList, searchFun, resetFun, closeFun, handleCurrentChange, handleSizeChange, getQueryList } = useTableListFun(getProductList,{isTb:true})
 
 
 
@@ -182,13 +182,13 @@ function getGetbookGroupFun() {
 getGetbookGroupFun()
 
 // 获取发布类目
-let loading = ref(false)
+let loadinga = ref(false)
 const category_infoList = ref([])
 const remoteMethod = async (e) => {
-    loading.value = true
+    loadinga.value = true
     console.log("FFFF", e)
     let res = await category_info(e)
-    loading.value = false
+    loadinga.value = false
     category_infoList.value = res.data.item_cats
 }
 remoteMethod()

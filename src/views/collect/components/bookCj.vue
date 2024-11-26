@@ -137,7 +137,7 @@ const submitFun = async () => {
     //
     let res = await createTask(form)
     if (res.code == 200) {
-        ElMessage.success("采集成功")
+        ElMessage.success("采集任务创建成功")
         form.task_params.shop_ids = '';
 
     }

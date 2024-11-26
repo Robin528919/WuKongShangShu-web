@@ -57,6 +57,9 @@ console.log("proxy", proxy)
     password: "123456",  .. 2422144784@qq.com jdy13254
       email: "admin123@qq.com",
     password: "admin123", 
+
+    Wkm@qq.com
+    wkm@123456
 */
 const loginForm = ref({
     email: "",
