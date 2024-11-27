@@ -126,19 +126,34 @@ export function logout() {
 
 // /api/v1/release/record/query 获取发布记录
 export function getReleaseRecord(data) {
+ 
+  let arr = data.body.map(item=>{
+    if(item.field=="publish_result"&&item.value=="发布失败"){
+      item.value = '发布成功'
+      item.operator="!="
+    }
+    return item
+  })
   return request({
     url: `/release/record/query?page=${data.current_page}&page_size=${data.page_size}`,
     method: 'post',
-    data: data.body
+    data: arr
   })
 }
 // 管理员发布记录
 
 export function getAdminReleaseRecord(data) {
+  let arr = data.body.map(item=>{
+    if(item.field=="publish_result"&&item.value=="发布失败"){
+      item.value = '发布成功'
+      item.operator="!="
+    }
+    return item
+  })
   return request({
     url: `/admin/release/record/query?page=${data.current_page}&page_size=${data.page_size}`,
     method: 'post',
-    data: data.body
+    data: arr
   })
 }
 

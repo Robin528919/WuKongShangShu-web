@@ -13,11 +13,14 @@
             <el-form-item label="任务ID">
                 <el-input v-model="query.task_id" placeholder="请输入参数名称" clearable style="width: 240px" />
             </el-form-item>
-            <!-- <el-form-item label="启用状态" prop="configType">
-                <el-select v-model="queryParams.configType" placeholder="系统内置" clearable>
-                    <el-option v-for="dict in sys_yes_no" :key="dict.value" :label="dict.label" :value="dict.value" />
+            <el-form-item label="发布结果">
+                <el-select v-model="query.publish_result" placeholder="请选择"  clearable style="width: 240px" >
+                    <el-option :key="1" label="发布成功" value="发布成功">
+                    </el-option>
+                    <el-option :key="2" label="发布失败" value="发布失败">
+                    </el-option>
                 </el-select>
-            </el-form-item> -->
+            </el-form-item>
             <el-form-item>
                 <el-button type="primary" icon="Search" @click="searchFun">搜索</el-button>
                 <el-button icon="Refresh" @click="resetFunaa">重置</el-button>
@@ -118,7 +121,7 @@ if (urlQuery.id) {
 }
 
 
-const { page, open, query, tableList, searchFun, resetFun, closeFun, handleCurrentChange, handleSizeChange, getQueryList } = useTableListFun(getAdminReleaseRecord, parms)
+const { page, open, query, loading, tableList, searchFun, resetFun, closeFun, handleCurrentChange, handleSizeChange, getQueryList } = useTableListFun(getAdminReleaseRecord, parms)
 
 const resetFunaa = () => {
     // 获取当前的哈希路径部分，不包含查询参数
@@ -151,7 +154,7 @@ const sys_yes_no = [{
     value: false,
     label: '否'
 }]
-const loading = ref(false);
+
 const showSearch = ref(true);
 const ids = ref([]);
 const single = ref(true);
