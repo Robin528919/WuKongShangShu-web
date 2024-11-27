@@ -52,7 +52,7 @@
             </el-table-column>
         </el-table>
         <div style="display: flex; justify-content: end;">
-            <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+            <el-pagination @size-change="handleSizeChange"  :current-page="page.current_page"  @current-change="handleCurrentChange"
                 style="margin-top: 20px;" background :page-size="page.page_size" layout="total, sizes, prev, pager, next, jumper"
                 :total="page.total">
             </el-pagination>
