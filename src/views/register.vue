@@ -105,13 +105,7 @@ function handleRegister() {
                 }
                 loading.value = false
 
-                // console.log("egisterForm.value",registerForm )
-                // ElMessageBox.alert("<font color='red'>恭喜你，您的账号 " + username + " 注册成功！</font>", "系统提示", {
-                //     dangerouslyUseHTMLString: true,
-                //     type: "success",
-                // }).then(() => {
-                //     router.push("/login");
-                // }).catch(() => { });
+               
             }).catch(() => {
                 loading.value = false;
                 if (captchaEnabled) {
@@ -122,17 +116,7 @@ function handleRegister() {
     });
 }
 
-// function getCode() {
-//     getCodeImg().then(res => {
-//         captchaEnabled.value = res.captchaEnabled === undefined ? true : res.captchaEnabled;
-//         if (captchaEnabled.value) {
-//             codeUrl.value = "data:image/gif;base64," + res.img;
-//             registerForm.value.uuid = res.uuid;
-//         }
-//     });
-// }
 
-// getCode();
 </script>
 
 <style lang='scss' scoped>

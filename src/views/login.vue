@@ -42,7 +42,7 @@
 </template>
 
 <script setup>
-//import { getCodeImg } from "@/api/login";
+
 import Cookies from "js-cookie";
 import { encrypt, decrypt } from "@/utils/jsencrypt";
 import useUserStore from '@/store/modules/user'
@@ -127,15 +127,7 @@ function handleLogin() {
     });
 }
 
-// function getCode() {
-//     getCodeImg().then(res => {
-//         captchaEnabled.value = res.captchaEnabled === undefined ? true : res.captchaEnabled;
-//         if (captchaEnabled.value) {
-//             codeUrl.value = "data:image/gif;base64," + res.img;
-//             loginForm.value.uuid = res.uuid;
-//         }
-//     });
-// }
+
 
 function getCookie() {
     const email = Cookies.get("email");

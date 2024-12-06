@@ -2,11 +2,12 @@ import request from '@/utils/request'
 
 // 登录方法
 export function login(data) {
-  console.log("ddd")
+  
   return request({
     url: '/user/login',
     headers: {
       isToken: false,
+      isYun:true,
       repeatSubmit: false
     },
     method: 'post',
@@ -19,7 +20,8 @@ export function register(data) {
   return request({
     url: '/user/register',
     headers: {
-      isToken: false
+      isToken: false,
+      isYun:false 
     },
     method: 'post',
     data: data
@@ -35,21 +37,5 @@ export function getInfo() {
 }
 
 // 退出方法
-export function logout() {
-  return request({
-    url: '/logout',
-    method: 'post'
-  })
-}
 
-// 获取验证码
-export function getCodeImg() {
-  return request({
-    url: '/captchaImage',
-    headers: {
-      isToken: false
-    },
-    method: 'get',
-    timeout: 20000
-  })
-}
+

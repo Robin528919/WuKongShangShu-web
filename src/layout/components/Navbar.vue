@@ -83,9 +83,7 @@ function logout() {
        localStorage.removeItem("is_superuser") 
         localStorage.removeItem("tbMsg")
         location.href = '/#login';
-        // userStore.logOut().then(() => {
-        //     location.href = '/index';
-        // })
+      
     }).catch(() => { });
 }
 

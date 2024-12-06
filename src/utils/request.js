@@ -11,6 +11,7 @@ import { tansParams, blobValidate } from "@/utils/ruoyi";
 import cache from "@/plugins/cache";
 import { saveAs } from "file-saver";
 import useUserStore from "@/store/modules/user";
+import { el } from "element-plus/es/locales.mjs";
 
 let downloadLoadingInstance;
 // 是否显示重新登录
@@ -18,9 +19,10 @@ export let isRelogin = { show: false };
 
 axios.defaults.headers["Content-Type"] = "application/json;charset=utf-8";
 // 创建axios实例
-const service = axios.create({  // 
+const service = axios.create({
+  //
   // axios中请求配置有baseURL选项，表示请求URL公共部分 "http://120.27.8.117/api/v1",
-  baseURL: import.meta.env.VITE_APP_BASE_API + '/api/v1', // "http://120.27.8.117/media/images/16b1ce319a9357e34ac75cb907d739938.png
+  baseURL: "", //import.meta.env.VITE_APP_BASE_API + '/api/v1', // "http://120.27.8.117/media/images/16b1ce319a9357e34ac75cb907d739938.png
   // 超时
   timeout: 1000000,
 });
@@ -37,9 +39,9 @@ service.interceptors.request.use(
       config.headers["token"] = getToken(); // 让每个请求携带自定义token 请根据实际情况自行修改
     }
     // get请求映射params参数
-    if ((config.method === "get" && config.params)) {
+    if (config.method === "get" && config.params) {
       let url = config.url + "?" + tansParams(config.params);
-      console.log("is_enableis_enable",url)
+      console.log("is_enableis_enable", url);
       url = url.slice(0, -1);
       config.params = {};
       config.url = url;
@@ -88,6 +90,12 @@ service.interceptors.request.use(
         }
       }
     }
+    if (config && config.headers && config.headers.isYun) {
+      config.baseURL = import.meta.env.VITE_APP_BASENEXT_API + "/api/v1";
+    } else {
+      config.baseURL = import.meta.env.VITE_APP_BASE_API + "/api/v1";
+    }
+    console.log("config----", config);
     return config;
   },
   (error) => {
@@ -99,7 +107,6 @@ service.interceptors.request.use(
 // 响应拦截器
 service.interceptors.response.use(
   (res) => {
-  
     // 未设置状态码则默认成功状态
     const code = res.data.code || 200;
     // 获取错误信息
