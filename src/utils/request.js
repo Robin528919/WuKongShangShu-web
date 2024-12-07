@@ -95,7 +95,6 @@ service.interceptors.request.use(
     } else {
       config.baseURL = import.meta.env.VITE_APP_BASE_API + "/api/v1";
     }
-    console.log("config----", config);
     return config;
   },
   (error) => {

@@ -77,7 +77,8 @@ export function getTemplate(data) {
     return request({
       url: "callback/get_auth_url",
       headers: {
-        isToken: true
+        isToken: true,
+        isYun:true,
       },
       method: 'get',
      // data: data

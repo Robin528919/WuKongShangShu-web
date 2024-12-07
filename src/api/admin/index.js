@@ -73,10 +73,6 @@ export function uploadWord(data) {
   });
 }
 
-
-
-
-
 // 登录方法
 export function login(username, password, code, uuid) {
   const data = {
@@ -89,7 +85,8 @@ export function login(username, password, code, uuid) {
     url: '/login',
     headers: {
       isToken: false,
-      repeatSubmit: false
+      repeatSubmit: false,
+      isYun:true,
     },
     method: 'post',
     data: data
