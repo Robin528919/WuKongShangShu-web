@@ -22,7 +22,6 @@ export function loginLocal(data) {
     url: '/user/login',
     headers: {
       isToken: false,
-      isYun:true,
       repeatSubmit: false
     },
     method: 'post',
