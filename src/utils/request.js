@@ -5,7 +5,7 @@ import {
   ElMessage,
   ElLoading,
 } from "element-plus";
-import { getToken, setToken } from "@/utils/auth";
+import { getToken, setToken,getLocaToken } from "@/utils/auth";
 import errorCode from "@/utils/errorCode";
 import { tansParams, blobValidate } from "@/utils/ruoyi";
 import cache from "@/plugins/cache";
@@ -92,8 +92,13 @@ service.interceptors.request.use(
     }
     if (config && config.headers && config.headers.isYun) {
       config.baseURL = import.meta.env.VITE_APP_BASENEXT_API + "/api/v1";
+      config.headers["Authorization"] = "Bearer " + getLocaToken(); // 让每个请求携带自定义token 请根据实际情况自行修改
+      config.headers["token"] = getLocaToken(); // 让每个请求携带自定义token 请根据实际情况自行修改
+
     } else {
       config.baseURL = import.meta.env.VITE_APP_BASE_API + "/api/v1";
+      config.headers["Authorization"] = "Bearer " + getToken(); // 让每个请求携带自定义token 请根据实际情况自行修改
+      config.headers["token"] = getToken(); // 让每个请求携带自定义token 请根据实际情况自行修改
     }
     return config;
   },

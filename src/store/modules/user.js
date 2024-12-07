@@ -1,5 +1,5 @@
-import { login,  getInfo } from "@/api/login";
-import { getToken, setToken, removeToken } from "@/utils/auth";
+import { login,loginLocal,  getInfo } from "@/api/login";
+import { getToken, setToken, removeToken,setLocaToken,removeLocalToken} from "@/utils/auth";
 import defAva from "@/assets/images/profile.jpg";
 
 const useUserStore = defineStore("user", {
@@ -20,6 +20,15 @@ const useUserStore = defineStore("user", {
       // const code = userInfo.code;
       // const uuid = userInfo.uuid;
       return new Promise((resolve, reject) => {
+
+        loginLocal({
+          email: username,
+          password,
+          
+        }).then(res=>{
+          console.log("user/profileuser/profile",res)
+          setLocaToken(res.data.token);
+        })
         login({
           email: username,
           password,
@@ -74,6 +83,7 @@ const useUserStore = defineStore("user", {
             this.roles = [];
             this.permissions = [];
             removeToken();
+            removeLocalToken()
             resolve();
           })
           .catch((error) => {

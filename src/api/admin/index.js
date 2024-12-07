@@ -93,6 +93,25 @@ export function login(username, password, code, uuid) {
   })
 }
 
+export function loginLocal(username, password, code, uuid) {
+  const data = {
+    username,
+    password,
+    code,
+    uuid
+  }
+  return request({
+    url: '/login',
+    headers: {
+      isToken: false,
+      repeatSubmit: false,
+    },
+    method: 'post',
+    data: data
+  })
+}
+
+
 // 注册方法 /api/v1/user/register
 export function register(data) {
   return request({
