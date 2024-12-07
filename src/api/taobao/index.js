@@ -12,7 +12,8 @@ export function getTb(data) {
     return request({
       url: "tb",
       headers: {
-        isToken: true
+        isToken: true,
+        isYun:true,
       },
       method: 'get',
       //data: data
@@ -26,7 +27,8 @@ export function postTb(data) {
     return request({
       url: `tb?session_key=${data.session_key}`,
       headers: {
-        isToken: true
+        isToken: true,
+        isYun:true,
       },
       method: 'post',
       data: data
@@ -39,7 +41,8 @@ export function getSell_count(data) {
     return request({
       url: "/tb/sell_count",
       headers: {
-        isToken: true
+        isToken: true,
+        isYun:true,
       },
       method: 'get',
      // data: data
@@ -52,7 +55,8 @@ export function getCategory(data) {
     return request({
       url: "tb/category",
       headers: {
-        isToken: true
+        isToken: true,
+        isYun:true,
       },
       method: 'get',
       //data: data
@@ -64,7 +68,8 @@ export function getTemplate(data) {
     return request({
       url: "tb/template",
       headers: {
-        isToken: true
+        isToken: true,
+        isYun:true,
       },
       method: 'get',
      // data: data
@@ -91,7 +96,8 @@ export function tbInfo(data) {
   return request({
     url: "tb/info",
     headers: {
-      isToken: true
+      isToken: true,
+      isYun:true,
     },
     method: 'get',
    // data: data

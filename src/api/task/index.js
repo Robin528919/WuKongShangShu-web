@@ -84,6 +84,7 @@ export function getProductList(data) {
     url: `/tb/product_list`,
     headers: {
       isToken: true,
+      isYun:true,
     },
     method: "post",
     data: data,
@@ -107,6 +108,7 @@ export function getInventoryList(data) {
     url: `/tb/inventory_list`,
     headers: {
       isToken: true,
+      isYun:true,
     },
     method: "post",
     data: data,

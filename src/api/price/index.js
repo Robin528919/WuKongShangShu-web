@@ -203,6 +203,7 @@ export function sell_count() {
     url: `tb/sell_count`,
     headers: {
       isToken: true,
+      isYun:true,
       // "Content-Type":"form-data;charset=utf-8"
     },
     method: "get",
@@ -217,6 +218,7 @@ export function getCategory() {
     url: `tb/category`,
     headers: {
       isToken: true,
+      isYun:true,
       // "Content-Type":"form-data;charset=utf-8"
     },
     method: "get",
@@ -231,6 +233,7 @@ export function templateS() {
     url: `tb/template`,
     headers: {
       isToken: true,
+      isYun:true,
       // "Content-Type":"form-data;charset=utf-8"
     },
     method: "get",
@@ -245,6 +248,7 @@ export function category_info(str) {
     url: `tb/category_info?keyword=${str}`,
     headers: {
       isToken: true,
+      isYun:true,
       // "Content-Type":"form-data;charset=utf-8"
     },
     method: "get",
@@ -283,6 +287,7 @@ export function uploadImage(data) {
     headers: {
       isToken: true,
       "Content-Type": "multipart/form-data",
+      isYun:true,
     },
     method: "post",
     data: data, //data: data
