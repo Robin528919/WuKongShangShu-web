@@ -25,7 +25,7 @@ const useUserStore = defineStore("user", {
           password,
           
         }).then(res=>{
-          console.log("user/profileuser/profile",res)
+          console.log("loginLocal",res.data.token)
           setLocaToken(res.data.token);
         })
         login({
