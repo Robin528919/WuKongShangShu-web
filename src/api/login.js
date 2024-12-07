@@ -15,6 +15,21 @@ export function login(data) {
   })
 }
 
+// 登录方法
+export function loginLocal(data) {
+  
+  return request({
+    url: '/user/login',
+    headers: {
+      isToken: false,
+      isYun:true,
+      repeatSubmit: false
+    },
+    method: 'post',
+    data: data
+  })
+}
+
 // 注册方法 /api/v1/user/register
 export function register(data) {
   return request({

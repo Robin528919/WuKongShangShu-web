@@ -20,7 +20,6 @@ const useUserStore = defineStore("user", {
       // const code = userInfo.code;
       // const uuid = userInfo.uuid;
       return new Promise((resolve, reject) => {
-
         loginLocal({
           email: username,
           password,
