@@ -19,7 +19,7 @@
     </el-form-item>
     <el-form-item label="店铺登陆：">
       <el-button type="primary" @click="getAuthuUrlFun">授权登陆</el-button>
-      <!-- <el-button type="primary" @click="getAuthuUrlFun">同步授权信息</el-button> -->
+      <el-button type="primary" @click="settbInfoFun">同步授权信息</el-button>
     </el-form-item>
    
     <el-form-item label="淘标题优化:">
@@ -85,6 +85,9 @@ function tbInfoFun(){
 // settbInfo
 
 const settbInfoFun= async()=>{
+  if(!tbinfoDetail.value.access_token){
+    proxy.$modal.msgWarning("请先授权");
+  }
   let res = await settbInfo(tbinfoDetail.value)
   if(res&&res.code==200){
     proxy.$modal.msgSuccess("同步淘宝信息成功");
