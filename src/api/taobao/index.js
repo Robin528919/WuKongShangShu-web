@@ -103,3 +103,18 @@ export function tbInfo(data) {
    // data: data
   })
 }
+
+// 同步授权信息
+
+export function settbInfo(data) {
+  return request({
+    url: "tb/set_info",
+    headers: {
+      isToken: true,
+      //  isYun:true,
+    },
+    method: 'post',
+     data: data
+  })
+}
+

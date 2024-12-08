@@ -19,6 +19,7 @@
     </el-form-item>
     <el-form-item label="店铺登陆：">
       <el-button type="primary" @click="getAuthuUrlFun">授权登陆</el-button>
+      <!-- <el-button type="primary" @click="getAuthuUrlFun">同步授权信息</el-button> -->
     </el-form-item>
    
     <el-form-item label="淘标题优化:">
@@ -44,7 +45,7 @@
 </template>
 <script setup>
 import { ref, reactive, toRefs, onMounted } from "vue";
-import { getTb, postTb ,getAuthuUrl,tbInfo} from "@/api/taobao/index.js"
+import { getTb, postTb ,getAuthuUrl,tbInfo,settbInfo} from "@/api/taobao/index.js"
 // src/store/modules/tbMsg.js
 import useTbMsgStore from '../../../store/modules/tbMsg'
 const { proxy } = getCurrentInstance();
@@ -76,7 +77,20 @@ const tbinfoDetail = ref({})
 function tbInfoFun(){
   tbInfo().then(res => {
     tbinfoDetail.value = res.data
+    settbInfoFun()
+
   })
+}
+
+// settbInfo
+
+const settbInfoFun= async()=>{
+  let res = await settbInfo(tbinfoDetail.value)
+  if(res&&res.code==200){
+    proxy.$modal.msgSuccess("同步淘宝信息成功");
+  }
+
+
 }
 
 
