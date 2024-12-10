@@ -42,6 +42,19 @@ export function register(data) {
   })
 }
 
+// 注册方法 /api/v1/user/register
+export function registerIsYun(data) {
+  return request({
+    url: '/user/register',
+    headers: {
+      isToken: false,
+      isYun:true 
+    },
+    method: 'post',
+    data: data
+  })
+}
+
 // 获取用户详细信息
 export function getInfo() {
   return request({

@@ -3,18 +3,18 @@
         <el-form ref="registerRef" :model="registerForm" :rules="registerRules" class="register-form">
             <h3 class="title">悟空上书系统</h3>
             <el-form-item prop="email">
-                <el-input v-model="registerForm.email" type="text" size="large" auto-complete="off" placeholder="邮箱">
+                <el-input v-model.trim="registerForm.email" type="text" size="large" auto-complete="off" placeholder="邮箱">
                     <template #prefix><svg-icon icon-class="user" class="el-input__icon input-icon" /></template>
                 </el-input>
             </el-form-item>
             <el-form-item prop="password">
-                <el-input v-model="registerForm.password" type="password" size="large" auto-complete="off"
+                <el-input v-model.trim="registerForm.password" type="password" size="large" auto-complete="off"
                     placeholder="密码" @keyup.enter="handleRegister">
                     <template #prefix><svg-icon icon-class="password" class="el-input__icon input-icon" /></template>
                 </el-input>
             </el-form-item>
             <el-form-item prop="confirmPassword">
-                <el-input v-model="registerForm.confirmPassword" type="password" size="large" auto-complete="off"
+                <el-input v-model.trim="registerForm.confirmPassword" type="password" size="large" auto-complete="off"
                     placeholder="确认密码" @keyup.enter="handleRegister">
                     <template #prefix><svg-icon icon-class="password" class="el-input__icon input-icon" /></template>
                 </el-input>
@@ -48,7 +48,7 @@
 
 <script setup>
 import { ElMessage, ElMessageBox } from "element-plus";
-import {  register } from "@/api/login";
+import { register, registerIsYun } from "@/api/login";
 
 const router = useRouter();
 const { proxy } = getCurrentInstance();
@@ -56,7 +56,7 @@ const { proxy } = getCurrentInstance();
 const registerForm = ref({
     email: "",
     password: "",
-    confirmPassword:"",
+    confirmPassword: "",
     code: "",
 
 });
@@ -94,18 +94,23 @@ function handleRegister() {
         if (valid) {
             loading.value = true;
             register(registerForm.value).then(res => {
-                console.log("Fffff",res)
+
                 // const username = registerForm.value.email;
-               
-                if(res&&res.code==200){
-                    ElMessage.success("注册成功！")
-                    setTimeout(()=>{
-                        router.push("/login");
-                    },1000)
+
+                if (res && res.code == 200) {
+                    registerIsYun(registerForm.value).then((res) => {
+                        if (res.code == 200) {
+                            ElMessage.success("注册成功！")
+                            setTimeout(() => {
+                                router.push("/login");
+                            }, 1000)
+                        }
+                    })
+
                 }
                 loading.value = false
 
-               
+
             }).catch(() => {
                 loading.value = false;
                 if (captchaEnabled) {
