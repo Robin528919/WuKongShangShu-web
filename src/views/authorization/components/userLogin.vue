@@ -23,7 +23,7 @@
     </el-form-item>
    
     <el-form-item label="淘标题优化:">
-      <el-link type="primary"  target="_blank" href="https://fuwu.taobao.com/ser/detail.htm?service_code=FW_GOODS-1857923"> api购买</el-link>
+      <el-link type="primary"  target="_blank" href="https://fuwu.taobao.com/ser/detail.htm?spm=a1z13.fuwu_search_result_2023.0.0.25315aca5U1SZ7&service_code=FW_GOODS-1857923&tracelog=search&from_key=%E6%B7%98%E6%9C%89%E9%81%93"> api购买</el-link>
     </el-form-item>
    
     <el-form-item label="access_token:">
