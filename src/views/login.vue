@@ -53,7 +53,7 @@ const router = useRouter();
 const { proxy } = getCurrentInstance();
 console.log("proxy", proxy)
 /*
-  email: "wkm@123.com",
+  email: "wkm@123.com",   wkm222@qq.com
     password: "123456",  .. 2422144784@qq.com jdy13254
       email: "admin123@qq.com",
     password: "admin123", 

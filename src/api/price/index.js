@@ -81,6 +81,7 @@ export function getUser(data) {
     url: `/admin/user/query?page=${data.current_page}&page_size=${data.page_size}`,
     headers: {
       isToken: true,
+      isYun:true
     },
     method: "post",
     data: data.body,

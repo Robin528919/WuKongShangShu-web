@@ -42,20 +42,7 @@
             <el-table-column label="余额" align="center" prop="balance" :show-overflow-tooltip="true" />
             
             <el-table-column label="会员到期时间" align="center" prop="expire_time" :show-overflow-tooltip="true" />
-            <!-- <el-table-column label="密码" align="center" prop="start_price" :show-overflow-tooltip="true" /> -->
-            <!-- <el-table-column label="原价" align="center" prop="original_price" :show-overflow-tooltip="true" />
-            <el-table-column label="运算符1" align="center" prop="operator1" :show-overflow-tooltip="true" />
-            <el-table-column label="数字1" align="center" prop="number1" :show-overflow-tooltip="true" />
-            <el-table-column label="运算符2" align="center" prop="operator2" :show-overflow-tooltip="true" />
-            <el-table-column label="数字2" align="center" prop="number2" :show-overflow-tooltip="true" />
-            <el-table-column label="说明" align="center" prop="description" :show-overflow-tooltip="true" />
-            <el-table-column label="状是否启用态" align="center" prop="is_enable">
-                <template #default="scope">
-                    <el-tag v-if="scope.row.is_enable" type="success">是</el-tag>
-                    <el-tag v-else type="error">否</el-tag>
-                </template>
-            </el-table-column>
-            -->
+           
             <el-table-column label="操作" align="center" width="250" class-name="small-padding fixed-width">
                 <template #default="scope">
                     <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)">修改</el-button>
@@ -76,7 +63,6 @@
 </template>
 
 <script setup name="Config">
-
 import { useTableListFun } from "@/hooks/getTabel.js"
 import { getUser } from "@/api/price/index"
 import addPop from "./addPop.vue"
@@ -84,7 +70,9 @@ import addPop from "./addPop.vue"
 import { reactive, } from "vue";
 
 const { proxy } = getCurrentInstance();
-import { delPrice,putPrice } from "@/api/price/index"
+import { delPrice, } from "@/api/price/index"
+
+
 
 const { page,open, query, tableList, searchFun,resetFun,closeFun,handleCurrentChange,handleSizeChange,getQueryList} = useTableListFun(getUser)
 
