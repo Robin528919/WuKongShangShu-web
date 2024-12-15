@@ -100,12 +100,16 @@
                     </el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="运费模版：" :required="true">
-                <el-select v-model="form.task_params.template" placeholder="请选者运费模版">
+            <!-- <el-form-item label="运费模版：" :required="true">
+                <el-select v-model="form.task_params.template" placeholder="请选择运费模版">
                     <el-option v-for="item in templateList" :key="item.template_id" :label="item.name"
                         :value="item.template_id">
                     </el-option>
                 </el-select>
+            </el-form-item> -->
+
+            <el-form-item label="运费模版：" :required="true">
+              <el-input v-model="form.task_params.template" placeholder="手动输入运费模版id"></el-input>
             </el-form-item>
 
             <el-form-item>

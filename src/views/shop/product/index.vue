@@ -4,6 +4,9 @@
             <el-form-item label="商品标题：">
                 <el-input v-model="query.q" placeholder="图书名称" clearable style="width: 240px" />
             </el-form-item>
+            <el-form-item label="商品标题俄432：">
+                <el-input v-model="query.outer_id" placeholder="图书名称" clearable style="width: 240px" />
+            </el-form-item>
             <el-form-item label="商品类目：">
                 <el-select v-model="query.cid" filterable remote reserve-keyword style="width: 240px"
                     placeholder="请选择发布类目" remote-show-suffix :remote-method="remoteMethod" :loading="loadinga">
