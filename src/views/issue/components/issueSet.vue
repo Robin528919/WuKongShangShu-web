@@ -100,17 +100,16 @@
                     </el-option>
                 </el-select>
             </el-form-item>
-            <!-- <el-form-item label="运费模版：" :required="true">
+            <el-form-item label="运费模版：" :required="true">
                 <el-select v-model="form.task_params.template" placeholder="请选择运费模版">
                     <el-option v-for="item in templateList" :key="item.template_id" :label="item.name"
                         :value="item.template_id">
                     </el-option>
                 </el-select>
-            </el-form-item> -->
-
-            <el-form-item label="运费模版：" :required="true">
-              <el-input v-model="form.task_params.template" placeholder="手动输入运费模版id"></el-input>
             </el-form-item>
+            <!-- <el-form-item label="运费模版：" :required="true">
+              <el-input v-model="form.task_params.template" placeholder="手动输入运费模版id"></el-input>
+            </el-form-item> -->
 
             <el-form-item>
                 <el-button type="primary" @click="sureIssuFun">确定发布</el-button>
@@ -122,11 +121,9 @@
             </el-form-item>
             <div v-html="form.task_params.detial" class="html-preview"></div>
         </el-form> -->
-
         <el-dialog v-model="dialogVisible">
             <img w-full :src="dialogImageUrl" alt="Preview Image" />
         </el-dialog>
-
     </div>
 </template>
 
