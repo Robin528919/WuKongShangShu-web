@@ -288,7 +288,7 @@ export function uploadImage(data) {
     headers: {
       isToken: true,
       "Content-Type": "multipart/form-data",
-      isYun:true,
+      isYun:false,
     },
     method: "post",
     data: data, //data: data

@@ -52,7 +52,7 @@ const route = useRoute();
 const router = useRouter();
 const { proxy } = getCurrentInstance();
 console.log("proxy", proxy)
-/*
+/*https://github.com/Robin528919/WuKongShangShu-web
   email: "wkm@123.com",   wkm222@qq.com
     password: "123456",  .. 2422144784@qq.com jdy13254
       email: "admin123@qq.com",
