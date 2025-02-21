@@ -185,12 +185,14 @@ export const constantRoutes = [
         name: "admintask",
         meta: { title: "管理员任务", icon: "peoples", },
       },
+      // {
+      //   path: "adApiRecord",  
+      //   component: () => import("@/views/admin/adApiRecord"),
+      //   name: "adApiRecord",
+      //   meta: { title: "管理员API记录", icon: "peoples" },
+      // },
+      
       {
-        path: "adApiRecord",  // src/views/admin/adApiRecord.vue
-        component: () => import("@/views/admin/adApiRecord"),
-        name: "adApiRecord",
-        meta: { title: "管理员API记录", icon: "peoples" },
-      }, {
         path: "issueRecord",  // src/views/admin/adApiRecord.vue
         component: () => import("@/views/admin/issueRecord"),
         name: "issueRecord",
@@ -303,15 +305,15 @@ export const constantRoutes = [
           icon: "nested",
         },
       },
-      {
-        path: "issueTj",
-        component: () => import("@/views/issue/issueTj"),
-        name: "issueTj",
-        meta: {
-          title: "发布统计",
-          icon: "build",
-        },
-      },
+      // {
+      //   path: "issueTj",
+      //   component: () => import("@/views/issue/issueTj"),
+      //   name: "issueTj",
+      //   meta: {
+      //     title: "发布统计",
+      //     icon: "build",
+      //   },
+      // },
       {
         path: "record",
         component: () => import("@/views/issue/record"),
@@ -324,43 +326,7 @@ export const constantRoutes = [
     ],
   },
 
-  // {
-  //   path: "/delete",
-  //   component: Layout,
-  //   redirect: "noRedirect",
-  //   hidden: false,
-  //   alwaysShow: true,
-  //   meta: { title: "删除数据", icon: "build" },
-  //   children: [
-  //     {
-  //       path: "product",
-  //       component: () => import("@/views/delete/product"),
-  //       name: "product",
-  //       meta: {
-  //         title: "删除商品",
-  //         icon: "build",
-  //       },
-  //     },
-  //     {
-  //       path: "statistics",
-  //       component: () => import("@/views/delete/statistics"),
-  //       name: "statistics",
-  //       meta: {
-  //         title: "删除统计",
-  //         icon: "build",
-  //       },
-  //     },
-  //     {
-  //       path: "dellog",
-  //       component: () => import("@/views/delete/dellog"),
-  //       name: "dellog",
-  //       meta: {
-  //         title: "删除日志",
-  //         icon: "build",
-  //       },
-  //     },
-  //   ],
-  // },
+  
   {
     path: "/user",
     component: Layout,
@@ -379,33 +345,17 @@ export const constantRoutes = [
   //   path: "/userm",
   //   component: Layout,
   //   redirect: "noRedirect",
-  //   hidden: localStorage.getItem("is_superuser")==1?false:true,
+  //   //hidden: localStorage.getItem("is_superuser")==1?false:true,
   //   children: [
   //     {
-  //       path: "index",
-  //       component: () => import("@/views/system/user/index"),
+  //       path: "apiRecord",
+  //       component: () => import("@/views/system/user/apiRecord"),
   //       // component: () => import("@/views/system/user/index"),
-  //       name: "userm",
-  //       meta: { title: "用户管理", icon: "peoples" },
+  //       name: "apiRecord",
+  //       meta: { title: "API记录", icon: "peoples" },
   //     },
   //   ],
   // },
- 
-  {
-    path: "/userm",
-    component: Layout,
-    redirect: "noRedirect",
-    //hidden: localStorage.getItem("is_superuser")==1?false:true,
-    children: [
-      {
-        path: "apiRecord",
-        component: () => import("@/views/system/user/apiRecord"),
-        // component: () => import("@/views/system/user/index"),
-        name: "apiRecord",
-        meta: { title: "API记录", icon: "peoples" },
-      },
-    ],
-  },
 
   
 ];
