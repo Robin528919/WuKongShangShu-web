@@ -95,6 +95,7 @@ export function updatetUser(data) {
     url: `/admin/user/update`,
     headers: {
       isToken: true,
+      isYun:true
     },
     method: "post",
     data: data,
