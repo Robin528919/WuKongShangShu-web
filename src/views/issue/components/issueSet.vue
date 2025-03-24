@@ -93,10 +93,11 @@
             </el-form-item>
 
             <el-form-item label="选择分类：" :required="true">
-                <el-select v-model="form.task_params.category" placeholder="选择分类">
+                <el-input v-model="form.task_params.category" placeholder="请选择分类"></el-input>
+                <!-- <el-select v-model="form.task_params.category" placeholder="选择分类">
                     <el-option v-for="item in categoryList" :key="item.cid" :label="item.name" :value="item.cid">
                     </el-option>
-                </el-select>
+                </el-select> -->
             </el-form-item>
             <el-form-item label="运费模版ID:" :required="true">
                 <el-input v-model="form.task_params.template" placeholder="请输入运费模版ID"></el-input>
