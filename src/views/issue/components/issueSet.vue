@@ -81,8 +81,6 @@
                     <el-option v-for="item in category_infoList" :key="item.cid" :label="item.name" :value="item.cid" />
                 </el-select>
             </el-form-item>
-
-
             <el-form-item label="图书分组：" >
                 <div style="display: flex; width: 100%;">
                     <el-select style="flex: 1;" v-model="form.task_params.book_group_id" placeholder="请选择图书分组">
@@ -100,12 +98,13 @@
                     </el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="运费模版：" :required="true">
-                <el-select v-model="form.task_params.template" placeholder="请选择运费模版">
+            <el-form-item label="运费模版ID:" :required="true">
+                <el-input v-model="form.task_params.template" placeholder="请输入运费模版ID"></el-input>
+                <!-- <el-select v-model="form.task_params.template" placeholder="请选择运费模版">
                     <el-option v-for="item in templateList" :key="item.template_id" :label="item.name"
                         :value="item.template_id">
                     </el-option>
-                </el-select>
+                </el-select> -->
             </el-form-item>
             <!-- <el-form-item label="运费模版：" :required="true">
               <el-input v-model="form.task_params.template" placeholder="手动输入运费模版id"></el-input>
